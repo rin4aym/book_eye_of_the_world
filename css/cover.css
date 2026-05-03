@@ -1,0 +1,91 @@
+/* Контейнер на весь экран */
+#cover {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000; /* Чёрный фон на случай, если анимация не загрузилась */
+}
+
+/* Стили для canvas от PIXI */
+#cover canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+}
+/* Контейнер для UI поверх анимации */
+.overlay {
+    position: fixed;
+    top: 0;
+    right: 4.166%;
+    max-width: 40%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    justify-content: space-between;  /* Элементы распределяются: логотип вверху, кнопка внизу */
+    align-items: center;
+    pointer-events: none; /* Чтобы клики проходили сквозь overlay, но не сквозь кнопку */
+    
+}
+
+/* Логотип */
+.logo {
+    margin-top: 40%;
+    width: 100%;
+    min-width: 40%;
+    pointer-events: none; /* Логотип не перехватывает клики */
+}
+
+/* Кнопка */
+.start_button {
+    pointer-events: auto; /* Кнопка должна реагировать на клики */
+    cursor: pointer;
+    margin-bottom: 10%;
+}
+
+  /* Делаем кнопку кликабельной */
+  #goldButton {
+    cursor: pointer;
+    display: block;
+    flex-shrink: 0;    /* запрещаем сжатие во флексе */
+    width: 383px;       /* фиксированная ширина */
+    height: 96px;  
+    transition: transform 0.1s ease;
+  }
+
+  #hexagon-gradient {
+    opacity: 1;
+  }
+  
+  #hexagon-solid {
+    opacity: 1;
+  }
+
+  /* Наведение — затемняем шестиугольник */
+  #goldButton:active #hexagon-solid {
+    fill: var(--brown);
+    transition: fill 0.2s ease;
+  }
+
+  #goldButton:active #hexagon-gradient {
+    opacity: 0;
+  }
+
+  #goldButton:active {
+    transform: scale(0.98);
+  }
+  /* При нажатии (active) — показываем градиентный шестиугольник */
+  
+  #goldButton:hover #hexagon-solid {
+    opacity: 0;
+  }
+
+  #hexagon-gradient,
+    #hexagon-solid {
+  transition: opacity 0.4s ease;
+}

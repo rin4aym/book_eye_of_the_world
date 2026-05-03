@@ -1,0 +1,97 @@
+@font-face {
+    font-family: "CormorantB";
+    src:url('../assets/fonts/CormorantUnicase-Bold.ttf');
+}
+
+@font-face {
+    font-family: "NotoSerifB";
+    src:url('../assets/fonts/NotoSerif-Bold.ttf');
+}
+
+@font-face {
+    font-family: "NotoSerifB";
+    src:url('../assets/fonts/NotoSerif-Bold.ttf');
+}
+
+@font-face {
+    font-family: "NotoSerifR";
+    src:url('../assets/fonts/NotoSerif-Regular.ttf');
+}
+
+:root{
+    --menu: #363F4B;
+    --grey: #585C62;
+    --lightgrey: #8F9BAE;
+    --red: #7B3E3E;
+    --lightbrown: #876C47;
+    --brown: #785C32;
+
+    --puregold: linear-gradient(74deg,
+                                    #C7AA7F,
+                                    #CCAA79,
+                                    #A98959,
+                                    #E5CCA8,
+                                    #AA8A59,
+                                    #F0DBBC);
+    --darkgold: linear-gradient(74deg,
+                                    #9F8866,
+                                    #A38861,
+                                    #876E47,
+                                    #B7A386,
+                                    #886E47,
+                                    #C0AF96);
+}
+
+
+body{
+    overflow-x: hidden;
+}
+
+h1{
+    font-size: 32px;
+    font-family: "CommissionerSB";
+    text-transform: uppercase;
+    color: white;
+    line-height: 109%;
+}
+
+h2{
+    font-size: 47px;
+    font-family: "CommissionerSB";
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 36px;
+    font-family: "CommissionerSB";
+    text-transform: uppercase;
+    line-height: 121%;
+}
+
+h4{
+    font-size: 32px;
+    font-family: "CommissionerSB";
+}
+p {
+    font-size: 22px;
+    font-family: "CommissionerR";
+    line-height: 27px;
+}
+
+
+
+
+
+
+
+
+
+.container{
+    padding: 80 80px;
+    margin: 0 auto;
+}
+
+.sqwere{
+    position: absolute;
+    z-index: 3;
+}
