@@ -1,0 +1,20 @@
+/* Контейнер для карты */
+#map {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    overflow: hidden;
+}
+
+/* Canvas внутри контейнера */
+#map canvas {
+    display: block;
+}
+
+/* Убираем скролл на странице с картой */
+body[data-page="map"] {
+    overflow: hidden;
+}

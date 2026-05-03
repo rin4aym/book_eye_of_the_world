@@ -1,0 +1,287 @@
+import { createLightFx } from './lightFx.js';
+
+
+export function initMap() {
+    const container = document.getElementById('map');
+    let velocity = { x: 0, y: 0 };
+    let lastMoveTime = 0;
+    let lastMovePos = null;
+    let inertiaFrame = null;
+    let zoomVelocity = 0;
+    let currentZoomTarget = null;
+    let lastMousePos = { x: 0, y: 0 }; // Запоминаем позицию мыши
+
+    
+    
+    container.style.position = 'fixed';
+    container.style.top = '0';
+    container.style.left = '0';
+    container.style.width = '100vw';
+    container.style.height = '100vh';
+    container.style.background = '#000';
+    
+    
+    const app = new PIXI.Application({
+        width: container.clientWidth,
+        height: container.clientHeight,
+        backgroundColor: 0x000000,
+        antialias: true
+    });
+    
+    container.appendChild(app.view);
+    
+    const canvas = app.view;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
+    
+    const camera = new PIXI.Container();
+    app.stage.addChild(camera);
+    
+    let mapSprite;
+    let isDragging = false;
+    let lastPos = null;
+    
+    PIXI.Loader.shared
+        .add('map', '../assets/images/map.jpg')
+        .load((loader, resources) => {
+            mapSprite = new PIXI.Sprite(resources.map.texture);
+            camera.addChild(mapSprite);
+            
+            setupInitialView();
+            setupInteraction();
+            setupResizeHandler();
+
+            createLightFx(app, camera);
+        });
+    
+    function setupInitialView() {
+        const screenW = app.screen.width;
+        const screenH = app.screen.height;
+        
+        const texW = mapSprite.texture.width;
+        const texH = mapSprite.texture.height;
+        
+        const scaleX = screenW / texW;
+        const scaleY = screenH / texH;
+        const minScale = Math.max(scaleX, scaleY);
+        
+        camera.scale.set(minScale);
+        clampCamera();
+    }
+    
+    function setupResizeHandler() {
+        window.addEventListener('resize', () => {
+            const newWidth = container.clientWidth;
+            const newHeight = container.clientHeight;
+            
+            app.renderer.resize(newWidth, newHeight);
+            
+            if (mapSprite) {
+                clampCamera();
+                stopInertia();
+            }
+        });
+    }
+    
+    function setupInteraction() {
+        app.view.addEventListener('pointerdown', (e) => {
+            stopInertia();
+            isDragging = true;
+            lastPos = { x: e.clientX, y: e.clientY };
+            lastMoveTime = performance.now();
+            lastMovePos = { x: e.clientX, y: e.clientY };
+            app.view.style.cursor = 'grabbing';
+        });
+        
+        window.addEventListener('pointerup', () => {
+            if (isDragging) {
+                isDragging = false;
+                app.view.style.cursor = 'grab';
+                startInertia();
+            }
+        });
+        
+        window.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+        
+            const now = performance.now();
+            const dx = e.clientX - lastPos.x;
+            const dy = e.clientY - lastPos.y;
+        
+            camera.x += dx;
+            camera.y += dy;
+            
+            const dt = Math.max(1, now - lastMoveTime);
+            
+            velocity.x = (e.clientX - lastMovePos.x) / dt * 16;
+            velocity.y = (e.clientY - lastMovePos.y) / dt * 16;
+            
+            const maxSpeed = 15;
+            velocity.x = Math.min(maxSpeed, Math.max(-maxSpeed, velocity.x));
+            velocity.y = Math.min(maxSpeed, Math.max(-maxSpeed, velocity.y));
+        
+            lastMoveTime = now;
+            lastMovePos = { x: e.clientX, y: e.clientY };
+            lastPos = { x: e.clientX, y: e.clientY };
+        
+            clampCamera();
+        });
+        
+        app.view.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            stopInertia();
+            
+            // Запоминаем позицию мыши для зума
+            lastMousePos = { x: e.clientX, y: e.clientY };
+            
+            const minScale = getMinScale();
+            const maxScale = minScale * 3;
+            
+            // Скорость колеса 0.04 как вы просили
+            const zoomSpeed = 0.04;
+            const zoomDelta = -e.deltaY * zoomSpeed;
+            
+            // Добавляем скорость для инерции зума
+            zoomVelocity += zoomDelta * 0.3;
+            
+            // Ограничиваем скорость зума
+            zoomVelocity = Math.min(0.03, Math.max(-0.03, zoomVelocity));
+            
+            // Запускаем инерцию зума
+            startZoomInertia(minScale, maxScale);
+        }, { passive: false });
+        
+        app.view.style.cursor = 'grab';
+    }
+    
+    function startZoomInertia(minScale, maxScale) {
+        if (currentZoomTarget) {
+            cancelAnimationFrame(currentZoomTarget);
+        }
+        
+        function animateZoom() {
+            if (Math.abs(zoomVelocity) < 0.0005) {
+                zoomVelocity = 0;
+                currentZoomTarget = null;
+                return;
+            }
+            
+            const oldScale = camera.scale.x;
+            let newScale = oldScale * (1 + zoomVelocity);
+            
+            newScale = Math.max(minScale, Math.min(maxScale, newScale));
+            
+            if (newScale !== oldScale) {
+                // Зумируем к позиции мыши
+                const mouseX = lastMousePos.x;
+                const mouseY = lastMousePos.y;
+                
+                const worldPos = {
+                    x: (mouseX - camera.x) / oldScale,
+                    y: (mouseY - camera.y) / oldScale
+                };
+                
+                camera.scale.set(newScale);
+                camera.x = mouseX - worldPos.x * newScale;
+                camera.y = mouseY - worldPos.y * newScale;
+                
+                clampCamera();
+            }
+            
+            // Замедление
+            zoomVelocity *= 0.92;
+            
+            currentZoomTarget = requestAnimationFrame(animateZoom);
+        }
+        
+        currentZoomTarget = requestAnimationFrame(animateZoom);
+    }
+    
+    function startInertia() {
+        if (inertiaFrame) {
+            cancelAnimationFrame(inertiaFrame);
+        }
+        
+        const friction = 0.92;
+        
+        function animate() {
+            if (isDragging) return;
+            
+            let moved = false;
+            
+            if (Math.abs(velocity.x) > 0.05 || Math.abs(velocity.y) > 0.05) {
+                camera.x += velocity.x;
+                camera.y += velocity.y;
+                
+                velocity.x *= friction;
+                velocity.y *= friction;
+                
+                clampCamera();
+                moved = true;
+            }
+            
+            if (moved) {
+                inertiaFrame = requestAnimationFrame(animate);
+            } else {
+                velocity.x = 0;
+                velocity.y = 0;
+                inertiaFrame = null;
+            }
+        }
+        
+        inertiaFrame = requestAnimationFrame(animate);
+    }
+    
+    function stopInertia() {
+        if (inertiaFrame) {
+            cancelAnimationFrame(inertiaFrame);
+            inertiaFrame = null;
+        }
+        velocity = { x: 0, y: 0 };
+        
+        if (currentZoomTarget) {
+            cancelAnimationFrame(currentZoomTarget);
+            currentZoomTarget = null;
+        }
+        zoomVelocity = 0;
+    }
+    
+    function clampCamera() {
+        if (!mapSprite) return;
+        
+        const screenW = app.screen.width;
+        const screenH = app.screen.height;
+        
+        const texW = mapSprite.texture.width * camera.scale.x;
+        const texH = mapSprite.texture.height * camera.scale.y;
+        
+        if (texW > screenW) {
+            camera.x = Math.min(0, Math.max(camera.x, screenW - texW));
+        } else {
+            camera.x = (screenW - texW) / 2;
+        }
+        
+        if (texH > screenH) {
+            camera.y = Math.min(0, Math.max(camera.y, screenH - texH));
+        } else {
+            camera.y = (screenH - texH) / 2;
+        }
+    }
+    
+    function getMinScale() {
+        if (!mapSprite) return 1;
+        
+        const screenW = app.screen.width;
+        const screenH = app.screen.height;
+        const texW = mapSprite.texture.width;
+        const texH = mapSprite.texture.height;
+        
+        const scaleX = screenW / texW;
+        const scaleY = screenH / texH;
+        
+        return Math.max(scaleX, scaleY);
+    }
+
+    
+}
