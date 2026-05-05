@@ -1,8 +1,11 @@
 import { createLightFx } from './lightFx.js';
+import { createMapMarkers } from './mapMarkers.js';
 
 
 export function initMap() {
     const container = document.getElementById('map');
+    const overlay = document.getElementById('map-overlay');
+
     let velocity = { x: 0, y: 0 };
     let lastMoveTime = 0;
     let lastMovePos = null;
@@ -52,23 +55,34 @@ export function initMap() {
             setupInteraction();
             setupResizeHandler();
 
-            createLightFx(app, camera);
+            createLightFx(app, camera);      
+            createMapMarkers(camera);
         });
     
-    function setupInitialView() {
-        const screenW = app.screen.width;
-        const screenH = app.screen.height;
+        function setupInitialView() {
+            const screenW = app.screen.width;
+            const screenH = app.screen.height;
+            
+            const texW = mapSprite.texture.width;
+            const texH = mapSprite.texture.height;
+            
+            const scaleX = screenW / texW;
+            const scaleY = screenH / texH;
+            const minScale = Math.max(scaleX, scaleY);
+            
+            camera.scale.set(minScale);
+            
+            // Принудительное центрирование при старте
+            const scaledTexW = mapSprite.texture.width * camera.scale.x;
+            const scaledTexH = mapSprite.texture.height * camera.scale.y;
+            
+            camera.x = (screenW - scaledTexW) / 2;
+            camera.y = (screenH - scaledTexH) / 2;
+            
+            // Применяем границы (на случай если что-то вылезло)
+            clampCamera();
+        }
         
-        const texW = mapSprite.texture.width;
-        const texH = mapSprite.texture.height;
-        
-        const scaleX = screenW / texW;
-        const scaleY = screenH / texH;
-        const minScale = Math.max(scaleX, scaleY);
-        
-        camera.scale.set(minScale);
-        clampCamera();
-    }
     
     function setupResizeHandler() {
         window.addEventListener('resize', () => {
@@ -100,6 +114,13 @@ export function initMap() {
                 app.view.style.cursor = 'grab';
                 startInertia();
             }
+        });
+
+        app.view.addEventListener('click', (e) => {
+            const worldX = (e.clientX - camera.x) / camera.scale.x;
+            const worldY = (e.clientY - camera.y) / camera.scale.y;
+        
+            console.log(worldX, worldY);
         });
         
         window.addEventListener('pointermove', (e) => {
@@ -256,15 +277,23 @@ export function initMap() {
         const texW = mapSprite.texture.width * camera.scale.x;
         const texH = mapSprite.texture.height * camera.scale.y;
         
+        // Горизонтальные границы (не даём уйти за края)
         if (texW > screenW) {
-            camera.x = Math.min(0, Math.max(camera.x, screenW - texW));
+            // Карта шире экрана: ограничиваем от 0 до screenW - texW
+            if (camera.x > 0) camera.x = 0;
+            if (camera.x < screenW - texW) camera.x = screenW - texW;
         } else {
+            // Карта уже экрана: центрируем
             camera.x = (screenW - texW) / 2;
         }
         
+        // Вертикальные границы
         if (texH > screenH) {
-            camera.y = Math.min(0, Math.max(camera.y, screenH - texH));
+            // Карта выше экрана: ограничиваем от 0 до screenH - texH
+            if (camera.y > 0) camera.y = 0;
+            if (camera.y < screenH - texH) camera.y = screenH - texH;
         } else {
+            // Карта ниже экрана: центрируем
             camera.y = (screenH - texH) / 2;
         }
     }
@@ -282,6 +311,42 @@ export function initMap() {
         
         return Math.max(scaleX, scaleY);
     }
+
+        // Открытие/закрытие окна "Путь героев"
+    const pathBtn = document.getElementById('pathBtn');
+    const heroPath = document.getElementById('heroPath');
+    const closePathBtn = document.getElementById('closePathBtn');
+
+    function openHeroPath() {
+        if (heroPath) heroPath.classList.add('open');
+    }
+
+    function closeHeroPath() {
+        if (heroPath) heroPath.classList.remove('open');
+    }
+
+    if (pathBtn) {
+        pathBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openHeroPath();
+        });
+    }
+
+    if (closePathBtn) {
+        closePathBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeHeroPath();
+        });
+    }
+
+    // Закрытие по клику вне окна
+    document.addEventListener('click', (e) => {
+        if (heroPath && heroPath.classList.contains('open')) {
+            if (!heroPath.contains(e.target) && e.target !== pathBtn && !pathBtn?.contains(e.target)) {
+                closeHeroPath();
+            }
+        }
+    });
 
     
 }

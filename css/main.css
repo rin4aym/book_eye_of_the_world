@@ -20,6 +20,7 @@
 
 :root{
     --menu: #363F4B;
+    --ui: #33363B;
     --grey: #585C62;
     --lightgrey: #8F9BAE;
     --red: #7B3E3E;
@@ -49,10 +50,7 @@ body{
 
 h1{
     font-size: 32px;
-    font-family: "CommissionerSB";
-    text-transform: uppercase;
-    color: white;
-    line-height: 109%;
+    font-family: "NotoSerifB";
 }
 
 h2{
@@ -69,17 +67,14 @@ h3 {
 }
 
 h4{
-    font-size: 32px;
-    font-family: "CommissionerSB";
+    font-size: 22px;
+    font-family: "NotoSerifB";
 }
 p {
     font-size: 22px;
-    font-family: "CommissionerR";
-    line-height: 27px;
+    font-family: "NotoSerifR";
+    line-height: 30px;
 }
-
-
-
 
 
 
@@ -94,4 +89,62 @@ p {
 .sqwere{
     position: absolute;
     z-index: 3;
+}
+
+
+/* Базовая кнопка */
+.btn {
+    position: fixed;
+    top: 40px;
+    width: 56px;
+    height: 56px;
+    background: var(--ui);
+    border: 2px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease;
+    z-index: 10000;
+}
+
+/* Левая кнопка */
+.btn-back {
+    left: 0;
+}
+
+/* Правая кнопка */
+.btn-right {
+    right: 0;
+}
+
+#marksBtn{
+ bottom: 40px;
+ top: auto;
+}
+
+#pathBtn{
+    bottom: 112px;
+    top: auto;
+}
+   
+
+
+/* Градиентная обводка */
+.btn {
+    border-image: var(--darkgold);
+    border-image-slice: 1;
+}
+
+.btn:hover {
+    background: var(--grey);
+}
+
+.btn:active {
+    background: var(--lightgrey);
+}
+
+
+.btn:active {
+    transform: scale(0.95);
 }

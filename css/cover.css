@@ -6,7 +6,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #000; /* Чёрный фон на случай, если анимация не загрузилась */
+    background: white; /* Чёрный фон на случай, если анимация не загрузилась */
 }
 
 /* Стили для canvas от PIXI */
@@ -74,6 +74,7 @@
 
   #goldButton:active #hexagon-gradient {
     opacity: 0;
+    transition: opacity 0.2s ease;
   }
 
   #goldButton:active {
@@ -83,9 +84,5 @@
   
   #goldButton:hover #hexagon-solid {
     opacity: 0;
+    transition: opacity 0.2s ease;
   }
-
-  #hexagon-gradient,
-    #hexagon-solid {
-  transition: opacity 0.4s ease;
-}

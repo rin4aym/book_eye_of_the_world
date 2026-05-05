@@ -18,3 +18,550 @@
 body[data-page="map"] {
     overflow: hidden;
 }
+
+
+
+#map {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+}
+
+
+.marker-svg {
+    width: 79px;
+    height: 79px;
+}
+
+
+/* =========================
+   MAP MARKER - общие стили
+========================= */
+
+.map-marker {
+    position: absolute;
+    cursor: pointer;
+    pointer-events: auto;
+    /* Центрируем по центру иконки */
+    transform: translate(-50%, -50%);
+}
+
+/* Контейнер для иконки */
+.marker-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Для type2 другой размер контейнера */
+[data-type="type2"] .marker-svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* =========================
+   ПОДПИСИ (всегда видны, по центру)
+========================= */
+
+.marker-tag {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    text-align: center;
+    pointer-events: none;
+}
+
+.tag-label {
+    display: block;
+    line-height: 1.3;
+}
+
+/* Стиль подписи type1 */
+.tag1 {
+
+    padding: 4px 6px;
+    font-family: "NotoSerifR", serif;
+    position: relative;
+    /* Градиентная обводка */
+    border: 1px solid transparent;
+    background-image:
+    linear-gradient(74deg,
+            #9F8866,
+            #A38861,
+            #876E47,
+            #B7A386,
+            #886E47,
+            #C0AF96)
+        ;
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+/* Градиентный текст для tag1 */
+.tag1 .tag-label {
+    color: black;
+}
+
+/* Стиль подписи type2 */
+.tag2 {
+    min-width: 150px;
+    font-family: "NotoSerifR", serif;
+    text-align: center;
+}
+
+.tag2 .tag-label {
+    background: linear-gradient(74deg,
+    #C7AA7F,
+    #CCAA79,
+    #A98959,
+    #E5CCA8,
+    #AA8A59,
+    #F0DBBC);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* =========================
+   ЦИФРА НА МАРКЕРЕ
+========================= */
+
+.marker-number {
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Градиентный текст через background-clip */
+    background: linear-gradient(74deg,
+                            #9F8866,
+                            #A38861,
+                            #876E47,
+                            #B7A386,
+                            #886E47,
+                            #C0AF96);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 45px;
+    font-family: "NotoSerifB", serif;
+    pointer-events: none;
+}
+
+/* =========================
+   TYPE1 (большой маркер)
+========================= */
+
+#sobytie {
+    transition: 0.7s;
+}
+
+#rectang-group {
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+/* Ховер */
+[data-type="type1"] #sobytie {
+    transition: 0.7s;
+}
+
+[data-type="type1"] #rectang-group {
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+[data-type="type1"] #sobytie:hover #rectang-group {
+    transform: rotate(45deg);
+}
+
+[data-type="type1"] #sobytie:hover #circ {
+    fill: var(--grey);
+}
+
+[data-type="type1"] #sobytie.active #rectang-group {
+    transform: rotate(90deg);
+}
+
+[data-type="type1"] #sobytie.active #circ {
+    fill: var(--red);
+}
+
+/* =========================
+   TYPE2 (маленький маркер)
+========================= */
+
+[data-type="type2"] #type2-marker {
+    transition: 0.7s;
+    display: block;
+}
+
+[data-type="type2"] #type2-marker:hover circle {
+    fill: var(--grey);
+}
+
+[data-type="type2"] #type2-marker.active circle {
+    fill: var(--red);
+}
+
+
+/* Панель summary */
+.summary {
+    position: fixed;
+    right: 80px;
+    bottom: 40px;
+    transform: translateY(0%) translateX(120%);
+    width: 585px;
+    height: 725px;
+    padding: 40px;
+    box-sizing: border-box;
+    background-color: var(--ui);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s ease;
+}
+
+.summary.open {
+    transform: translateY(0) translateX(0);
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    padding-left: 32px;
+}
+
+.summary-title {
+    flex: 1;
+    text-align: center;
+    color: white;
+    padding-bottom: 16px;
+}
+
+.summary-close {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.summary-chapters {
+    margin-bottom: 8px;
+    flex-shrink: 0;
+
+}
+
+.summary-chapters-text {
+    text-align: center;
+    color: var(--grey);
+}
+
+.ornament_header{
+    text-align: center;
+    padding-bottom: 16px;
+}
+
+.summary-content {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 24px;
+}
+
+.summary-text {
+    margin: 0;
+    color: white;
+    padding-right: 16px;
+}
+
+.summary-button {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.summary-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.read{
+    transition: transform 0.2s ease;
+}
+
+.read:hover #defoult{
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.read:active #hover{
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.read:active {
+    transform: scale(0.98);
+  }
+
+
+  
+/* Кастомный скроллбар */
+.summary-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.summary-content::-webkit-scrollbar-track {
+    background: var(--menu);
+    border-radius: 2px;
+}
+
+.summary-content::-webkit-scrollbar-thumb {
+    background: var(--grey);
+    border-radius: 2px;
+}
+
+.summary-content::-webkit-scrollbar-thumb:hover {
+    background: var(--lightgrey);
+}
+
+.close:hover  path{
+    transition: 0.1s ease;
+}
+
+.close:hover  path{
+    stroke: var(--lightgrey);
+}
+.close:active  path{
+    stroke: var(--menu);
+}
+
+
+
+
+
+
+
+/* Контейнер для всех подсказок */
+.tips-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* Подсказка */
+.tips {
+    position: absolute;
+    width: 400px;
+    background: var(--grey);
+    border: 1px solid rgba(199, 170, 127, 0.3);
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+    padding: 24px;
+}
+
+/* Хедер */
+.tips-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    padding-bottom: 16px;
+}
+
+/* Заголовок */
+.tips-title {
+    color: white;
+}
+
+
+
+.tip path{
+    stroke: var(--lightgrey);
+}
+
+
+.tip:hover  path{
+    transition: 0.1s ease;
+}
+
+.tip:hover  path{
+    stroke: var(--ui);
+}
+.tip:active  path{
+    stroke: white;
+}
+
+
+/* Текст */
+.tips-text {
+    font-size: 20px;
+    color: white;
+    margin: 0;
+}
+
+
+
+/* Окно "Путь героев" */
+.hero-path {
+    position: fixed;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 267px;
+    background: var(--menu, #1a1a1a);
+    border: 1px solid rgba(199, 170, 127, 0.3);
+    border-radius: 8px;
+    padding: 20px 16px;
+    z-index: 10001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hero-path.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Хедер */
+.hero-path-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.hero-path-title {
+    font-family: 'Georgia', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #C7AA7F;
+    margin: 0;
+    text-align: center;
+}
+
+.hero-path-close {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.hero-path-close svg path {
+    transition: stroke 0.2s ease;
+}
+
+.hero-path-close:hover svg path {
+    stroke: #F8F4EE;
+}
+
+/* Орнамент */
+.hero-path-ornament {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.hero-path-ornament svg {
+    width: 100%;
+    height: auto;
+}
+
+/* Список */
+.hero-path-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Элемент списка */
+.hero-path-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Аватар с круглой кнопкой */
+.hero-path-avatar {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.hero-path-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #C7AA7F;
+}
+
+/* Обводка круга */
+.hero-path-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C7AA7F, #785C32, #D9AF72, #9C8460, #F8F4EE);
+    -webkit-mask: radial-gradient(transparent 70%, #000 70%);
+    mask: radial-gradient(transparent 70%, #000 70%);
+    pointer-events: none;
+}
+
+/* Имя */
+.hero-path-name {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #e0e0e0;
+    flex-shrink: 0;
+    width: 60px;
+}
+
+/* Линия */
+.hero-path-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #C7AA7F, #785C32, #D9AF72, #9C8460, #F8F4EE);
+    border-radius: 1px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .hero-path {
+        left: 20px;
+        width: 280px;
+    }
+    
+    .hero-path-name {
+        font-size: 13px;
+        width: 50px;
+    }
+}
