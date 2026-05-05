@@ -48,17 +48,17 @@ export function createLightFx(app, camera) {
             vec3 hsv = rgb2hsv(color.rgb);
             
             // Увеличиваем яркость (Value) - осветление
-            hsv.z = min(hsv.z * 1.8, 1.0);
+            hsv.z = min(hsv.z * 3.4, 1.0);
             
             // Увеличиваем насыщенность - делаем цвета сочнее
-            hsv.y = min(hsv.y * 1.6, 1.0);
+            hsv.y = min(hsv.y * 1.9, 1.0);
             
             // Конвертируем обратно в RGB
             color.rgb = hsv2rgb(hsv);
             
             // Добавляем лёгкое свечение в светлых областях
             float brightness = (color.r + color.g + color.b) / 3.0;
-            vec3 glow = vec3(brightness * brightness * 0.4);
+            vec3 glow = vec3(brightness * brightness * 1.4);
             color.rgb += glow;
             
             // Финальный clamp
@@ -83,7 +83,7 @@ export function createLightFx(app, camera) {
     });
     
     // Общая скорость для всех бликов
-    const BASE_SPEED = 0.5;
+    const BASE_SPEED = 0.3;
     
     // Создаём пул спрайтов
     function createLight(texture) {
@@ -97,7 +97,7 @@ export function createLightFx(app, camera) {
         light.blendMode = PIXI.BLEND_MODES.ADD;
         
         // Увеличенная прозрачность для сильного эффекта
-        light.alpha = 0.7;
+        light.alpha = 0.2;
         light.tint = 0xffffff; // Белый для максимального осветления
         
         light.visible = false;
@@ -110,38 +110,38 @@ export function createLightFx(app, camera) {
         return light;
     }
     
-    // Активация блика
     function activateLight(light, isFirst = false) {
         const { w, h } = mapBounds();
-        
-        console.log('Activating light on map');
-        
-        // Выбираем случайную текстуру
+    
         const randomTexture = textures[Math.floor(Math.random() * textures.length)];
-        light.texture = randomTexture;
-        
-        if (isFirst) {
-            // Первый блик стартует почти с центра карты
-            light.x = w * 0.4 + Math.random() * w * 0.2; // между 40% и 60% ширины
-        } else {
-            // Остальные стартуют слева за пределами карты
-            light.x = -light.width;
+    
+        // 💥 ВАЖНО: ждём загрузку текстуры
+        if (!randomTexture.baseTexture.valid) {
+            randomTexture.baseTexture.once('loaded', () => {
+                activateLight(light, isFirst);
+            });
+            return;
         }
-        
-        // Случайная позиция по всей высоте карты
+    
+        light.texture = randomTexture;
+    
+        if (isFirst) {
+            light.x = w * 0.4 + Math.random() * w * 0.2;
+        } else {
+            light.x = -randomTexture.width;
+        }
+    
         light.y = Math.random() * h;
-        
-        // Увеличенный масштаб для более заметного эффекта
-        const baseScale = (h / 4) / light.texture.height * (0.7 + Math.random() * 0.3);
+    
+        // ✅ теперь height точно есть
+        const baseScale = (h / 4) / randomTexture.height * (0.7 + Math.random() * 0.3);
+    
         light.baseScale = baseScale;
         light.scale.set(baseScale);
-        
-        // Одинаковая скорость для всех бликов
+    
         light.speed = BASE_SPEED;
-        
-        // Сильная прозрачность для осветления
-        light.alpha = 0.7;
-        
+        light.alpha = 0.2;
+    
         light.active = true;
         light.visible = true;
         light.isFirstLight = isFirst;
@@ -178,7 +178,7 @@ export function createLightFx(app, camera) {
     
     setTimeout(() => {
         tryActivateNewLight(true); // второй блик тоже из центра
-    }, 1500);
+    }, 500);
     
     // Третий блик запускаем обычным способом
     setTimeout(() => {
