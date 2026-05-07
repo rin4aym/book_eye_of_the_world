@@ -1,0 +1,226 @@
+
+/* Оверлей (затемненный фон) */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(201, 208, 223, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10000;
+}
+
+/* Меню (выезжающее справа) */
+.menu {
+    position: fixed;
+    top: 0;
+    right: -1000px;
+    width: 645px;
+    height: 100%;
+    background: var(--menu);
+    padding-top: 64px;
+    padding-right: 64px;
+    padding-left: 64px;
+    padding-bottom: 64px;
+    transition: right 0.3s ease;
+    z-index: 10001;
+    overflow-y: auto;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; /* ДОБАВИТЬ ЭТУ СТРОКУ */
+
+}
+
+/* Открытое состояние */
+.menu.open {
+    right: 0;
+}
+
+.menu-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll h1,
+.scroll h2,
+.scroll h3,
+.scroll p {
+    color: white;
+}
+
+.header_menu{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.head_close{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: baseline;
+}
+
+.head_close h2{
+    padding-right: 158px;
+}
+
+.settings_block{
+padding-top: 40px;
+}
+
+.subheader{
+    padding-bottom: 16px;
+}
+
+.line_pols{
+    height: 5px;
+    width: auto;
+    background-color: #C7AA7F;
+}
+
+.pols{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 32px;
+}
+
+.label{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.label p{
+    font-size: 14px;
+}
+
+.exemple{
+    background-color:  #444B56;
+    padding: 32px;
+}
+
+.exemple h1{
+    padding-bottom: 16px;
+}
+
+.toggle_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.toggle {
+    background: var(--puregold);
+    height: 32px;
+    width: 59px;
+    border-radius: 30px;
+    border: solid 1px var(--lipa);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.toggle_btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 30px;
+    border: solid 1px var(--lipa);
+    background: var(--ui);
+    position: absolute;
+    left: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Включен (ON) - кружок справа */
+.toggle.active .toggle_btn {
+    left: calc(100% - 29px);
+}
+
+/* Выключен (OFF) - кружок слева (по умолчанию) */
+.toggle:not(.active) .toggle_btn {
+    left: 3px;
+    background: #515866;
+}
+
+.toggle:not(.active){
+    background: var(--ui);
+}
+
+
+.toggle:hover {
+    opacity: 0.9;
+}
+
+.toggle:hover .toggle_btn {
+    background: var(--lightgrey);
+}
+
+.toggle:active .toggle_btn {
+    background: var(--menu);
+}
+
+
+
+.download_block{
+    padding: 40px 0px;
+}
+
+.gold_line{
+    height: 1px;
+    width: auto;
+    background-color: #C7AA7F;
+}
+
+.download_block .read{
+ padding: 40px 0px;
+}
+
+
+/* Стилизация скроллбара для меню */
+.menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu::-webkit-scrollbar-track {
+    background: #2C2C2C;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: #C7AA7F;
+    border-radius: 3px;
+}
+
+.menu::-webkit-scrollbar-thumb:hover {
+    background: #D9AF72;
+}
+
+.suka{
+    height: 400px;
+    background-color: blue;
+}
+
+/* Кастомный скроллбар */
+.menu::-webkit-scrollbar {
+    width: 5px;
+}
+
+.menu::-webkit-scrollbar-track {
+    background: var(--menu);
+    border-radius: 2px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: var(--grey);
+    border-radius: 2px;
+}
+
+.menu::-webkit-scrollbar-thumb:hover {
+    background: var(--lightgrey);
+}

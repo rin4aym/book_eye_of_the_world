@@ -227,6 +227,9 @@ body[data-page="map"] {
     display: flex;
     flex-direction: column;
     transition: transform 0.35s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    
+    border: 1px solid rgba(199, 170, 127, 0.3);
 }
 
 .summary.open {
@@ -236,7 +239,7 @@ body[data-page="map"] {
 .summary-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
     flex-shrink: 0;
     padding-left: 32px;
 }
@@ -375,6 +378,7 @@ body[data-page="map"] {
     opacity: 1;
     transition: opacity 0.2s ease;
     padding: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* Хедер */
@@ -419,72 +423,127 @@ body[data-page="map"] {
 
 
 
-/* Окно "Путь героев" */
-.hero-path {
+/* ======================================================
+   ОБЩИЙ КОНТЕЙНЕР ОКОН
+====================================================== */
+
+#windowsContainer {
     position: fixed;
     left: 80px;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 40px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+
+    z-index: 10000;
+
+    pointer-events: none;
+    align-items: flex-start;
+}
+
+/* ======================================================
+   ОБЩИЕ СТИЛИ ОКОН
+====================================================== */
+
+.hero-path,
+.marks-window {
     width: 267px;
-    background: var(--menu, #1a1a1a);
+
+    background: var(--menu);
+
     border: 1px solid rgba(199, 170, 127, 0.3);
-    border-radius: 8px;
-    padding: 20px 16px;
-    z-index: 10001;
+
+    padding: 24px;
+
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    pointer-events: auto;
+
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    transform: translateX(-140%);
+
+    transition:
+        transform 0.35s ease,
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+
 }
 
-.hero-path.open {
+/* ======================================================
+   OPEN
+====================================================== */
+
+.hero-path.open,
+.marks-window.open {
     opacity: 1;
     visibility: visible;
+
+    transform: translateX(0);
 }
 
+/* ======================================================
+   HERO PATH
+====================================================== */
+
 /* Хедер */
+
 .hero-path-header {
     display: flex;
     justify-content: center;
     align-items: center;
+
     position: relative;
+
     margin-bottom: 20px;
 }
 
 .hero-path-title {
-    font-family: 'Georgia', serif;
-    font-size: 18px;
-    font-weight: 400;
-    color: #C7AA7F;
+    color: white;
     margin: 0;
     text-align: center;
 }
 
 .hero-path-close {
     position: absolute;
+
     right: 0;
     top: 50%;
+
     transform: translateY(-50%);
+
     width: 24px;
     height: 24px;
+
     background: none;
     border: none;
+
     cursor: pointer;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     padding: 0;
 }
 
-.hero-path-close svg path {
+.hero-path-close svg {
     transition: stroke 0.2s ease;
 }
 
 .hero-path-close:hover svg path {
-    stroke: #F8F4EE;
+    fill: var(--lightgrey);
+}
+
+.hero-path-close:active svg path {
+    fill: var(--grey);
 }
 
 /* Орнамент */
+
 .hero-path-ornament {
     margin-bottom: 24px;
     text-align: center;
@@ -496,72 +555,305 @@ body[data-page="map"] {
 }
 
 /* Список */
+
 .hero-path-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
 /* Элемент списка */
+
 .hero-path-item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
+
+    cursor: pointer;
 }
 
-/* Аватар с круглой кнопкой */
+/* ======================================================
+   АВАТАР
+====================================================== */
+
 .hero-path-avatar {
     position: relative;
+
     width: 48px;
     height: 48px;
+
     flex-shrink: 0;
 }
 
 .hero-path-avatar img {
     width: 100%;
     height: 100%;
+
     border-radius: 50%;
+
     object-fit: cover;
+
+    border: none;
+}
+
+/* Темный слой */
+
+.hero-path-avatar::before {
+    content: '';
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.2);
+
+    z-index: 1;
+
+    transition: opacity 0.2s ease;
+}
+
+/* ======================================================
+   ТЕКСТ
+====================================================== */
+
+.hero-path-name {
+    font-size: 22px;
+
+    color: #888;
+
+    font-family: "NotoSerifR";
+
+    transition: color 0.2s ease;
+}
+
+/* ======================================================
+   ЛИНИЯ
+====================================================== */
+
+.hero-path-line {
+    flex: 1;
+
+    height: 2px;
+
+    border-radius: 1px;
+
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+}
+
+/* ======================================================
+   HOVER
+====================================================== */
+
+.hero-path-item:hover .hero-path-name {
+    color: white;
+}
+
+.hero-path-item:hover .hero-path-avatar::before {
+    opacity: 0;
+}
+
+.hero-path-item:hover .hero-path-line {
+    opacity: 1;
+}
+
+/* ======================================================
+   ACTIVE
+====================================================== */
+
+.hero-path-item.active .hero-path-avatar img {
     border: 2px solid #C7AA7F;
 }
 
-/* Обводка круга */
-.hero-path-circle {
+.hero-path-item.active .hero-path-avatar::before {
+    opacity: 0;
+}
+
+.hero-path-item.active .hero-path-name {
+    color: white;
+}
+
+.hero-path-item.active .hero-path-line {
+    opacity: 1;
+}
+
+/* Обводка */
+
+.hero-path-item.active .hero-path-circle {
     position: absolute;
+
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+
     border-radius: 50%;
-    background: linear-gradient(135deg, #C7AA7F, #785C32, #D9AF72, #9C8460, #F8F4EE);
-    -webkit-mask: radial-gradient(transparent 70%, #000 70%);
-    mask: radial-gradient(transparent 70%, #000 70%);
+
+    background: linear-gradient(
+        135deg,
+        #C7AA7F,
+        #785C32,
+        #D9AF72,
+        #9C8460,
+        #F8F4EE
+    );
+
+    -webkit-mask: radial-gradient(
+        transparent 70%,
+        #000 70%
+    );
+
+    mask: radial-gradient(
+        transparent 70%,
+        #000 70%
+    );
+
     pointer-events: none;
 }
 
-/* Имя */
-.hero-path-name {
-    font-family: 'Georgia', serif;
-    font-size: 14px;
-    font-weight: 400;
-    color: #e0e0e0;
+/* ======================================================
+   ACTIVE + HOVER
+====================================================== */
+
+.hero-path-item.active:hover .hero-path-avatar::before {
+    opacity: 0.5;
+
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.hero-path-item.active:hover .hero-path-name {
+    color: #C7AA7F;
+}
+
+.hero-path-item.active:hover .hero-path-line {
+    opacity: 0.7;
+}
+
+/* ======================================================
+   ЦВЕТА ЛИНИЙ
+====================================================== */
+
+.mori {
+    background: #3E61D2;
+}
+
+.randi {
+    background: #67960F;
+}
+
+.peri {
+    background: #B45400;
+}
+
+.mati {
+    background: #8C3D3D;
+}
+
+.egi {
+    background: #854FA4;
+}
+
+.nayi {
+    background: #208C76;
+}
+
+.lani {
+    background: #23881D;
+}
+
+/* ======================================================
+   MARKS WINDOW
+====================================================== */
+
+/* Хедер */
+
+.marks-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    margin-bottom: 20px;
+}
+
+.marks-title {
+    color: white;
+    text-align: center;
+}
+
+.marks-close {
+    position: absolute;
+
+    right: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 24px;
+    height: 24px;
+
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+}
+
+.marks-close svg {
+    transition: stroke 0.2s ease;
+}
+
+.marks-close:hover svg path {
+    fill: var(--lightgrey);
+}
+
+.marks-close:active svg path {
+    fill: var(--grey);
+}
+
+/* Список */
+
+.marks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Элемент */
+
+.marks-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Иконка */
+
+.marks-icon {
+    width: 48px;
+    height: 48px;
+
     flex-shrink: 0;
-    width: 60px;
+
+    text-align: center;
+    align-content: center;
 }
 
-/* Линия */
-.hero-path-line {
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(90deg, #C7AA7F, #785C32, #D9AF72, #9C8460, #F8F4EE);
-    border-radius: 1px;
-}
+/* Подпись */
 
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-    .hero-path {
-        left: 20px;
-        width: 280px;
-    }
-    
-    .hero-path-name {
-        font-size: 13px;
-        width: 50px;
-    }
+.marks-label {
+    font-size: 22px;
+
+    color: #e0e0e0;
+
+    font-family: "NotoSerifR", serif;
 }

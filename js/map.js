@@ -1,5 +1,7 @@
 import { createLightFx } from './lightFx.js';
 import { createMapMarkers } from './mapMarkers.js';
+import { initWindows } from './windows.js';
+import { initPathLines } from './pathLines.js';
 
 
 export function initMap() {
@@ -55,8 +57,12 @@ export function initMap() {
             setupInteraction();
             setupResizeHandler();
 
+            // Инициализация слоя для путей (ДО создания маркеров и окон)
+            initPathLines(camera);
+            
             createLightFx(app, camera);      
             createMapMarkers(camera);
+            initWindows();
         });
     
         function setupInitialView() {
@@ -78,6 +84,7 @@ export function initMap() {
             
             camera.x = (screenW - scaledTexW) / 2;
             camera.y = (screenH - scaledTexH) / 2;
+
             
             // Применяем границы (на случай если что-то вылезло)
             clampCamera();
@@ -311,42 +318,6 @@ export function initMap() {
         
         return Math.max(scaleX, scaleY);
     }
-
-        // Открытие/закрытие окна "Путь героев"
-    const pathBtn = document.getElementById('pathBtn');
-    const heroPath = document.getElementById('heroPath');
-    const closePathBtn = document.getElementById('closePathBtn');
-
-    function openHeroPath() {
-        if (heroPath) heroPath.classList.add('open');
-    }
-
-    function closeHeroPath() {
-        if (heroPath) heroPath.classList.remove('open');
-    }
-
-    if (pathBtn) {
-        pathBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openHeroPath();
-        });
-    }
-
-    if (closePathBtn) {
-        closePathBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeHeroPath();
-        });
-    }
-
-    // Закрытие по клику вне окна
-    document.addEventListener('click', (e) => {
-        if (heroPath && heroPath.classList.contains('open')) {
-            if (!heroPath.contains(e.target) && e.target !== pathBtn && !pathBtn?.contains(e.target)) {
-                closeHeroPath();
-            }
-        }
-    });
-
-    
 }
+
+

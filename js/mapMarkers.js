@@ -1,7 +1,6 @@
-import { initSummary, toggleSummary } from './summaryPanel.js';
+import { initSummary, toggleSummary, isSummaryOpen, getCurrentMarkerId } from './summaryPanel.js';
 import { initTips, showTips, updateTipsPositions, isTipOpen, closeTips } from './tipsPanel.js';
 
-const panel = initSummary();
 let summaryPanel = null;
 
 // Функции для синхронизации состояния маркеров с подсказками
@@ -37,15 +36,15 @@ export function createMapMarkers(camera) {
     let currentMarkersPositions = [];
 
     const markersConfig = [
-        { x: 1667, y: 2488, type: 'type1', number: 1, label: 'Двуречье', chapters: 'Глава 7',
+        { x: 1667, y: 2488, type: 'type1', number: 1, label: 'Двуречье', chapters: 'Глава 7', eventPage: 'chapter_1.html',
         description: 'Наше дело не так однозначно, как может показаться: граница обучения кадров является качественно новой ступенью направлений прогрессивного развития. Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: базовый вектор развития представляет собой интересный эксперимент проверки новых предложений. представляет собой интересный эксперимент проверки новых предложений. Время от времени дворец подрагивал, словно сама земля содрогалась от воспоминаний и тяжко вздыхала, не желая поверить в случившееся'},
-        { x: 1903, y: 2209, type: 'type1', number: 2, label: 'Шадар Лагот', chapters: 'Глава 8',
+        { x: 1903, y: 2209, type: 'type1', number: 2, label: 'Шадар Лагот', chapters: 'Глава 8', eventPage: 'chapter_2.html',
         description: 'Описание Шадар Лагот...' },
-        { x: 2633, y: 2489, type: 'type1', number: 3, label: 'Лагерь Белоплащников', chapters: 'Глава 9',
+        { x: 2633, y: 2489, type: 'type1', number: 3, label: 'Лагерь Белоплащников', chapters: 'Глава 9', eventPage: 'chapter_3.html',
         description: 'Описание лагеря Белоплащников...' },
-        { x: 3031, y: 2589, type: 'type1', number: 4, label: 'Кеймлин', chapters: 'Глава 10',
+        { x: 3031, y: 2589, type: 'type1', number: 4, label: 'Кеймлин', chapters: 'Глава 10', eventPage: 'chapter_4.html',
         description: 'Описание Кеймлина...' },
-        { x: 3748, y: 1068, type: 'type1', number: 5, label: 'Око мира', chapters: 'Глава 11',
+        { x: 3748, y: 1068, type: 'type1', number: 5, label: 'Око мира', chapters: 'Глава 11', eventPage: 'chapter_5.html',
         description: 'Описание Око мира...' },
         { x: 1728, y: 2300, type: 'type2', id: 'marker_bairlon', label: 'Байрлон', 
         tipsText: 'Байрлон — древний город, известный своими кузнецами и оружейниками.'},
@@ -69,9 +68,8 @@ export function createMapMarkers(camera) {
 
     const markers = [];
 
-
-     // Инициализируем панель с колбэком для деактивации маркера
-     summaryPanel = initSummary((closedMarkerId) => {
+    // Инициализируем панель с колбэком для деактивации маркера
+    summaryPanel = initSummary((closedMarkerId) => {
         // Деактивируем маркер, который был закрыт
         if (closedMarkerId) {
             const marker = document.querySelector(`.map-marker[data-marker-id="${closedMarkerId}"]`);
@@ -88,7 +86,7 @@ export function createMapMarkers(camera) {
     markersConfig.forEach(cfg => {
         const marker = createMarker(cfg, camera);
         // Добавляем атрибут для идентификации маркера
-        marker.el.setAttribute('data-marker-id', cfg.id || cfg.number);
+        marker.el.setAttribute('data-marker-id', cfg.id || String(cfg.number));
         overlay.appendChild(marker.el);
         markers.push(marker);
     });
@@ -102,7 +100,7 @@ export function createMapMarkers(camera) {
             m.el.style.top = screen.y + 'px';
             
             newPositions.push({
-                id: m.cfg.id || m.cfg.number,
+                id: m.cfg.id || String(m.cfg.number),
                 screenX: screen.x,
                 screenY: screen.y
             });
@@ -158,14 +156,50 @@ function createMarker(cfg, camera) {
         const screenPos = worldToScreen(cfg.x, cfg.y, camera);
         
         if (cfg.type === 'type1') {
-            toggleSummary(
-                {
-                    title: cfg.label,
-                    chapters: cfg.chapters || 'Глава не указана',
-                    text: cfg.description || 'Нет описания'
-                },
-                cfg.id || cfg.number
-            );
+            const markerId = cfg.id || String(cfg.number);
+            const svg = el.querySelector('svg');
+            
+            // Проверяем, открыто ли сейчас окно именно для этого маркера
+            if (summaryPanel && typeof isSummaryOpen === 'function' && typeof getCurrentMarkerId === 'function' && isSummaryOpen() && getCurrentMarkerId() === markerId) {
+                // Если окно открыто для этого маркера - закрываем
+                toggleSummary(
+                    {
+                        title: cfg.label,
+                        chapters: cfg.chapters || 'Глава не указана',
+                        text: cfg.description || 'Нет описания',
+                        page: cfg.eventPage || null 
+                    },
+                    markerId
+                );
+                // Маркер будет деактивирован через колбэк в initSummary
+            } else {
+                // Деактивируем все маркеры
+                const allMarkers = document.querySelectorAll('.map-marker[data-type="type1"]');
+                allMarkers.forEach(marker => {
+                    marker.setAttribute('data-active', 'false');
+                    const markerSvg = marker.querySelector('svg');
+                    if (markerSvg) {
+                        markerSvg.classList.remove('active');
+                    }
+                });
+                
+                // Активируем текущий
+                el.setAttribute('data-active', 'true');
+                if (svg) {
+                    svg.classList.add('active');
+                }
+                
+                // Открываем summary
+                toggleSummary(
+                    {
+                        title: cfg.label,
+                        chapters: cfg.chapters || 'Глава не указана',
+                        text: cfg.description || 'Нет описания',
+                        page: cfg.eventPage || null 
+                    },
+                    markerId
+                );
+            }
         } else if (cfg.type === 'type2') {
             // Проверяем, открыта ли уже подсказка
             if (isTipOpen(cfg.id)) {
@@ -180,30 +214,6 @@ function createMarker(cfg, camera) {
                     screenPos.x,
                     screenPos.y
                 );
-            }
-        }
-        
-        // Для type1 обрабатываем активное состояние
-        if (cfg.type === 'type1') {
-            const svg = el.querySelector('svg');
-            if (!svg) return;
-            
-            const allMarkers = document.querySelectorAll('.map-marker[data-type="type1"]');
-            
-            if (el.getAttribute('data-active') === 'true') {
-                el.setAttribute('data-active', 'false');
-                svg.classList.remove('active');
-            } else {
-                allMarkers.forEach(marker => {
-                    marker.setAttribute('data-active', 'false');
-                    const markerSvg = marker.querySelector('svg');
-                    if (markerSvg) {
-                        markerSvg.classList.remove('active');
-                    }
-                });
-                
-                el.setAttribute('data-active', 'true');
-                svg.classList.add('active');
             }
         }
         
