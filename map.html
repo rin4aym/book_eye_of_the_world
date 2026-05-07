@@ -8,10 +8,10 @@
     <link rel="stylesheet" type="text/css" href="css/cover.css">
     <link rel="stylesheet" type="text/css" href="css/mobile.css">
     <link rel="stylesheet" type="text/css" href="css/map.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Око Мира</title>
     <link rel="icon" href="assets/icons/small_logo.png" type="image/x-icon">
-  <title>Око мира</title>
+    <title>Око мира</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.5.10/browser/pixi.min.js"></script>
 </head>
@@ -105,88 +105,202 @@
   <div class="hero-path-header">
       <h3 class="hero-path-title">Путь героев</h3>
       <button class="hero-path-close" id="closePathBtn">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 18L9 12L15 6" stroke="#C7AA7F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23.5 12.5469C24.3284 12.5469 25 11.8753 25 11.0469C25 10.2184 24.3284 9.54688 23.5 9.54688V11.0469V12.5469ZM0.439341 9.98621C-0.146446 10.572 -0.146446 11.5217 0.439341 12.1075L9.98528 21.6535C10.5711 22.2393 11.5208 22.2393 12.1066 21.6535C12.6924 21.0677 12.6924 20.1179 12.1066 19.5322L3.62132 11.0469L12.1066 2.56159C12.6924 1.97581 12.6924 1.02606 12.1066 0.440273C11.5208 -0.145514 10.5711 -0.145514 9.98528 0.440273L0.439341 9.98621ZM23.5 11.0469V9.54688H1.5V11.0469V12.5469H23.5V11.0469Z" fill="white"/>
+          <path d="M23.5 12.5469C24.3284 12.5469 25 11.8753 25 11.0469C25 10.2184 24.3284 9.54688 23.5 9.54688V11.0469V12.5469ZM0.439341 9.98621C-0.146446 10.572 -0.146446 11.5217 0.439341 12.1075L9.98528 21.6535C10.5711 22.2393 11.5208 22.2393 12.1066 21.6535C12.6924 21.0677 12.6924 20.1179 12.1066 19.5322L3.62132 11.0469L12.1066 2.56159C12.6924 1.97581 12.6924 1.02606 12.1066 0.440273C11.5208 -0.145514 10.5711 -0.145514 9.98528 0.440273L0.439341 9.98621ZM23.5 11.0469V9.54688H1.5V11.0469V12.5469H23.5V11.0469Z" fill="url(#paint0_linear_973_1645)"/>
+          <defs>
+          <linearGradient id="paint0_linear_973_1645" x1="2.16591" y1="11.4514" x2="61" y2="8.54687" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#C7AA7F"/>
+          <stop offset="0.211538" stop-color="#785C32"/>
+          <stop offset="0.514423" stop-color="#D9AF72"/>
+          <stop offset="0.75" stop-color="#9C8460"/>
+          <stop offset="0.870192" stop-color="#F8F4EE"/>
+          </linearGradient>
+          </defs>
+          </svg>          
       </button>
   </div>
   
   <div class="hero-path-ornament">
-      <!-- Сюда вставьте ваш SVG орнамент -->
+    <?xml version="1.0" encoding="UTF-8"?>
+    <svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.74 37.04">
+      <defs>
+        <style>
+          .cls-1 {
+            stroke-width: 2.83px;
+          }
+    
+          .cls-1, .cls-2, .cls-3 {
+            fill: #585c62;
+            stroke: #585c62;
+            stroke-miterlimit: 10;
+          }
+    
+          .cls-3 {
+            stroke-width: 2.83px;
+          }
+        </style>
+      </defs>
+      <g id="_Слой_4" data-name="Слой 4">
+        <line id="long_r" class="cls-3" x1="779.74" y1="14.87" x2="429.04" y2="14.87"/>
+        <path class="cls-2" d="M319.84,19.33s26.65-6.6,30.14,7.33c.24,.95-7.09,9.81-9.69,2.13-2.6-7.68-13.24-9.22-20.45-9.45Z"/>
+        <path class="cls-2" d="M459.54,19.33s-26.65-6.6-30.14,7.33c-.24,.95,7.09,9.81,9.69,2.13s13.24-9.22,20.45-9.45Z"/>
+        <rect class="cls-2" x="379.3" y="5.01" width="20.77" height="20.77" transform="translate(125.02 -271.04) rotate(45)"/>
+        <path class="cls-2" d="M394.77,36.82s7.24-23.1,30.73-23.99c2.76-.11,7.64,.16,10.87,.71-2.83,.9,.55,2.45-7.3,3.31-1.01,.11-2.1,.57-3.25,1-3.7,1.38-5.08,3.68-5.52,6.2-.71,4.02-1.65,9.93-12.53,9.22-10.87-.71-13,3.55-13,3.55Z"/>
+        <line id="long_l" class="cls-3" x1="0" y1="14.87" x2="350.21" y2="14.87"/>
+        <path class="cls-2" d="M384.49,36.82s-7.24-23.1-30.73-23.99c-2.76-.11-7.64,.16-10.87,.71,2.83,.9-.55,2.45,7.3,3.31,1.01,.11,2.1,.57,3.25,1,3.7,1.38,5.08,3.68,5.52,6.2,.71,4.02,1.65,9.93,12.53,9.22,10.87-.71,13,3.55,13,3.55Z"/>
+        <line class="cls-1" x1="309.47" y1="20.85" x2="172.11" y2="20.85"/>
+      </g>
+    </svg>
   </div>
   
   <div class="hero-path-list">
       <!-- Строка 1 -->
-      <div class="hero-path-item">
+      <div class="hero-path-item mor" data-hero-id="mor">
           <div class="hero-path-avatar">
               <img src="assets/images/avatars/mor.png" alt="Имя">
               <div class="hero-path-circle"></div>
           </div>
           <span class="hero-path-name">Морейн</span>
-          <div class="hero-path-line"></div>
+          <div class="hero-path-line mori"></div>
       </div>
       
       <!-- Строка 2 -->
-      <div class="hero-path-item">
+      <div class="hero-path-item rand" data-hero-id="rand">
           <div class="hero-path-avatar">
               <img src="assets/images/avatars/rand.png" alt="Имя">
               <div class="hero-path-circle"></div>
           </div>
           <span class="hero-path-name">Ранд</span>
-          <div class="hero-path-line"></div>
+          <div class="hero-path-line randi"  ></div>
       </div>
       
       <!-- Строка 3 -->
-      <div class="hero-path-item">
+      <div class="hero-path-item per" data-hero-id="per">
           <div class="hero-path-avatar">
               <img src="assets/images/avatars/per.png" alt="Имя">
               <div class="hero-path-circle"></div>
           </div>
           <span class="hero-path-name">Перрин</span>
-          <div class="hero-path-line"></div>
+          <div class="hero-path-line peri"></div>
       </div>
       
       <!-- Строка 4 -->
-      <div class="hero-path-item">
+      <div class="hero-path-item mat" data-hero-id="mat">
           <div class="hero-path-avatar">
               <img src="assets/images/avatars/mat.png" alt="Имя">
               <div class="hero-path-circle"></div>
           </div>
           <span class="hero-path-name">Мэт</span>
-          <div class="hero-path-line"></div>
+          <div class="hero-path-line mati"></div>
       </div>
       
       <!-- Строка 5 -->
-      <div class="hero-path-item">
+      <div class="hero-path-item eg" data-hero-id="eg">
           <div class="hero-path-avatar">
               <img src="assets/images/avatars/eg.png" alt="Имя">
               <div class="hero-path-circle"></div>
           </div>
           <span class="hero-path-name">Эгвейн</span>
-          <div class="hero-path-line"></div>
+          <div class="hero-path-line egi" ></div>
       </div>
       
       <!-- Строка 6 -->
-      <div class="hero-path-item">
+      <div class="hero-path-item nay" data-hero-id="nay">
           <div class="hero-path-avatar">
               <img src="assets/images/avatars/nay.png" alt="Имя">
               <div class="hero-path-circle"></div>
           </div>
-          <span class="hero-path-name">найнив</span>
-          <div class="hero-path-line"></div>
+          <span class="hero-path-name">Найнив</span>
+          <div class="hero-path-line nayi"></div>
       </div>
       
       <!-- Строка 7 -->
-      <div class="hero-path-item">
+      <div class="hero-path-item lan" data-hero-id="lan">
           <div class="hero-path-avatar">
               <img src="assets/images/avatars/lan.png" alt="Имя">
               <div class="hero-path-circle"></div>
           </div>
           <span class="hero-path-name">Лан</span>
-          <div class="hero-path-line"></div>
+          <div class="hero-path-line lani"></div>
       </div>
   </div>
 </div>
+
+
+<!-- Окно "Метки" -->
+<div class="marks-window" id="marksWindow">
+  <div class="marks-header">
+      <h4 class="marks-title">Обозначения</h4>
+      <button class="marks-close" id="closeMarksBtn">
+        <svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23.5 12.5469C24.3284 12.5469 25 11.8753 25 11.0469C25 10.2184 24.3284 9.54688 23.5 9.54688V11.0469V12.5469ZM0.439341 9.98621C-0.146446 10.572 -0.146446 11.5217 0.439341 12.1075L9.98528 21.6535C10.5711 22.2393 11.5208 22.2393 12.1066 21.6535C12.6924 21.0677 12.6924 20.1179 12.1066 19.5322L3.62132 11.0469L12.1066 2.56159C12.6924 1.97581 12.6924 1.02606 12.1066 0.440273C11.5208 -0.145514 10.5711 -0.145514 9.98528 0.440273L0.439341 9.98621ZM23.5 11.0469V9.54688H1.5V11.0469V12.5469H23.5V11.0469Z" fill="white"/>
+          <path d="M23.5 12.5469C24.3284 12.5469 25 11.8753 25 11.0469C25 10.2184 24.3284 9.54688 23.5 9.54688V11.0469V12.5469ZM0.439341 9.98621C-0.146446 10.572 -0.146446 11.5217 0.439341 12.1075L9.98528 21.6535C10.5711 22.2393 11.5208 22.2393 12.1066 21.6535C12.6924 21.0677 12.6924 20.1179 12.1066 19.5322L3.62132 11.0469L12.1066 2.56159C12.6924 1.97581 12.6924 1.02606 12.1066 0.440273C11.5208 -0.145514 10.5711 -0.145514 9.98528 0.440273L0.439341 9.98621ZM23.5 11.0469V9.54688H1.5V11.0469V12.5469H23.5V11.0469Z" fill="url(#paint0_linear_973_1645)"/>
+          <defs>
+          <linearGradient id="paint0_linear_973_1645" x1="2.16591" y1="11.4514" x2="61" y2="8.54687" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#C7AA7F"/>
+          <stop offset="0.211538" stop-color="#785C32"/>
+          <stop offset="0.514423" stop-color="#D9AF72"/>
+          <stop offset="0.75" stop-color="#9C8460"/>
+          <stop offset="0.870192" stop-color="#F8F4EE"/>
+          </linearGradient>
+          </defs>
+          </svg>          
+      </button>
+  </div>
+  
+  <div class="hero-path-ornament">
+    <?xml version="1.0" encoding="UTF-8"?>
+    <svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.74 37.04">
+      <defs>
+        <style>
+          .cls-1 {
+            stroke-width: 2.83px;
+          }
+    
+          .cls-1, .cls-2, .cls-3 {
+            fill: #585c62;
+            stroke: #585c62;
+            stroke-miterlimit: 10;
+          }
+    
+          .cls-3 {
+            stroke-width: 2.83px;
+          }
+        </style>
+      </defs>
+      <g id="_Слой_4" data-name="Слой 4">
+        <line id="long_r" class="cls-3" x1="779.74" y1="14.87" x2="429.04" y2="14.87"/>
+        <path class="cls-2" d="M319.84,19.33s26.65-6.6,30.14,7.33c.24,.95-7.09,9.81-9.69,2.13-2.6-7.68-13.24-9.22-20.45-9.45Z"/>
+        <path class="cls-2" d="M459.54,19.33s-26.65-6.6-30.14,7.33c-.24,.95,7.09,9.81,9.69,2.13s13.24-9.22,20.45-9.45Z"/>
+        <rect class="cls-2" x="379.3" y="5.01" width="20.77" height="20.77" transform="translate(125.02 -271.04) rotate(45)"/>
+        <path class="cls-2" d="M394.77,36.82s7.24-23.1,30.73-23.99c2.76-.11,7.64,.16,10.87,.71-2.83,.9,.55,2.45-7.3,3.31-1.01,.11-2.1,.57-3.25,1-3.7,1.38-5.08,3.68-5.52,6.2-.71,4.02-1.65,9.93-12.53,9.22-10.87-.71-13,3.55-13,3.55Z"/>
+        <line id="long_l" class="cls-3" x1="0" y1="14.87" x2="350.21" y2="14.87"/>
+        <path class="cls-2" d="M384.49,36.82s-7.24-23.1-30.73-23.99c-2.76-.11-7.64,.16-10.87,.71,2.83,.9-.55,2.45,7.3,3.31,1.01,.11,2.1,.57,3.25,1,3.7,1.38,5.08,3.68,5.52,6.2,.71,4.02,1.65,9.93,12.53,9.22,10.87-.71,13,3.55,13,3.55Z"/>
+        <line class="cls-1" x1="309.47" y1="20.85" x2="172.11" y2="20.85"/>
+      </g>
+    </svg>
+  </div>
+  
+  <div class="marks-list">
+      <!-- Строка 1 -->
+      <div class="marks-item">
+          <div class="marks-icon">
+              <img src="assets/icons/location.png" alt="Локации">
+          </div>
+          <span class="marks-label">Локации</span>
+      </div>
+      
+      <!-- Строка 2 -->
+      <div class="marks-item">
+          <div class="marks-icon">
+              <img src="assets/icons/events.png" alt="События">
+          </div>
+          <span class="marks-label">События</span>
+      </div>
+  </div>
+</div>
+
   
 <div id="map-overlay"></div>
 

@@ -1,41 +1,37 @@
-let summaryEl;
-let isOpen = false;
-let currentMarkerId = null;
-let onSummaryCloseCallback = null;
-let currentEventPage = null;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+    <div class="menu-overlay"></div>
+<div class="menu">
 
-
-export function initSummary(onClose) {
-    // Сохраняем колбэк для уведомления о закрытии
-    onSummaryCloseCallback = onClose;
     
-    summaryEl = document.createElement('div');
-    summaryEl.className = 'summary';
-
-    summaryEl.innerHTML = `
-        <div class="summary-header">
-            <h1 class="summary-title"></h1>
-            <div class="summary-close">
-                <svg class="close" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18M6 6L18 18" stroke="#696B62" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+    <div class="scroll">
+        <div class="header_menu">
+            <div class="head_close">
+                <h2>Настройки</h2>
+                <div class="tips-close">
+                    <svg class="close tip" width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4L4 12M4 4L12 12" stroke="#585C62" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
             </div>
-        </div>
-        <div class="summary-chapters">
-            <p class="summary-chapters-text"></p>
-        </div>
-        <div class="ornament_header">
-            <svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.74 37.04">
+            <div class="ornament">
+                <svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.74 37.04">
                 <defs>
                     <style>
                     .cls-1 {
                         stroke-width: 2.83px;
                     }
+
                     .cls-1, .cls-2, .cls-3 {
                         fill: #585c62;
                         stroke: #585c62;
                         stroke-miterlimit: 10;
                     }
+
                     .cls-3 {
                         stroke-width: 2.83px;
                     }
@@ -51,12 +47,48 @@ export function initSummary(onClose) {
                     <path class="cls-2" d="M384.49,36.82s-7.24-23.1-30.73-23.99c-2.76-.11-7.64,.16-10.87,.71,2.83,.9-.55,2.45,7.3,3.31,1.01,.11,2.1,.57,3.25,1,3.7,1.38,5.08,3.68,5.52,6.2,.71,4.02,1.65,9.93,12.53,9.22,10.87-.71,13,3.55,13,3.55Z"/>
                     <line class="cls-1" x1="309.47" y1="20.85" x2="172.11" y2="20.85"/>
                 </g>
-            </svg>
+                </svg>
+            </div>
         </div>
-        <div class="summary-content">
-            <p class="summary-text"></p>
+
+        <div class="settings_block">
+            <div class="subheader">
+                <h3>Текст</h3>
+            </div>
+            <div class="pols">
+                <div class="line_pols">
+
+                </div>
+                <div class="label">
+                    <p>Маленький</p>
+                    <p>Средний</p>
+                    <p>Большой</p>
+                </div>
+            </div>
+            <div class="exemple">
+                <h1 class="real">Пример</h1>
+                <p class="real">Время от времени дворец подрагивал, словно сама земля содрогалась от воспоминаний
+                    и тяжко вздыхала, не желая поверить в случившееся.</p>
+            </div>
         </div>
-        <div class="summary-button">
+
+        <div class="settings_block">
+            <div class="subheader">
+                <h3>Звук</h3>
+            </div>
+            <div class="toggle_row">
+                <p>Включен</p>
+                <div class="toggle">
+                    <div class="toggle_btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Строка 4
+        <div class="download_block">
+            <div class="gold_line"></div>
             <button class="summary-action-btn">
                 <svg class="read" width="487" height="70" viewBox="0 0 487 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path id="active" d="M42.5885 1H444.564L484.566 35L444.564 69H42.5885L1.56641 35L42.5885 1Z" fill="url(#paint0_linear_1062_951)" stroke="url(#paint1_linear_1062_951)" stroke-width="2" stroke-linecap="round"/>
@@ -106,123 +138,70 @@ export function initSummary(onClose) {
                     </defs>
                 </svg>
             </button>
+            <div class="gold_line"></div>
+        </div>  -->
+
+
+        
+
+        <div class="header_menu">
+            <div class="head_close">
+                <h2 style="padding-top: 64px;">Информация</h2>
+            </div>
+            <div class="ornament">
+                <svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.74 37.04">
+                <defs>
+                    <style>
+                    .cls-1 {
+                        stroke-width: 2.83px;
+                    }
+
+                    .cls-1, .cls-2, .cls-3 {
+                        fill: #585c62;
+                        stroke: #585c62;
+                        stroke-miterlimit: 10;
+                    }
+
+                    .cls-3 {
+                        stroke-width: 2.83px;
+                    }
+                    </style>
+                </defs>
+                <g id="_Слой_4" data-name="Слой 4">
+                    <line id="long_r" class="cls-3" x1="779.74" y1="14.87" x2="429.04" y2="14.87"/>
+                    <path class="cls-2" d="M319.84,19.33s26.65-6.6,30.14,7.33c.24,.95-7.09,9.81-9.69,2.13-2.6-7.68-13.24-9.22-20.45-9.45Z"/>
+                    <path class="cls-2" d="M459.54,19.33s-26.65-6.6-30.14,7.33c-.24,.95,7.09,9.81,9.69,2.13s13.24-9.22,20.45-9.45Z"/>
+                    <rect class="cls-2" x="379.3" y="5.01" width="20.77" height="20.77" transform="translate(125.02 -271.04) rotate(45)"/>
+                    <path class="cls-2" d="M394.77,36.82s7.24-23.1,30.73-23.99c2.76-.11,7.64,.16,10.87,.71-2.83,.9,.55,2.45-7.3,3.31-1.01,.11-2.1,.57-3.25,1-3.7,1.38-5.08,3.68-5.52,6.2-.71,4.02-1.65,9.93-12.53,9.22-10.87-.71-13,3.55-13,3.55Z"/>
+                    <line id="long_l" class="cls-3" x1="0" y1="14.87" x2="350.21" y2="14.87"/>
+                    <path class="cls-2" d="M384.49,36.82s-7.24-23.1-30.73-23.99c-2.76-.11-7.64,.16-10.87,.71,2.83,.9-.55,2.45,7.3,3.31,1.01,.11,2.1,.57,3.25,1,3.7,1.38,5.08,3.68,5.52,6.2,.71,4.02,1.65,9.93,12.53,9.22,10.87-.71,13,3.55,13,3.55Z"/>
+                    <line class="cls-1" x1="309.47" y1="20.85" x2="172.11" y2="20.85"/>
+                </g>
+                </svg>
+            </div>
         </div>
-    `;
 
-    document.body.appendChild(summaryEl);
+        <div class="settings_block">
+            <div class="subheader">
+                <h3>Права</h3>
+            </div>
+            <p>«Око Мира» © Robert Jordan<br>& Bandersnatch Group<br><br>
+                Иллюстрации и разработка — Аймалетдинова Рината, 2026
+            </p>
+        </div> 
 
-    // Закрытие по крестику
-    summaryEl.querySelector('.summary-close').addEventListener('click', () => {
-        closeSummary();
-    });
-    
-    // Обработчик для кнопки
-    const actionBtn = summaryEl.querySelector('.summary-action-btn');
-    if (actionBtn) {
-        actionBtn.addEventListener('click', () => {
-            if (currentEventPage) {
-                window.location.href = currentEventPage;
-            } else {
-                console.log('Страница события не указана для маркера', currentMarkerId);
-            }
-        });
-    }
-}
-
-export function toggleSummary(data, markerId) {
-
-    console.log('toggleSummary called with data:', data); // Посмотрим что приходит
-    
-    if (isOpen && currentMarkerId === markerId) {
-        closeSummary();
-        return;
-    }
-
-    currentMarkerId = markerId;
-    currentEventPage = data.page || null;
-    console.log('currentEventPage set to:', currentEventPage); // Посмотрим что сохранилось
-    // ... остальной код
-
-    // Если это повторный клик по тому же маркеру и окно открыто -> закрываем
-    if (isOpen && currentMarkerId === markerId) {
-        closeSummary();
-        return;
-    }
-
-    // Иначе обновляем данные и открываем
-    currentMarkerId = markerId;
-    currentEventPage = data.page || null;
-
-    // Заголовок
-    summaryEl.querySelector('.summary-title').textContent = data.title || '';
-    
-    // Подпись с главами
-    const chaptersText = summaryEl.querySelector('.summary-chapters-text');
-    if (data.chapters) {
-        chaptersText.textContent = data.chapters;
-        chaptersText.parentElement.style.display = 'block';
-    } else {
-        chaptersText.parentElement.style.display = 'none';
-    }
-    
-    // Основной текст
-    const textEl = summaryEl.querySelector('.summary-text');
-    if (data.text) {
-        textEl.innerHTML = data.text;
-    } else {
-        textEl.textContent = 'Нет описания';
-    }
-    
-    // Сброс скролла
-    const contentEl = summaryEl.querySelector('.summary-content');
-    if (contentEl) {
-        contentEl.scrollTop = 0;
-    }
-    
-    summaryEl.classList.add('open');
-    isOpen = true;
-}
-
-export function closeSummary() {
-    summaryEl.classList.remove('open');
-    
-    // Уведомляем о закрытии, чтобы деактивировать маркер (вернуть в состояние default)
-    if (onSummaryCloseCallback) {
-        onSummaryCloseCallback(currentMarkerId);
-    }
-    
-    isOpen = false;
-    currentMarkerId = null;
-}
-
-export function updateSummaryContent(data) {
-    if (!isOpen) return;
-    
-    if (data.title) {
-        summaryEl.querySelector('.summary-title').textContent = data.title;
-    }
-    if (data.chapters !== undefined) {
-        const chaptersText = summaryEl.querySelector('.summary-chapters-text');
-        if (data.chapters) {
-            chaptersText.textContent = data.chapters;
-            chaptersText.parentElement.style.display = 'block';
-        } else {
-            chaptersText.parentElement.style.display = 'none';
-        }
-    }
-    if (data.text) {
-        summaryEl.querySelector('.summary-text').innerHTML = data.text;
-    }
-
-    
-}
+        <div class="settings_block">
+            <div class="subheader">
+                <h3>Контакты</h3>
+            </div>
+            <p>rinaymaletdin@mail.ru</p>
+        </div> 
 
 
-export function isSummaryOpen() {
-    return isOpen;
-}
+    </div>  
+</div> 
+</body>
+</html>
 
-export function getCurrentMarkerId() {
-    return currentMarkerId;
-}
+
 

@@ -10,13 +10,23 @@ export function createLightFx(app, camera) {
         PIXI.Texture.from('../assets/images/light4.png')
     ];
 
-    // Ждём загрузки карты
-    const mapSprite = camera.children[0]; // предполагаем, что карта первый ребёнок камеры
+    // 🔥 ИЩЕМ КАРТУ ПРАВИЛЬНО (не по индексу, а по типу)
+    let mapSprite = null;
+    for (let i = 0; i < camera.children.length; i++) {
+        const child = camera.children[i];
+        if (child instanceof PIXI.Sprite && child.texture && child.texture.width > 0) {
+            mapSprite = child;
+            break;
+        }
+    }
     
     if (!mapSprite || !mapSprite.texture) {
-        console.error('Map sprite not found in camera');
+        console.warn('Map sprite not found, retrying in 100ms');
+        setTimeout(() => createLightFx(app, camera), 100);
         return;
     }
+    
+    console.log('Map sprite found for lights');
 
     // ----------------------------
     // СОЗДАЁМ КАСТОМНЫЙ ШЕЙДЕР ДЛЯ ОСВЕТЛЕНИЯ
@@ -44,24 +54,14 @@ export function createLightFx(app, camera) {
         void main(void) {
             vec4 color = texture2D(uSampler, vTextureCoord);
             
-            // Конвертируем в HSV для работы с насыщенностью
             vec3 hsv = rgb2hsv(color.rgb);
-            
-            // Увеличиваем яркость (Value) - осветление
             hsv.z = min(hsv.z * 3.4, 1.0);
-            
-            // Увеличиваем насыщенность - делаем цвета сочнее
             hsv.y = min(hsv.y * 1.9, 1.0);
-            
-            // Конвертируем обратно в RGB
             color.rgb = hsv2rgb(hsv);
             
-            // Добавляем лёгкое свечение в светлых областях
             float brightness = (color.r + color.g + color.b) / 3.0;
             vec3 glow = vec3(brightness * brightness * 1.4);
             color.rgb += glow;
-            
-            // Финальный clamp
             color.rgb = clamp(color.rgb, 0.0, 1.0);
             
             gl_FragColor = color;
@@ -73,36 +73,26 @@ export function createLightFx(app, camera) {
     // ----------------------------
     const lights = [];
     let lastLightTime = performance.now();
-    const lightInterval = 4000; // Интервал 4 секунды
+    const lightInterval = 4000;
     let currentTextureIndex = 0;
     
-    // Границы карты в её координатах
     const mapBounds = () => ({
         w: mapSprite.texture.width,
         h: mapSprite.texture.height
     });
     
-    // Общая скорость для всех бликов
     const BASE_SPEED = 0.3;
     
-    // Создаём пул спрайтов
     function createLight(texture) {
         const light = new PIXI.Sprite(texture);
         light.anchor.set(0.5);
-        
-        // Применяем кастомный фильтр осветления
         light.filters = [lightFilter];
-        
-        // Базовый blend mode для дополнительного эффекта
         light.blendMode = PIXI.BLEND_MODES.ADD;
-        
-        // Увеличенная прозрачность для сильного эффекта
         light.alpha = 0.2;
-        light.tint = 0xffffff; // Белый для максимального осветления
-        
+        light.tint = 0xffffff;
         light.visible = false;
         light.active = false;
-        light.isFirstLight = false; // флаг для первого блика
+        light.isFirstLight = false;
         
         fxLayer.addChild(light);
         lights.push(light);
@@ -115,7 +105,6 @@ export function createLightFx(app, camera) {
     
         const randomTexture = textures[Math.floor(Math.random() * textures.length)];
     
-        // 💥 ВАЖНО: ждём загрузку текстуры
         if (!randomTexture.baseTexture.valid) {
             randomTexture.baseTexture.once('loaded', () => {
                 activateLight(light, isFirst);
@@ -133,7 +122,6 @@ export function createLightFx(app, camera) {
     
         light.y = Math.random() * h;
     
-        // ✅ теперь height точно есть
         const baseScale = (h / 4) / randomTexture.height * (0.7 + Math.random() * 0.3);
     
         light.baseScale = baseScale;
@@ -147,19 +135,16 @@ export function createLightFx(app, camera) {
         light.isFirstLight = isFirst;
     }
     
-    // Деактивация
     function deactivateLight(light) {
         light.active = false;
         light.visible = false;
     }
     
-    // Создаём 6 бликов в пуле
     for (let i = 0; i < 6; i++) {
         const texture = textures[i % textures.length];
         createLight(texture);
     }
     
-    // Функция для запуска нового блика
     function tryActivateNewLight(isFirst = false) {
         const inactiveLights = lights.filter(l => !l.active);
         if (inactiveLights.length > 0) {
@@ -171,51 +156,42 @@ export function createLightFx(app, camera) {
         return false;
     }
     
-    // Запускаем первые два блика почти сразу с центра карты
     setTimeout(() => {
-        tryActivateNewLight(true); // первый блик из центра
+        tryActivateNewLight(true);
     }, 500);
     
     setTimeout(() => {
-        tryActivateNewLight(true); // второй блик тоже из центра
+        tryActivateNewLight(true);
     }, 500);
     
-    // Третий блик запускаем обычным способом
     setTimeout(() => {
         tryActivateNewLight(false);
         lastLightTime = performance.now();
     }, 3000);
     
-    // Анимация
     app.ticker.add((delta) => {
         const now = performance.now();
         const { w, h } = mapBounds();
         
-        // Обновляем активные блики
         for (let light of lights) {
             if (!light.active) continue;
             
-            // Движение ВПРАВО
             light.x += light.speed * delta;
             
-            // Масштаб остаётся постоянным в координатах карты
             if (light.baseScale) {
                 light.scale.set(light.baseScale);
             }
             
-            // Проверяем выход за правый край карты
             if (light.x > w + light.width) {
                 deactivateLight(light);
                 console.log('Light deactivated');
                 
-                // Сразу запускаем новый блик вместо ушедшего
                 setTimeout(() => {
                     tryActivateNewLight(false);
-                }, 1000); // небольшая пауза перед новым бликом
+                }, 1000);
             }
         }
         
-        // Дополнительно создаём новые блики по времени
         if (now - lastLightTime >= lightInterval) {
             if (tryActivateNewLight(false)) {
                 lastLightTime = now;
