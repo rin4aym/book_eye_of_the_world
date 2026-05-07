@@ -27,6 +27,7 @@
     --lightbrown: #876C47;
     --brown: #785C32;
     --lipa: #C7AA7F;
+    --pages: #F2F2F2;
 
     --puregold: linear-gradient(74deg,
                                     #C7AA7F,
@@ -76,13 +77,6 @@ p {
 
 
 
-
-
-
-.container{
-    padding-left: 380px;
-    margin: 0 auto;
-}
 
 .sqwere{
     position: absolute;
@@ -145,4 +139,102 @@ p {
 
 .btn:active {
     transform: scale(0.95);
+}
+
+
+
+
+
+.container{
+    max-width: 1160px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+
+.chapter{
+    padding-top: 173px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.chapter h1{
+    font-size: 64px;
+    color: var(--ui);
+}
+
+
+
+.top{
+    margin-top: 217px;
+}
+
+.chapter_orn {
+    margin-bottom: -35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chapter_orn svg {
+    width: 100%;
+    max-width: 1160px; /* или любое другое значение */
+    height: auto;
+}
+
+.end_orn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 24px;
+}
+
+.end_orn svg {
+    width: 100%;
+    max-width: 512px; /* или любое другое значение */
+    height: auto;
+}
+
+.start_orn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 64px;
+}
+
+.start_orn svg {
+    width: 100%;
+    max-width: 512px; /* или любое другое значение */
+    height: auto;
+}
+
+.text{
+    padding: 72px;
+}
+
+.chapter_number{
+    padding: 32px;
+    text-align: center;
+}
+
+.real{
+    font-size: 22px;
+    line-height: 38px;
+    text-align: justify;
+    text-indent: 70px;
+}
+
+
+.animation_rand {
+    width: 100%;
+    position: relative;
+}
+
+.illust{
+    display: flex;
+}
+
+.illust img{
+    width: 100%;
 }

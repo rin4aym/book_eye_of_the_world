@@ -1,0 +1,194 @@
+
+animation_rand.png
+size: 3942,1919
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Body
+  rotate: false
+  xy: 1947, 904
+  size: 878, 797
+  orig: 1406, 1711
+  offset: 36, 868
+  index: -1
+Head
+  rotate: true
+  xy: 2957, 1655
+  size: 260, 301
+  orig: 319, 307
+  offset: 32, 1
+  index: -1
+L puple
+  rotate: false
+  xy: 26, 1898
+  size: 17, 17
+  orig: 20, 20
+  offset: 2, 2
+  index: -1
+L white
+  rotate: false
+  xy: 47, 1890
+  size: 26, 25
+  orig: 33, 29
+  offset: 3, 2
+  index: -1
+L_cloth_bot
+  rotate: false
+  xy: 800, 1817
+  size: 141, 98
+  orig: 146, 98
+  offset: 4, 0
+  index: -1
+L_cloth_top
+  rotate: true
+  xy: 1488, 1765
+  size: 150, 320
+  orig: 161, 328
+  offset: 7, 6
+  index: -1
+R puple
+  rotate: false
+  xy: 4, 1900
+  size: 18, 15
+  orig: 21, 20
+  offset: 2, 3
+  index: -1
+R white
+  rotate: false
+  xy: 77, 1882
+  size: 36, 33
+  orig: 62, 60
+  offset: 24, 25
+  index: -1
+arm_l
+  rotate: true
+  xy: 1812, 1761
+  size: 154, 334
+  orig: 176, 391
+  offset: 22, 38
+  index: -1
+arm_r
+  rotate: false
+  xy: 2475, 1705
+  size: 478, 210
+  orig: 487, 222
+  offset: 1, 12
+  index: -1
+cloth_r
+  rotate: false
+  xy: 1244, 1099
+  size: 699, 658
+  orig: 699, 663
+  offset: 0, 5
+  index: -1
+dad
+  rotate: false
+  xy: 4, 4
+  size: 1370, 1091
+  orig: 1370, 1091
+  offset: 0, 0
+  index: -1
+hair
+  rotate: true
+  xy: 254, 1848
+  size: 67, 104
+  orig: 90, 130
+  offset: 23, 11
+  index: -1
+hand_l
+  rotate: true
+  xy: 1332, 1770
+  size: 145, 152
+  orig: 146, 186
+  offset: 0, 3
+  index: -1
+hand_r
+  rotate: false
+  xy: 1173, 1774
+  size: 155, 141
+  orig: 155, 141
+  offset: 0, 0
+  index: -1
+legs
+  rotate: false
+  xy: 2829, 627
+  size: 1109, 1019
+  orig: 1128, 1019
+  offset: 12, 0
+  index: -1
+poyas
+  rotate: false
+  xy: 446, 1831
+  size: 350, 84
+  orig: 356, 89
+  offset: 6, 3
+  index: -1
+sword
+  rotate: true
+  xy: 4, 1293
+  size: 477, 1236
+  orig: 477, 1236
+  offset: 0, 0
+  index: -1
+sword_shadow
+  rotate: true
+  xy: 3262, 1650
+  size: 265, 524
+  orig: 265, 524
+  offset: 0, 0
+  index: -1
+teeh
+  rotate: false
+  xy: 117, 1876
+  size: 44, 39
+  orig: 44, 39
+  offset: 0, 0
+  index: -1
+vorot
+  rotate: true
+  xy: 2150, 1710
+  size: 205, 321
+  orig: 225, 328
+  offset: 19, 0
+  index: -1
+vorot piece
+  rotate: false
+  xy: 165, 1861
+  size: 85, 54
+  orig: 88, 55
+  offset: 1, 1
+  index: -1
+yzel
+  rotate: true
+  xy: 945, 1779
+  size: 136, 224
+  orig: 136, 254
+  offset: 0, 30
+  index: -1
+zamok
+  rotate: true
+  xy: 362, 1846
+  size: 69, 80
+  orig: 72, 84
+  offset: 3, 1
+  index: -1
+
+animation_rand2.png
+size: 3925,2682
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+first plan
+  rotate: false
+  xy: 4, 1343
+  size: 3917, 1335
+  orig: 3917, 1335
+  offset: 0, 0
+  index: -1
+second plan
+  rotate: false
+  xy: 4, 4
+  size: 3917, 1335
+  orig: 3917, 1335
+  offset: 0, 0
+  index: -1
