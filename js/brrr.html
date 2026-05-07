@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер текста в HTML с <br></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .editor-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: #2d3748;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header button {
+            background: #4a5568;
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+
+        .panel-header button:hover {
+            background: #718096;
+        }
+
+        textarea, .preview {
+            width: 100%;
+            min-height: 500px;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            border: none;
+            outline: none;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        textarea {
+            background: #f7fafc;
+            font-family: inherit;
+        }
+
+        .preview {
+            background: #fefefe;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .preview br {
+            display: block;
+            content: "";
+            margin: 0;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #2d3748;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #48bb78;
+        }
+
+        .btn-primary:hover {
+            background: #38a169;
+        }
+
+        .btn-copy {
+            background: #4299e1;
+        }
+
+        .btn-copy:hover {
+            background: #3182ce;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .editor-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Конвертер текста в HTML</h1>
+        <div class="subtitle">Вставьте текст — все переносы строк (Enter) автоматически заменятся на &lt;br&gt;</div>
+
+        <div class="controls">
+            <button class="btn-primary" onclick="convertToBr()">🔄 Преобразовать в HTML с &lt;br&gt;</button>
+            <button class="btn-copy" onclick="copyResult()">📋 Скопировать HTML-код</button>
+            <button onclick="clearAll()">🗑 Очистить всё</button>
+        </div>
+
+        <div class="editor-wrapper">
+            <div class="panel">
+                <div class="panel-header">
+                    📄 Исходный текст
+                    <button onclick="clearInput()">Очистить</button>
+                </div>
+                <textarea id="inputText" placeholder="Вставьте или напишите текст здесь...
+        
+Пример:
+Строка 1
+Строка 2
+Строка 3
+
+Каждый Enter будет заменён на &lt;br&gt;"></textarea>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    🔧 Результат с &lt;br&gt;
+                    <button onclick="copyResult()">Скопировать</button>
+                </div>
+                <div class="preview" id="previewArea"></div>
+            </div>
+        </div>
+
+        <div class="status" id="status">
+            💡 Вставьте текст в левое поле и нажмите «Преобразовать» или используйте автоматический режим
+        </div>
+    </div>
+
+    <script>
+        // Автоматическое преобразование при вводе (опционально)
+        let autoConvert = true;
+        
+        const inputElement = document.getElementById('inputText');
+        const previewElement = document.getElementById('previewArea');
+        
+        // Функция преобразования текста в HTML с <br>
+        function convertToBr() {
+            const inputText = document.getElementById('inputText').value;
+            
+            if (!inputText.trim()) {
+                showStatus('⚠️ Введите текст в левое поле', 'orange');
+                previewElement.innerHTML = '<em style="color: #999;">Здесь появится результат после преобразования...</em>';
+                return;
+            }
+            
+            // Заменяем все переносы строк на <br>
+            // \r\n для Windows, \n для Mac/Linux, \r для старых Mac
+            let htmlResult = inputText.replace(/\r?\n|\r/g, '<br>');
+            
+            // Дополнительно: экранируем HTML-теги, если пользователь ввел их случайно
+            // Но оставляем уже добавленные <br>
+            // Для безопасности можно экранировать, но тогда <br> сломается, поэтому делаем умную замену
+            
+            // Отображаем результат в preview
+            previewElement.innerHTML = htmlResult;
+            
+            showStatus('✅ Преобразовано! Нажмите «Скопировать HTML-код», чтобы использовать результат', 'lightgreen');
+            
+            return htmlResult;
+        }
+        
+        // Функция для копирования результата
+        function copyResult() {
+            const htmlContent = previewElement.innerHTML;
+            
+            if (!htmlContent || htmlContent === '<em style="color: #999;">Здесь появится результат после преобразования...</em>') {
+                showStatus('❌ Нет данных для копирования. Сначала преобразуйте текст', 'orange');
+                return;
+            }
+            
+            // Копируем в буфер обмена
+            navigator.clipboard.writeText(htmlContent).then(() => {
+                showStatus('📋 HTML-код скопирован в буфер обмена!', 'lightgreen');
+            }).catch(() => {
+                // fallback для старых браузеров
+                const textarea = document.createElement('textarea');
+                textarea.value = htmlContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showStatus('📋 HTML-код скопирован (старый способ)', 'lightgreen');
+            });
+        }
+        
+        // Показать отдельно HTML-код тегами (для наглядности)
+        function showRawHtml() {
+            const htmlContent = previewElement.innerHTML;
+            if (htmlContent) {
+                alert('HTML с тегами <br>:\n\n' + htmlContent);
+            } else {
+                showStatus('❌ Сначала преобразуйте текст', 'orange');
+            }
+        }
+        
+        // Очистить всё
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            previewElement.innerHTML = '<em style="color: #999;">Здесь появится результат после преобразования...</em>';
+            showStatus('🗑 Всё очищено', 'white');
+        }
+        
+        function clearInput() {
+            document.getElementById('inputText').value = '';
+            showStatus('✏️ Исходный текст очищен', 'white');
+        }
+        
+        function showStatus(message, color) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.style.backgroundColor = color === 'orange' ? 'rgba(255, 100, 0, 0.8)' : 
+                                           (color === 'lightgreen' ? 'rgba(72, 187, 120, 0.9)' : 
+                                           'rgba(255, 255, 255, 0.2)');
+            setTimeout(() => {
+                if (document.getElementById('status').textContent === message) {
+                    statusDiv.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                }
+            }, 2000);
+        }
+        
+        // Автоматическое преобразование при вводе (можно включить/отключить)
+        let timeoutId;
+        inputElement.addEventListener('input', function() {
+            if (autoConvert) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    convertToBr();
+                }, 500); // Задержка 0.5 секунды после остановки печати
+            }
+        });
+        
+        // Добавляем возможность скопировать при клике на результат
+        previewElement.addEventListener('click', function() {
+            copyResult();
+        });
+        
+        // Показываем пример при загрузке страницы
+        window.addEventListener('load', function() {
+            const exampleText = `Незадолго до рассвета Тэм замолчал.
+Ранд не помнил точно, когда слышал в последний раз бормотание Тэма, но теперь остановиться и выяснить, что с отцом, он не отваживался.
+Остановись он сейчас — вряд ли заставит себя идти дальше.
+Каково бы ни было состояние Тэма, Ранд ничем помочь ему не мог, только тащить волокуши.
+Единственная надежда — впереди, в деревне.
+Юноша боролся с усталостью, стараясь ускорить шаг, но одеревенелые ноги не слушались, и он продолжал медленно и тяжело идти вперед.
+Он почти не замечал ни холода, ни ветра.
+
+Откуда-то потянуло слабым запахом горящего дерева.
+По крайней мере, Ранд уже почти пришел, раз смог ощутить дымок из деревенских труб.
+Однако появившаяся на его лице усталая улыбка сразу сменилась нахмуренно-встревоженным выражением.
+Дым тяжело стлался в воздухе — слишком тяжело и густо.
+В такую погоду в каждом камине мог ярко пылать огонь, но все равно дым был слишком плотным.
+Мысленно Ранд опять увидел бегущих по дороге троллоков.
+Троллоки шли с востока, со стороны Эмондова Луга.
+Юноша пытался разглядеть дома на околице, готовый позвать на помощь первого, кого увидит, пускай даже им окажется Кенн Буйе или кто-то из Коплинов.
+Слабый голос в подсознании настойчиво убеждал надеяться на то, что там кто-то сможет ему помочь.
+Внезапно сквозь голые ветви последних деревьев показался дом, и Ранд продолжал шагать вперед.
+Когда он, пошатываясь, вошел в деревню, надежда сменилась горестным отчаянием.`;
+            
+            document.getElementById('inputText').value = exampleText;
+            convertToBr();
+            showStatus('✨ Загружен пример текста. Вы можете отредактировать его или вставить свой', 'rgba(255,255,255,0.3)');
+        });
+    </script>
+</body>
+</html>

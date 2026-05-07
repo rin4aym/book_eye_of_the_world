@@ -1,0 +1,389 @@
+
+battle_sk.png
+size: 2044,1971
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+FACE
+  rotate: true
+  xy: 4, 1304
+  size: 274, 357
+  orig: 277, 359
+  offset: 2, 2
+  index: -1
+eyelid l
+  rotate: false
+  xy: 231, 1934
+  size: 49, 33
+  orig: 57, 43
+  offset: 5, 5
+  index: -1
+eyelid r
+  rotate: false
+  xy: 415, 1925
+  size: 71, 42
+  orig: 78, 47
+  offset: 3, 3
+  index: -1
+glow
+  rotate: true
+  xy: 365, 1256
+  size: 227, 710
+  orig: 232, 718
+  offset: 0, 0
+  index: -1
+hair back
+  rotate: true
+  xy: 4, 1582
+  size: 184, 358
+  orig: 193, 360
+  offset: 9, 2
+  index: -1
+hair end
+  rotate: true
+  xy: 1484, 1092
+  size: 282, 370
+  orig: 284, 370
+  offset: 0, 0
+  index: -1
+hair pice l
+  rotate: true
+  xy: 693, 1851
+  size: 116, 451
+  orig: 118, 451
+  offset: 1, 0
+  index: -1
+hair pice r
+  rotate: true
+  xy: 465, 1707
+  size: 140, 371
+  orig: 141, 372
+  offset: 1, 0
+  index: -1
+hair top
+  rotate: false
+  xy: 383, 483
+  size: 388, 462
+  orig: 552, 613
+  offset: 0, 150
+  index: -1
+l base hand
+  rotate: true
+  xy: 1081, 1680
+  size: 166, 368
+  orig: 185, 370
+  offset: 7, 1
+  index: -1
+l first f
+  rotate: true
+  xy: 1646, 1848
+  size: 119, 136
+  orig: 201, 137
+  offset: 30, 0
+  index: -1
+l inner hand
+  rotate: false
+  xy: 1786, 1834
+  size: 251, 133
+  orig: 251, 151
+  offset: 0, 0
+  index: -1
+l midle f
+  rotate: true
+  xy: 284, 1933
+  size: 34, 127
+  orig: 41, 130
+  offset: 1, 0
+  index: -1
+l wing
+  rotate: true
+  xy: 4, 1793
+  size: 137, 267
+  orig: 162, 293
+  offset: 24, 11
+  index: -1
+lan face
+  rotate: false
+  xy: 1114, 1447
+  size: 301, 229
+  orig: 302, 230
+  offset: 1, 1
+  index: -1
+lan head
+  rotate: true
+  xy: 1715, 696
+  size: 392, 325
+  orig: 422, 326
+  offset: 30, 0
+  index: -1
+magic
+  rotate: true
+  xy: 4, 148
+  size: 313, 984
+  orig: 912, 1772
+  offset: 54, 725
+  index: -1
+magic 2
+  rotate: false
+  xy: 275, 1770
+  size: 186, 151
+  orig: 912, 1772
+  offset: 652, 336
+  index: -1
+magic 3
+  rotate: false
+  xy: 992, 4
+  size: 688, 345
+  orig: 912, 1772
+  offset: 130, 65
+  index: -1
+main light
+  rotate: true
+  xy: 366, 1487
+  size: 189, 744
+  orig: 189, 749
+  offset: 0, 5
+  index: -1
+main light mirror
+  rotate: true
+  xy: 1148, 1850
+  size: 117, 494
+  orig: 117, 494
+  offset: 0, 0
+  index: -1
+neckless
+  rotate: false
+  xy: 1453, 1672
+  size: 252, 172
+  orig: 253, 174
+  offset: 1, 1
+  index: -1
+puple l
+  rotate: false
+  xy: 4, 1947
+  size: 24, 20
+  orig: 29, 25
+  offset: 3, 3
+  index: -1
+puple r
+  rotate: true
+  xy: 32, 1942
+  size: 25, 26
+  orig: 31, 30
+  offset: 3, 3
+  index: -1
+r  main hand
+  rotate: false
+  xy: 4, 610
+  size: 375, 346
+  orig: 382, 355
+  offset: 6, 9
+  index: -1
+r inner hand
+  rotate: true
+  xy: 1331, 766
+  size: 322, 380
+  orig: 397, 381
+  offset: 75, 1
+  index: -1
+r kist
+  rotate: false
+  xy: 1709, 1640
+  size: 230, 190
+  orig: 454, 281
+  offset: 224, 91
+  index: -1
+r midle f
+  rotate: true
+  xy: 617, 1907
+  size: 60, 72
+  orig: 61, 74
+  offset: 1, 2
+  index: -1
+r pinky
+  rotate: true
+  xy: 490, 1915
+  size: 52, 123
+  orig: 52, 124
+  offset: 0, 1
+  index: -1
+r wing
+  rotate: false
+  xy: 1419, 1378
+  size: 459, 258
+  orig: 459, 258
+  offset: 0, 0
+  index: -1
+round magic
+  rotate: false
+  xy: 1307, 353
+  size: 475, 339
+  orig: 475, 342
+  offset: 0, 0
+  index: -1
+round magic mirror
+  rotate: false
+  xy: 4, 960
+  size: 396, 292
+  orig: 396, 292
+  offset: 0, 0
+  index: -1
+sekira
+  rotate: false
+  xy: 840, 1689
+  size: 237, 158
+  orig: 237, 158
+  offset: 0, 0
+  index: -1
+straight light
+  rotate: false
+  xy: 775, 465
+  size: 528, 338
+  orig: 528, 339
+  offset: 0, 1
+  index: -1
+straight light mirror
+  rotate: false
+  xy: 790, 807
+  size: 537, 304
+  orig: 537, 304
+  offset: 0, 0
+  index: -1
+strike
+  rotate: false
+  xy: 404, 949
+  size: 382, 303
+  orig: 382, 305
+  offset: 0, 0
+  index: -1
+strike mirror
+  rotate: false
+  xy: 1079, 1115
+  size: 401, 259
+  orig: 401, 259
+  offset: 0, 0
+  index: -1
+teeth
+  rotate: false
+  xy: 62, 1941
+  size: 57, 26
+  orig: 74, 94
+  offset: 16, 53
+  index: -1
+whire right
+  rotate: false
+  xy: 169, 1939
+  size: 58, 28
+  orig: 63, 33
+  offset: 2, 3
+  index: -1
+white left
+  rotate: false
+  xy: 123, 1940
+  size: 42, 27
+  orig: 49, 32
+  offset: 3, 1
+  index: -1
+
+battle_sk2.png
+size: 1862,1719
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+background
+  rotate: false
+  xy: 4, 584
+  size: 1854, 1131
+  orig: 1854, 1166
+  offset: 0, 35
+  index: -1
+body
+  rotate: true
+  xy: 4, 4
+  size: 576, 761
+  orig: 1313, 1632
+  offset: 391, 312
+  index: -1
+lan body
+  rotate: true
+  xy: 769, 56
+  size: 524, 900
+  orig: 1608, 1684
+  offset: 602, 89
+  index: -1
+
+battle_sk3.png
+size: 1880,1700
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+big face
+  rotate: false
+  xy: 977, 88
+  size: 378, 613
+  orig: 378, 613
+  offset: 0, 0
+  index: -1
+big shoulder
+  rotate: true
+  xy: 1456, 1234
+  size: 462, 412
+  orig: 462, 412
+  offset: 0, 0
+  index: -1
+hair bace
+  rotate: true
+  xy: 4, 4
+  size: 443, 583
+  orig: 658, 699
+  offset: 20, 99
+  index: -1
+l hand
+  rotate: false
+  xy: 1359, 122
+  size: 433, 489
+  orig: 439, 542
+  offset: 4, 9
+  index: -1
+lan l hand
+  rotate: true
+  xy: 1488, 615
+  size: 615, 388
+  orig: 617, 402
+  offset: 0, 0
+  index: -1
+lan r hand
+  rotate: false
+  xy: 4, 1223
+  size: 1448, 473
+  orig: 1448, 521
+  offset: 0, 48
+  index: -1
+mini
+  rotate: false
+  xy: 591, 74
+  size: 382, 627
+  orig: 382, 634
+  offset: 0, 6
+  index: -1
+r hand
+  rotate: false
+  xy: 4, 451
+  size: 444, 768
+  orig: 505, 770
+  offset: 0, 0
+  index: -1
+round_blue
+  rotate: false
+  xy: 452, 705
+  size: 514, 514
+  orig: 514, 514
+  offset: 0, 0
+  index: -1
+round_white
+  rotate: false
+  xy: 970, 705
+  size: 514, 514
+  orig: 514, 514
+  offset: 0, 0
+  index: -1
