@@ -1,10 +1,9 @@
-// battleAnimation.js
 
-export function initBattleAnimation() {
-    let container = document.querySelector('.animation_fight');
+export function initIschezAnimation() {
+    let container = document.querySelector('.animation_ischez');
     
     if (!container) {
-        console.error('Контейнер .animation_fight не найден');
+        console.error('Контейнер .animation_ischez не найден');
         return null;
     }
     
@@ -26,10 +25,10 @@ export function initBattleAnimation() {
             width: containerWidth,
             height: containerHeight,
             backgroundAlpha: 0,
-            antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
-            resolution: 1,           // Не используй retina-разрешение
-            autoDensity: false,      // Отключи авто-плотность
-            powerPreference: "high-performance"  // Запрос высокой производительности
+            antialias: false,
+            resolution: 1,
+            autoDensity: false,
+            powerPreference: "high-performance"
         });
         
         container.appendChild(app.view);
@@ -68,10 +67,10 @@ export function initBattleAnimation() {
     initApp();
     
     app.loader
-        .add("spine", "assets/animations/battle/battle_sk.json")
+        .add("spine", "assets/animations/ischez/skelet_ischez.json")
         .load((loader, resources) => {
             spineCharacter = new PIXI.spine.Spine(resources.spine.spineData);
-            window.battleSpine = spineCharacter;
+            window.ischezSpine = spineCharacter;
             
             setTimeout(() => {
                 const bounds = spineCharacter.getBounds();
@@ -82,46 +81,26 @@ export function initBattleAnimation() {
                     y: bounds.y
                 };
                 
-                console.log('Battle animation bounds:', originalBounds);
+                console.log('Ischez animation bounds:', originalBounds);
                 
                 updateSizeAndPosition();
                 app.stage.addChild(spineCharacter);
                 
-                // Запускаем зацикленную анимацию
-                // Получаем список всех анимаций
-                const animations = spineCharacter.state.data.skeletonData.animations;
-                console.log('Available animations:', animations.map(a => a.name));
-                
-                // Запускаем первую анимацию зацикленно, или можно указать конкретную
-                if (animations && animations.length > 0) {
-                    const firstAnimation = animations[0].name;
-                    spineCharacter.state.setAnimation(0, firstAnimation, true);
-                    console.log('Playing animation:', firstAnimation);
-                } else {
-                    // Если анимаций нет в списке, пробуем стандартные названия
-                    const possibleAnimations = ["animation", "idle", "battle", "fight", "attack"];
-                    for (const animName of possibleAnimations) {
-                        try {
-                            spineCharacter.state.setAnimation(0, animName, true);
-                            console.log('Playing animation:', animName);
-                            break;
-                        } catch(e) {
-                            // анимации с таким именем нет
-                        }
-                    }
-                }
+                // Запускаем анимацию "animation" зацикленно
+                spineCharacter.state.setAnimation(0, "animation", true);
+                console.log('Playing animation: animation');
             }, 100);
         });
     
     return { app, container };
 }
 
-export function removeBattleAnimation() {
-    const container = document.querySelector('.animation_fight');
+export function removeIschezAnimation() {
+    const container = document.querySelector('.animation_ischez');
     if (container) {
         container.innerHTML = '';
         container.style.minHeight = '';
     }
     
-    window.battleSpine = null;
+    window.ischezSpine = null;
 }
