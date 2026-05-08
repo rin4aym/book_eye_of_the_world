@@ -75,10 +75,79 @@ padding-top: 40px;
     padding-bottom: 16px;
 }
 
-.line_pols{
+/* Слайдер */
+.slider-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.line_pols {
+    position: relative;
     height: 5px;
-    width: auto;
+    width: 100%;
     background-color: #C7AA7F;
+    cursor: pointer;
+}
+
+.slider-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--ui);
+    border: 1px solid var(--lipa);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -8px;
+    cursor: pointer;
+    transition: left 0.1s ease;
+    z-index: 10;
+    transition: 0.2s;
+}
+
+.slider-handle:hover {
+    background: var(--grey);
+}
+
+.slider-handle:active {
+    background: var(--lightgrey);
+}
+
+
+/* Отметки - теперь на концах линии */
+.line_pols::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 10px;
+    background: white;
+    pointer-events: none;
+}
+
+.line_pols::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 10px;
+    background: white;
+    pointer-events: none;
+}
+
+.mid-marker {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 10px;
+    background: white;
+    pointer-events: none;
 }
 
 .pols{
@@ -105,6 +174,15 @@ padding-top: 40px;
 
 .exemple h1{
     padding-bottom: 16px;
+}
+
+.exemple .real {
+    font-size: var(--current-text-size);
+    line-height: var(--current-line-size);
+}
+
+.exemple h1.real {
+    font-size: var(--current-head-size);
 }
 
 .toggle_row{

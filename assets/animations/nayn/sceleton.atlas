@@ -1,0 +1,265 @@
+
+sceleton.png
+size: 4040,2913
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+L torch
+  rotate: true
+  xy: 3644, 317
+  size: 200, 314
+  orig: 200, 314
+  offset: 0, 0
+  index: -1
+M blue
+  rotate: false
+  xy: 575, 56
+  size: 331, 816
+  orig: 403, 937
+  offset: 72, 121
+  index: -1
+M bot
+  rotate: true
+  xy: 3644, 92
+  size: 221, 211
+  orig: 221, 211
+  offset: 0, 0
+  index: -1
+M first
+  rotate: false
+  xy: 272, 49
+  size: 299, 823
+  orig: 338, 866
+  offset: 39, 43
+  index: -1
+M glow
+  rotate: false
+  xy: 1878, 7
+  size: 406, 884
+  orig: 445, 966
+  offset: 39, 40
+  index: -1
+M second
+  rotate: false
+  xy: 1171, 101
+  size: 248, 771
+  orig: 349, 838
+  offset: 77, 67
+  index: -1
+R torch
+  rotate: true
+  xy: 1245, 19
+  size: 78, 197
+  orig: 101, 201
+  offset: 0, 4
+  index: -1
+back remen
+  rotate: false
+  xy: 910, 73
+  size: 257, 799
+  orig: 257, 799
+  offset: 0, 0
+  index: -1
+backgroung
+  rotate: true
+  xy: 1416, 1176
+  size: 1733, 977
+  orig: 1733, 977
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 2288, 19
+  size: 945, 893
+  orig: 945, 1096
+  offset: 0, 0
+  index: -1
+body lightning
+  rotate: true
+  xy: 4, 876
+  size: 2033, 1408
+  orig: 2033, 1408
+  offset: 0, 0
+  index: -1
+braslet
+  rotate: true
+  xy: 1171, 12
+  size: 85, 70
+  orig: 85, 72
+  offset: 0, 2
+  index: -1
+breid
+  rotate: true
+  xy: 3418, 521
+  size: 688, 577
+  orig: 890, 598
+  offset: 202, 21
+  index: -1
+glow back
+  rotate: true
+  xy: 2397, 1176
+  size: 1733, 977
+  orig: 1733, 977
+  offset: 0, 0
+  index: -1
+hair left
+  rotate: false
+  xy: 3378, 1213
+  size: 168, 356
+  orig: 169, 358
+  offset: 0, 0
+  index: -1
+hair left  back
+  rotate: true
+  xy: 1446, 32
+  size: 112, 146
+  orig: 112, 146
+  offset: 0, 0
+  index: -1
+hair right back
+  rotate: false
+  xy: 2059, 909
+  size: 214, 263
+  orig: 214, 263
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 3237, 91
+  size: 403, 426
+  orig: 412, 427
+  offset: 0, 0
+  index: -1
+left hand
+  rotate: true
+  xy: 3378, 1573
+  size: 400, 646
+  orig: 417, 676
+  offset: 17, 0
+  index: -1
+left pov
+  rotate: false
+  xy: 3378, 1977
+  size: 657, 932
+  orig: 657, 935
+  offset: 0, 0
+  index: -1
+neck
+  rotate: true
+  xy: 3099, 944
+  size: 228, 315
+  orig: 228, 315
+  offset: 0, 0
+  index: -1
+puple l
+  rotate: true
+  xy: 451, 12
+  size: 33, 29
+  orig: 35, 29
+  offset: 1, 0
+  index: -1
+puple r
+  rotate: true
+  xy: 419, 7
+  size: 38, 28
+  orig: 39, 29
+  offset: 0, 1
+  index: -1
+r hand
+  rotate: true
+  xy: 2724, 923
+  size: 249, 163
+  orig: 265, 178
+  offset: 0, 0
+  index: -1
+renem
+  rotate: false
+  xy: 4, 27
+  size: 264, 845
+  orig: 264, 846
+  offset: 0, 0
+  index: -1
+right har
+  rotate: true
+  xy: 3550, 1262
+  size: 307, 486
+  orig: 307, 486
+  offset: 0, 0
+  index: -1
+right pov
+  rotate: true
+  xy: 1799, 895
+  size: 277, 256
+  orig: 277, 261
+  offset: 0, 2
+  index: -1
+shtora
+  rotate: false
+  xy: 1423, 148
+  size: 451, 733
+  orig: 451, 733
+  offset: 0, 0
+  index: -1
+sleeve left
+  rotate: true
+  xy: 2277, 916
+  size: 256, 443
+  orig: 256, 443
+  offset: 0, 0
+  index: -1
+sleeve r
+  rotate: false
+  xy: 1416, 885
+  size: 379, 287
+  orig: 379, 288
+  offset: 0, 0
+  index: -1
+teeth
+  rotate: true
+  xy: 1596, 32
+  size: 112, 68
+  orig: 112, 68
+  offset: 0, 0
+  index: -1
+veco l
+  rotate: false
+  xy: 272, 4
+  size: 70, 41
+  orig: 70, 42
+  offset: 0, 1
+  index: -1
+veco r
+  rotate: false
+  xy: 346, 6
+  size: 69, 39
+  orig: 69, 39
+  offset: 0, 0
+  index: -1
+vorot
+  rotate: false
+  xy: 2891, 927
+  size: 204, 245
+  orig: 204, 245
+  offset: 0, 0
+  index: -1
+white l
+  rotate: false
+  xy: 575, 8
+  size: 75, 44
+  orig: 75, 44
+  offset: 0, 0
+  index: -1
+white r
+  rotate: false
+  xy: 1002, 19
+  size: 88, 50
+  orig: 88, 53
+  offset: 0, 0
+  index: -1
+white r — копия
+  rotate: false
+  xy: 910, 16
+  size: 88, 53
+  orig: 88, 53
+  offset: 0, 0
+  index: -1

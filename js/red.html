@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер текста — каждый Enter = новый абзац</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Georgia, serif;
+            background: #f0ebe1;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .input-panel {
+            padding: 24px;
+            background: #faf7f0;
+            border-bottom: 1px solid #ddd0bc;
+        }
+
+        .input-panel label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: #2c2418;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 350px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 2px solid #ddd0bc;
+            border-radius: 8px;
+            resize: vertical;
+            background: #fffef8;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #8b7355;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #6b4c3b;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #4a3629;
+        }
+
+        .btn-clear {
+            background: #9e8b74;
+        }
+
+        .btn-clear:hover {
+            background: #7d6b57;
+        }
+
+        .output-panel {
+            padding: 24px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #ddd0bc;
+        }
+
+        .output-header h2 {
+            font-size: 20px;
+            color: #2c2418;
+            font-weight: normal;
+        }
+
+        .copy-btn {
+            background: #8b7355;
+            padding: 6px 16px;
+            font-size: 14px;
+        }
+
+        .result {
+            background: #fffef8;
+            border: 1px solid #e6ddd0;
+            border-radius: 8px;
+            padding: 32px 40px;
+            font-family: 'Times New Roman', Georgia, serif;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #1e1912;
+        }
+
+        /* КРАСНАЯ СТРОКА — у каждого абзаца */
+        .result p {
+            text-indent: 1.5em;
+            margin: 0 0 0.6em 0;
+        }
+
+        .result p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info {
+            margin-top: 16px;
+            font-size: 13px;
+            color: #7a6a58;
+            background: #fef7e8;
+            padding: 10px 16px;
+            border-radius: 8px;
+        }
+        
+        .debug-hint {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #8b6b4d;
+            background: #f5efe5;
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="input-panel">
+        <label>📄 Вставьте текст из Word (каждый Enter = новый абзац)</label>
+        <textarea id="sourceText" placeholder="Вставьте сюда ваш текст..."></textarea>
+        <div class="buttons">
+            <button id="convertBtn">✨ Разбить по Enter → абзацы с красной строкой</button>
+            <button id="clearBtn" class="btn-clear">Очистить всё</button>
+        </div>
+        <div class="debug-hint" id="lineCountInfo"></div>
+    </div>
+
+    <div class="output-panel">
+        <div class="output-header">
+            <h2>📖 Результат (каждый Enter = &lt;p&gt;, красная строка)</h2>
+            <button id="copyBtn" class="copy-btn">📋 Скопировать HTML</button>
+        </div>
+        <div id="resultContainer" class="result">
+            <p style="text-indent:0; color:#aa9a86;">Здесь появится ваш текст...</p>
+        </div>
+        <div class="info">
+            ✅ <strong>Как работает сейчас:</strong> Каждый перевод строки (Enter) создаёт новый абзац &lt;p&gt;.<br>
+            ✅ Пустые строки игнорируются (не создают пустых абзацев).<br>
+            ✅ У всех абзацев автоматически красная строка (отступ первой строки 1.5em).<br>
+            ✅ Текст из примера (где Enter после "гул", после "времен!", после "ждать") — всё правильно разделится.
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const textarea = document.getElementById('sourceText');
+        const resultContainer = document.getElementById('resultContainer');
+        const convertBtn = document.getElementById('convertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const lineCountInfo = document.getElementById('lineCountInfo');
+
+        // Главная функция: КАЖДЫЙ ПЕРЕВОД СТРОКИ (Enter) = новый абзац
+        function convertEachLineToParagraph(rawText) {
+            if (!rawText || rawText.trim() === '') {
+                return [];
+            }
+            
+            // 1. Нормализуем переносы строк: \r\n (Windows) и \r (старый Mac) → \n
+            let normalized = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+            
+            // 2. Разбиваем по символу \n (каждый Enter)
+            let lines = normalized.split('\n');
+            
+            // 3. Обрабатываем каждую строку:
+            //    - убираем пробелы в начале и конце
+            //    - если строка пустая (было два Enter подряд) — пропускаем (не создаём пустой <p>)
+            //    - внутренние пробелы схлопываем
+            let paragraphs = [];
+            for (let line of lines) {
+                let cleanLine = line.trim();
+                if (cleanLine.length === 0) {
+                    continue; // пустые строки пропускаем
+                }
+                // схлопываем множественные пробелы внутри строки
+                cleanLine = cleanLine.replace(/\s+/g, ' ');
+                paragraphs.push(cleanLine);
+            }
+            
+            // 4. Если после очистки ничего не осталось
+            if (paragraphs.length === 0) {
+                return [];
+            }
+            
+            // 5. Оборачиваем каждый абзац в <p> с экранированием HTML
+            return paragraphs.map(p => `<p>${escapeHtml(p)}</p>`);
+        }
+        
+        // Защита от XSS
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+        
+        // Отображение результата
+        function renderResult(paragraphsArray) {
+            if (!paragraphsArray || paragraphsArray.length === 0) {
+                resultContainer.innerHTML = '<p style="text-indent:0; color:#b38f6e;">⚠️ Нет текста для отображения. Вставьте текст и нажмите "Разбить по Enter".</p>';
+                return;
+            }
+            resultContainer.innerHTML = paragraphsArray.join('\n');
+        }
+        
+        // Основное действие
+        function processAndDisplay() {
+            let raw = textarea.value;
+            if (!raw.trim()) {
+                resultContainer.innerHTML = '<p style="text-indent:0; color:#b38f6e;">⚠️ Поле ввода пустое. Вставьте текст из Word.</p>';
+                lineCountInfo.textContent = '';
+                return;
+            }
+            
+            // Показываем сколько строк и Enter найдено (для отладки)
+            const lines = raw.split(/\r?\n/);
+            const nonEmptyLines = lines.filter(l => l.trim().length > 0).length;
+            lineCountInfo.textContent = `📊 Найдено переводов строк: ${lines.length} (непустых строк: ${nonEmptyLines}) → будет ${nonEmptyLines} абзацев`;
+            
+            const paragraphTags = convertEachLineToParagraph(raw);
+            renderResult(paragraphTags);
+            
+            // Дополнительно: если абзацев получилось меньше, чем строк — предупредим
+            if (paragraphTags.length < nonEmptyLines) {
+                console.log('Некоторые строки были пустыми или содержали только пробелы');
+            }
+        }
+        
+        // Очистка
+        function clearAll() {
+            textarea.value = '';
+            resultContainer.innerHTML = '<p style="text-indent:0; color:#aa9a86;">Здесь появится ваш текст...</p>';
+            lineCountInfo.textContent = '';
+            textarea.focus();
+        }
+        
+        // Копирование HTML
+        async function copyResultHTML() {
+            const currentHTML = resultContainer.innerHTML;
+            if (!currentHTML || currentHTML.includes('Здесь появится ваш текст') && !textarea.value.trim()) {
+                alert('Нечего копировать. Сначала вставьте текст и нажмите "Разбить по Enter".');
+                return;
+            }
+            
+            try {
+                await navigator.clipboard.writeText(currentHTML);
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = '✅ Скопировано!';
+                setTimeout(() => {
+                    copyBtn.innerText = originalText;
+                }, 2000);
+            } catch (err) {
+                alert('Не удалось скопировать: ' + err);
+            }
+        }
+        
+        // Установка вашего примера (чтобы сразу проверить)
+        function setYourExample() {
+            textarea.value = `Наконец ветры стихли, земля успокоилась, подрагивая в такт отдаленному грохоту. От Льюса Тэрина Теламона не осталось и следа. Там, где он стоял, теперь, устремившись на мили в небо, возвышалась гора; пышущая жаром земных глубин лава еще выплескивалась из обломанной верхушки. Катаклизм сдвинул русло прежде прямой реки в сторону; теперь она большой дугой огибала гору, и в самой середине реки, разделяя ее на два рукава, возник длинный остров. Тень от горы почти достигала острова, ее мрачная полоса легла на равнину печатью зловещего пророчества. Какое-то время единственным звуком был глухой протестующий гул.
+Воздух над островом замерцал и сгустился. Появилась фигура человека. Мужчина в черном стоял и разглядывал огненную гору, поднявшуюся над равниной. Черты его лица исказились от ярости и презрения.
+— Ты не уйдешь так просто, Дракон. Меж нами еще не все кончено. И не кончится — до скончания времен!
+Затем он исчез, а гора и остров остались одни. Остались ждать.`;
+        }
+        
+        // Обработчики
+        convertBtn.addEventListener('click', processAndDisplay);
+        clearBtn.addEventListener('click', clearAll);
+        copyBtn.addEventListener('click', copyResultHTML);
+        
+        // Загружаем ваш пример
+        setYourExample();
+        // И сразу показываем результат
+        setTimeout(() => {
+            processAndDisplay();
+        }, 100);
+    })();
+</script>
+</body>
+</html>

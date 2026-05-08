@@ -1,0 +1,160 @@
+
+skelet_ischez.png
+size: 4081,2286
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+background
+  rotate: false
+  xy: 4, 1136
+  size: 2031, 1146
+  orig: 2031, 1317
+  offset: 0, 0
+  index: -1
+chest
+  rotate: false
+  xy: 4, 51
+  size: 825, 298
+  orig: 825, 298
+  offset: 0, 0
+  index: -1
+face
+  rotate: false
+  xy: 2039, 1323
+  size: 789, 959
+  orig: 791, 965
+  offset: 2, 0
+  index: -1
+h hand base
+  rotate: false
+  xy: 3644, 835
+  size: 342, 523
+  orig: 474, 587
+  offset: 70, 31
+  index: -1
+h hand midle
+  rotate: true
+  xy: 3547, 240
+  size: 241, 139
+  orig: 250, 139
+  offset: 7, 0
+  index: -1
+h hand pincky
+  rotate: true
+  xy: 3698, 501
+  size: 245, 114
+  orig: 246, 116
+  offset: 0, 1
+  index: -1
+h hand ukas
+  rotate: true
+  xy: 1833, 105
+  size: 244, 148
+  orig: 270, 171
+  offset: 26, 17
+  index: -1
+hair
+  rotate: true
+  xy: 833, 87
+  size: 262, 760
+  orig: 291, 760
+  offset: 1, 0
+  index: -1
+haze
+  rotate: false
+  xy: 4, 353
+  size: 2027, 779
+  orig: 2027, 818
+  offset: 0, 3
+  index: -1
+hood back
+  rotate: true
+  xy: 3684, 1362
+  size: 920, 393
+  orig: 920, 398
+  offset: 0, 1
+  index: -1
+l hand base
+  rotate: true
+  xy: 2039, 587
+  size: 732, 775
+  orig: 798, 1102
+  offset: 61, 218
+  index: -1
+l hand first
+  rotate: true
+  xy: 3547, 485
+  size: 261, 147
+  orig: 307, 171
+  offset: 40, 2
+  index: -1
+l hand midle
+  rotate: false
+  xy: 1597, 4
+  size: 304, 82
+  orig: 341, 118
+  offset: 37, 15
+  index: -1
+l hand thumb
+  rotate: true
+  xy: 3831, 732
+  size: 99, 156
+  orig: 107, 160
+  offset: 6, 4
+  index: -1
+l shoulder
+  rotate: false
+  xy: 2832, 750
+  size: 808, 775
+  orig: 1475, 1125
+  offset: 4, 0
+  index: -1
+mouth inside
+  rotate: false
+  xy: 1597, 90
+  size: 232, 259
+  orig: 232, 260
+  offset: 0, 1
+  index: -1
+n hand
+  rotate: false
+  xy: 2832, 1529
+  size: 848, 753
+  orig: 888, 770
+  offset: 4, 0
+  index: -1
+neck
+  rotate: false
+  xy: 2818, 27
+  size: 725, 719
+  orig: 725, 719
+  offset: 0, 0
+  index: -1
+r shoulder
+  rotate: false
+  xy: 2035, 8
+  size: 723, 575
+  orig: 723, 575
+  offset: 0, 0
+  index: -1
+teeth bottom
+  rotate: false
+  xy: 3644, 750
+  size: 183, 81
+  orig: 184, 82
+  offset: 1, 0
+  index: -1
+teeth top
+  rotate: true
+  xy: 3547, 46
+  size: 190, 131
+  orig: 190, 136
+  offset: 0, 1
+  index: -1
+toung
+  rotate: false
+  xy: 3816, 620
+  size: 171, 108
+  orig: 172, 110
+  offset: 1, 0
+  index: -1

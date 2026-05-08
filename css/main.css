@@ -1,3 +1,5 @@
+
+
 @font-face {
     font-family: "CormorantB";
     src:url('../assets/fonts/CormorantUnicase-Bold.ttf');
@@ -43,6 +45,23 @@
                                     #B7A386,
                                     #886E47,
                                     #C0AF96);
+
+    --text_size_S: 20px;
+    --text_size_M: 24px;
+    --text_size_L: 32px;
+
+    --line_size_S: 28px;
+    --line_size_M: 38px;
+    --line_size_L: 50px;
+
+    --head_size_S: 24px;
+    --head_size_M: 32px;
+    --head_size_L: 50px;
+
+        /* Текущие значения (меняются через JS) */
+    --current-text-size: var(--text_size_M);
+    --current-line-size: var(--line_size_M);
+    --current-head-size: var(--head_size_M);
 }
 
 
@@ -151,6 +170,11 @@ p {
     background-color: white;
 }
 
+.container_without{
+    max-width: 1160px;
+    margin: 0 auto;
+}
+
 
 .chapter{
     padding-top: 173px;
@@ -196,6 +220,19 @@ p {
     height: auto;
 }
 
+.end_chapter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -35px;
+}
+
+.end_chapter svg {
+    width: 100%;
+    max-width: 1160px; /* или любое другое значение */
+    height: auto;
+}
+
 .start_orn{
     display: flex;
     justify-content: center;
@@ -218,9 +255,13 @@ p {
     text-align: center;
 }
 
-.real{
-    font-size: 22px;
-    line-height: 38px;
+.chapter_number h1 {
+    font-size: var(--current-head-size);
+}
+
+.text p{
+    font-size: var(--current-text-size);
+    line-height: var(--current-line-size);
     text-align: justify;
     text-indent: 70px;
 }
@@ -238,3 +279,175 @@ p {
 .illust img{
     width: 100%;
 }
+
+.navig_btns{
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 120px;
+    padding-bottom: 40px;
+}
+
+.blue_btn{
+ transition: 0.2s;
+}
+
+.blue_btn:hover .blue_fill{
+    fill: var(--grey);
+}
+
+.blue_btn:active .blue_fill{
+    fill: var(--menu);
+}
+
+
+
+
+/* randAnimation.css *-0-----------------------------------------------------/
+
+/* Контейнер для кнопки и шкалы (общий) */
+.ui-container {
+    position: absolute;
+    bottom: 160px;
+    left: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1001;
+}
+
+/* Кнопка */
+.custom-action-btn {
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: transform 0.1s ease;
+}
+
+/* Маленький круг внутри кнопки - состояния */
+.custom-action-btn .inner-circle {
+    transition: fill 0.2s ease;
+}
+
+/* Hover - меняем цвет круга */
+.custom-action-btn:hover .inner-circle {
+    fill: var(--grey);
+}
+
+/* Active (нажатие) - меняем цвет круга */
+.custom-action-btn:active .inner-circle {
+    fill: var(--lightgrey);
+}
+
+/* Шкала */
+.scale-container {
+    width: 185px;
+    height: 37px;
+}
+
+/* Вращающиеся круги */
+.rotating-circle-fast {
+    transform-origin: 50% 50%;
+    animation: rotate-fast 4s linear infinite, pulse 2s ease-in-out infinite;
+}
+
+.rotating-circle-slow {
+    transform-origin: 50% 50%;
+    animation: rotate-slow 8s linear infinite, pulse 2.5s ease-in-out infinite;
+}
+
+
+/* Ключевые кадры */
+@keyframes rotate-fast {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate-slow {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes pulse-fast {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+@keyframes pulse-slow {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.06);
+    }
+}
+
+
+/* Состояния кружка в naymAnimation */
+
+/* Обычное состояние */
+.naym-handle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    background: var(--grey);
+    border: 2px solid var(--lipa);
+    border-radius: 50%;
+    cursor: grab;
+    z-index: 1002;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Hover - когда мышка над кружком */
+.naym-handle:hover {
+    background: var(--lightgrey);
+    transform: translateX(-50%) scale(1.05);
+}
+
+/* Active - когда зажали кружок (тянем) */
+.naym-handle:active {
+    cursor: grabbing;
+    transform: translateX(-50%) scale(0.98);
+    background: var(--ui);
+}
+
+/* Disabled - когда анимация проигрывается (неактивен) */
+.naym-handle.disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+    background: var(--ui);
+}
+
+/* Disabled + hover (чтобы не было эффектов) */
+.naym-handle.disabled:hover {
+    transform: translateX(-50%);
+    background: var(--ui);
+    cursor: not-allowed;
+}
+

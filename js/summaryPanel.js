@@ -134,33 +134,53 @@ export function initSummary(onClose) {
 }
 
 export function toggleSummary(data, markerId) {
-
-    console.log('toggleSummary called with data:', data); // Посмотрим что приходит
+    console.log('toggleSummary called with data:', data);
     
+    // Если окно открыто и кликнули по ТОМУ ЖЕ маркеру -> закрываем
     if (isOpen && currentMarkerId === markerId) {
         closeSummary();
         return;
     }
-
-    currentMarkerId = markerId;
-    currentEventPage = data.page || null;
-    console.log('currentEventPage set to:', currentEventPage); // Посмотрим что сохранилось
-    // ... остальной код
-
-    // Если это повторный клик по тому же маркеру и окно открыто -> закрываем
-    if (isOpen && currentMarkerId === markerId) {
-        closeSummary();
+    
+    // Если окно открыто, но кликнули по ДРУГОМУ маркеру
+    // Просто обновляем данные, не закрывая окно
+    if (isOpen && currentMarkerId !== markerId) {
+        // Обновляем данные нового маркера
+        currentMarkerId = markerId;
+        currentEventPage = data.page || null;
+        
+        // Обновляем содержимое окна
+        summaryEl.querySelector('.summary-title').textContent = data.title || '';
+        
+        const chaptersText = summaryEl.querySelector('.summary-chapters-text');
+        if (data.chapters) {
+            chaptersText.textContent = data.chapters;
+            chaptersText.parentElement.style.display = 'block';
+        } else {
+            chaptersText.parentElement.style.display = 'none';
+        }
+        
+        const textEl = summaryEl.querySelector('.summary-text');
+        if (data.text) {
+            textEl.innerHTML = data.text;
+        } else {
+            textEl.textContent = 'Нет описания';
+        }
+        
+        const contentEl = summaryEl.querySelector('.summary-content');
+        if (contentEl) {
+            contentEl.scrollTop = 0;
+        }
+        
         return;
     }
-
-    // Иначе обновляем данные и открываем
+    
+    // Если окно закрыто - открываем с новыми данными
     currentMarkerId = markerId;
     currentEventPage = data.page || null;
-
-    // Заголовок
+    
     summaryEl.querySelector('.summary-title').textContent = data.title || '';
     
-    // Подпись с главами
     const chaptersText = summaryEl.querySelector('.summary-chapters-text');
     if (data.chapters) {
         chaptersText.textContent = data.chapters;
@@ -169,7 +189,6 @@ export function toggleSummary(data, markerId) {
         chaptersText.parentElement.style.display = 'none';
     }
     
-    // Основной текст
     const textEl = summaryEl.querySelector('.summary-text');
     if (data.text) {
         textEl.innerHTML = data.text;
@@ -177,7 +196,6 @@ export function toggleSummary(data, markerId) {
         textEl.textContent = 'Нет описания';
     }
     
-    // Сброс скролла
     const contentEl = summaryEl.querySelector('.summary-content');
     if (contentEl) {
         contentEl.scrollTop = 0;

@@ -12,7 +12,10 @@ export function createApp(containerId) {
     width: width,
     height: height,
     backgroundAlpha: 0,
-    antialias: true
+    antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
+    resolution: 1,           // Не используй retina-разрешение
+    autoDensity: false,      // Отключи авто-плотность
+    powerPreference: "high-performance"  // Запрос высокой производительности
   });
   
   container.appendChild(app.view);
