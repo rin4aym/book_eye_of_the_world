@@ -385,8 +385,8 @@ body[data-page="map"] {
 .tips-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    align-content: center;
+    align-items: top;
+    align-content: top;
     padding-bottom: 16px;
 }
 
@@ -420,6 +420,47 @@ body[data-page="map"] {
     color: white;
     margin: 0;
 }
+
+/* Уведомление о восстановлении прокрутки */
+.tips.scroll-notification {
+    width: 280px;
+    background: var(--grey);
+    border: 1px solid rgba(199, 170, 127, 0.3);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: slideInRight 0.3s ease;
+}
+
+/* Анимация появления */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Стиль для ссылки "Вернуться к началу" */
+.go-to-top-link {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+    color: var(--lightgrey);
+}
+
+.go-to-top-link:hover {
+    color: white;
+}
+
+.go-to-top-link:active {
+    color: var(--lipa);
+}
+
 
 
 

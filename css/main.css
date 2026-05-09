@@ -160,6 +160,16 @@ p {
     transform: scale(0.95);
 }
 
+.btn.disappear {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.btn-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none; /* чтобы нельзя было кликнуть */
+}
+
 
 
 
@@ -257,6 +267,7 @@ p {
 
 .chapter_number h1 {
     font-size: var(--current-head-size);
+    color: var(--ui);
 }
 
 .text p{
@@ -293,7 +304,9 @@ p {
 
 .blue_btn{
  transition: 0.2s;
+ cursor: pointer;
 }
+
 
 .blue_btn:hover .blue_fill{
     fill: var(--grey);
@@ -301,6 +314,13 @@ p {
 
 .blue_btn:active .blue_fill{
     fill: var(--menu);
+}
+
+.blue_btn.disabled  .blue_fill{
+    fill: var(--grey);
+}
+.blue_btn.disabled  {
+    cursor: default;
 }
 
 
@@ -317,6 +337,17 @@ p {
     flex-direction: column;
     align-items: center;
     z-index: 1001;
+}
+
+.ui-container {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ui-container.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Кнопка */
