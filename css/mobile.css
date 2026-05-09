@@ -1,0 +1,64 @@
+/* ========== МОБИЛЬНАЯ ВЕРСИЯ (от 500px и ниже) ========== */
+
+@media (max-width: 500px) and (orientation: portrait) {
+    /* Переопределяем overlay */
+    .overlay {
+        right: auto;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        justify-content: end;
+        gap: 32px;
+    }
+    
+    /* Логотип - над кнопкой */
+    .logo {
+        margin-top: 0;
+        width: auto;
+        min-width: auto;
+        max-width: 100%;
+    }
+    
+    /* Кнопка - убираем отступ */
+    .start_button {
+        margin-bottom: 0;
+    }
+    
+    /* Скрываем десктопную кнопку */
+    .desktop-button {
+        display: none;
+    }
+    
+    /* Показываем мобильную кнопку */
+    .mobile-button {
+        display: block;
+    }
+    
+    /* Адаптируем размер мобильной кнопки под контейнер */
+    #goldButton{
+        max-width: 264px;
+        max-height: auto;
+        padding-bottom: 40px;
+    }
+
+        /* Наведение — затемняем шестиугольник */
+    #goldButton:active #hexagon-solid {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    #goldButton:active #hexagon-gradient {
+        opacity: none;
+        transition: opacity 0.2s ease;
+    }
+
+    #goldButton:active {
+        transform: scale(0.98);
+    }
+    /* При нажатии (active) — показываем градиентный шестиугольник */
+    
+    #goldButton:hover #hexagon-solid {
+        opacity: none;
+        transition: opacity 0.2s ease;
+    }
+}

@@ -1,9 +1,11 @@
+// spine.js
 let app;
 let currentSpine = null;
 let originalBounds = null;
 
 export function createApp(containerId) {
   const container = document.getElementById(containerId);
+  if (!container) return null;
   
   const width = container.clientWidth;
   const height = container.clientHeight;
@@ -12,10 +14,10 @@ export function createApp(containerId) {
     width: width,
     height: height,
     backgroundAlpha: 0,
-    antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
-    resolution: 1,           // Не используй retina-разрешение
-    autoDensity: false,      // Отключи авто-плотность
-    powerPreference: "high-performance"  // Запрос высокой производительности
+    antialias: false,
+    resolution: 1,
+    autoDensity: false,
+    powerPreference: "high-performance"
   });
   
   container.appendChild(app.view);
@@ -32,6 +34,8 @@ export function createApp(containerId) {
       applyAutoScale(currentSpine);
     }
   });
+  
+  return app;
 }
 
 export function loadSpine(path) {
@@ -48,7 +52,9 @@ export function loadSpine(path) {
 }
 
 export function addToStage(spine) {
-  app.stage.addChild(spine);
+  if (app && app.stage) {
+    app.stage.addChild(spine);
+  }
 }
 
 export function getApp() {
@@ -56,7 +62,8 @@ export function getApp() {
 }
 
 export function setupAutoScale(spine) {
-  // Получаем оригинальные границы
+  if (!spine) return;
+  
   const bounds = spine.getBounds();
   originalBounds = {
     width: bounds.width,
@@ -66,31 +73,36 @@ export function setupAutoScale(spine) {
   };
   
   console.log('Original bounds:', originalBounds);
-  
   applyAutoScale(spine);
 }
 
 export function applyAutoScale(spine) {
-  if (!spine || !originalBounds) return;
+  if (!spine || !originalBounds || !app) return;
   
   const screenWidth = app.screen.width;
   const screenHeight = app.screen.height;
   
-  // Рассчитываем масштаб для заполнения экрана
   const scaleX = screenWidth / originalBounds.width;
   const scaleY = screenHeight / originalBounds.height;
   const scale = Math.max(scaleX, scaleY);
   
   spine.scale.set(scale);
   
-  // Вычисляем центр анимации с учётом bounds
   const centerX = originalBounds.x + originalBounds.width / 2;
   const centerY = originalBounds.y + originalBounds.height / 2;
   
-  // Помещаем центр анимации в центр экрана
   spine.x = screenWidth / 2 - centerX * scale;
   spine.y = screenHeight / 2 - centerY * scale;
   
   console.log('Scale:', scale);
   console.log('Spine position:', spine.x, spine.y);
+}
+
+export function destroyApp() {
+  if (app) {
+    app.destroy(true, true);
+    app = null;
+    currentSpine = null;
+    originalBounds = null;
+  }
 }

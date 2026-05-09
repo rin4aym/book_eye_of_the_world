@@ -53,8 +53,8 @@
     cursor: pointer;
     display: block;
     flex-shrink: 0;    /* запрещаем сжатие во флексе */
-    width: 383px;       /* фиксированная ширина */
-    height: 96px;  
+    max-width: 383px;       /* фиксированная ширина */
+    max-height: 96px;  
     transition: transform 0.1s ease;
   }
 
