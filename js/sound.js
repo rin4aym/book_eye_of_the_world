@@ -1,85 +1,142 @@
 // sound.js
 
-let isSoundEnabled = true;
-let toggleElement = null;
-let textElement = null;
+let musicEnabled = true;
+let effectsEnabled = true;
+let musicToggle = null;
+let effectsToggle = null;
+let musicLabel = null;
+let effectsLabel = null;
 
-// Получаем элемент переключателя из DOM
 export function initSoundToggle() {
-    toggleElement = document.querySelector('.toggle');
-    if (!toggleElement) return null;
-    
-    // Находим элемент с текстом рядом
-    const toggleRow = toggleElement.closest('.toggle_row');
-    if (toggleRow) {
-        textElement = toggleRow.querySelector('p');
+    // Находим переключатель музыки
+    musicToggle = document.querySelector('.toggle[data-sound="music"]');
+    if (musicToggle) {
+        const toggleRow = musicToggle.closest('.toggle_row');
+        if (toggleRow) {
+            musicLabel = toggleRow.querySelector('.toggle-label');
+        }
+        
+        const savedMusic = localStorage.getItem('musicEnabled');
+        musicEnabled = savedMusic !== null ? savedMusic === 'true' : true;
+        
+        updateMusicToggleState();
+        updateMusicLabelColor();
+        
+        musicToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMusic();
+        });
     }
     
-    // Загружаем сохранённое состояние
-    const savedState = localStorage.getItem('soundEnabled');
-    if (savedState !== null) {
-        isSoundEnabled = savedState === 'true';
-    } else {
-        // По умолчанию звук включен
-        isSoundEnabled = true;
+    // Находим переключатель эффектов
+    effectsToggle = document.querySelector('.toggle[data-sound="effects"]');
+    if (effectsToggle) {
+        const toggleRow = effectsToggle.closest('.toggle_row');
+        if (toggleRow) {
+            effectsLabel = toggleRow.querySelector('.toggle-label');
+        }
+        
+        const savedEffects = localStorage.getItem('effectsEnabled');
+        effectsEnabled = savedEffects !== null ? savedEffects === 'true' : true;
+        
+        updateEffectsToggleState();
+        updateEffectsLabelColor();
+        
+        effectsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleEffects();
+        });
     }
-    
-    updateToggleState();
-    updateTextState();
-    
-    // Добавляем обработчик клика
-    toggleElement.addEventListener('click', () => {
-        toggleSound();
-    });
-    
-    return toggleElement;
 }
 
-// Переключение звука
-export function toggleSound() {
-    isSoundEnabled = !isSoundEnabled;
-    updateToggleState();
-    updateTextState();
-    localStorage.setItem('soundEnabled', isSoundEnabled);
+// Переключение музыки
+export function toggleMusic() {
+    musicEnabled = !musicEnabled;
+    updateMusicToggleState();
+    updateMusicLabelColor();
+    localStorage.setItem('musicEnabled', musicEnabled);
     
-    // Событие для других модулей
-    const event = new CustomEvent('soundToggle', { detail: { enabled: isSoundEnabled } });
+    const event = new CustomEvent('musicToggle', { detail: { enabled: musicEnabled } });
     window.dispatchEvent(event);
 }
 
-// Обновление визуального состояния переключателя
-function updateToggleState() {
-    if (!toggleElement) return;
+// Переключение эффектов
+export function toggleEffects() {
+    effectsEnabled = !effectsEnabled;
+    updateEffectsToggleState();
+    updateEffectsLabelColor();
+    localStorage.setItem('effectsEnabled', effectsEnabled);
     
-    if (isSoundEnabled) {
-        toggleElement.classList.add('active');
+    const event = new CustomEvent('effectsToggle', { detail: { enabled: effectsEnabled } });
+    window.dispatchEvent(event);
+}
+
+// Обновление визуального состояния переключателя музыки
+function updateMusicToggleState() {
+    if (!musicToggle) return;
+    
+    if (musicEnabled) {
+        musicToggle.classList.add('active');
     } else {
-        toggleElement.classList.remove('active');
+        musicToggle.classList.remove('active');
     }
 }
 
-// Обновление текста
-function updateTextState() {
-    if (!textElement) return;
+// Обновление визуального состояния переключателя эффектов
+function updateEffectsToggleState() {
+    if (!effectsToggle) return;
     
-    if (isSoundEnabled) {
-        textElement.textContent = 'Включен';
+    if (effectsEnabled) {
+        effectsToggle.classList.add('active');
     } else {
-        textElement.textContent = 'Выключен';
+        effectsToggle.classList.remove('active');
     }
 }
 
-// Получить текущее состояние звука
-export function isSoundEnabledState() {
-    return isSoundEnabled;
+// Обновление цвета подписи музыки
+function updateMusicLabelColor() {
+    if (!musicLabel) return;
+    
+    if (musicEnabled) {
+        musicLabel.style.color = '#FFFFFF';
+        musicLabel.style.transition = 'color 0.3s ease';
+    } else {
+        musicLabel.style.color = '#585C62';
+    }
 }
 
-// Включить звук
-export function enableSound() {
-    if (!isSoundEnabled) toggleSound();
+// Обновление цвета подписи эффектов
+function updateEffectsLabelColor() {
+    if (!effectsLabel) return;
+    
+    if (effectsEnabled) {
+        effectsLabel.style.color = '#FFFFFF';
+        effectsLabel.style.transition = 'color 0.3s ease';
+    } else {
+        effectsLabel.style.color = '#585C62';
+    }
 }
 
-// Выключить звук
-export function disableSound() {
-    if (isSoundEnabled) toggleSound();
+// Получить состояние музыки
+export function isMusicEnabled() {
+    return musicEnabled;
+}
+
+// Получить состояние эффектов
+export function isEffectsEnabled() {
+    return effectsEnabled;
+}
+
+// Включить/выключить музыку
+export function setMusic(enabled) {
+    if (musicEnabled !== enabled) {
+        toggleMusic();
+    }
+}
+
+// Включить/выключить эффекты
+export function setEffects(enabled) {
+    if (effectsEnabled !== enabled) {
+        toggleEffects();
+    }
 }

@@ -333,6 +333,7 @@ export function initRandAnimation() {
                 });
                 
                 spineCharacter.state.setAnimation(0, animations[0].idle, true);
+                uiContainer.classList.add('visible');
             }, 100);
         });
     

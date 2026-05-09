@@ -243,7 +243,16 @@ padding-top: 40px;
 .toggle:active .toggle_btn {
     background: var(--menu);
 }
+/* Стили для подписей переключателей */
+.toggle-label {
+    transition: color 0.3s ease;
+}
 
+/* Активное состояние подписи (когда переключатель включён) */
+.toggle.active ~ .toggle-label,
+.toggle_row:has(.toggle.active) .toggle-label {
+    color: white;
+}
 
 
 .download_block{

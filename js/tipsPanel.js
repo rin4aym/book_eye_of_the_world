@@ -1,13 +1,16 @@
+// tipsPanel.js (дополненный)
+
 let activeTips = [];
 let onTipOpenCallback = null;
 let onTipCloseCallback = null;
+let scrollNotification = null;
+let notificationTimeout = null;
 
 export function initTips(onOpen, onClose) {
     const tipsContainer = document.createElement('div');
     tipsContainer.className = 'tips-container';
     document.body.appendChild(tipsContainer);
     
-    // Сохраняем колбэки для уведомления маркеров
     onTipOpenCallback = onOpen;
     onTipCloseCallback = onClose;
     
@@ -18,7 +21,6 @@ export function initTips(onOpen, onClose) {
 export function showTips(data, markerId, markerX, markerY) {
     console.log('showTips called:', { markerId, markerX, markerY, data });
     
-    // Проверяем, открыта ли уже подсказка для этого маркера
     const existingTip = activeTips.find(tip => tip.markerId === markerId);
     
     if (existingTip) {
@@ -56,16 +58,13 @@ export function showTips(data, markerId, markerX, markerY) {
         tipEl.style.opacity = '1';
     }, 10);
     
-    // Закрытие по клику на крестик
     const closeBtn = tipEl.querySelector('.tips-close');
     closeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         closeTips(markerId);
     });
     
-    // 🟢 НОВОЕ: закрытие по клику на всю подсказку
     tipEl.addEventListener('click', (e) => {
-        // Проверяем, что клик не по крестику (чтобы не закрыть дважды)
         if (!e.target.closest('.tips-close')) {
             closeTips(markerId);
         }
@@ -76,12 +75,107 @@ export function showTips(data, markerId, markerX, markerY) {
         markerId: markerId
     });
     
-    // Уведомляем об открытии подсказки
     if (onTipOpenCallback) {
         onTipOpenCallback(markerId);
     }
     
     console.log('Tips added, total active:', activeTips.length);
+}
+
+export function showScrollRestoreNotification(savedPosition) {
+    if (scrollNotification) {
+        scrollNotification.remove();
+        if (notificationTimeout) clearTimeout(notificationTimeout);
+    }
+    
+    const container = document.querySelector('.tips-container');
+    if (!container) return;
+    
+    scrollNotification = document.createElement('div');
+    scrollNotification.className = 'tips scroll-notification';
+    scrollNotification.setAttribute('data-notification', 'scroll');
+    
+    scrollNotification.innerHTML = `
+        <div class="tips-header">
+            <h4 class="tips-title">Вы остановились на&nbsp;этом месте</h4>
+            <div class="tips-close">
+                <svg class="close tip scroll-close" width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4L4 12M4 4L12 12" stroke="#585C62" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="tips-content">
+            <p class="tips-text go-to-top-link">Вернуться к началу</p>
+        </div>
+    `;
+    
+    container.appendChild(scrollNotification);
+    
+    setTimeout(() => {
+        positionNotificationInCorner(scrollNotification);
+        scrollNotification.style.opacity = '1';
+    }, 10);
+    
+    const closeBtn = scrollNotification.querySelector('.scroll-close');
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeScrollNotification();
+    });
+    
+    const goToTopLink = scrollNotification.querySelector('.go-to-top-link');
+    goToTopLink.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        closeScrollNotification();
+    });
+    
+    scrollNotification.addEventListener('click', (e) => {
+        if (!e.target.closest('.tips-close') && !e.target.closest('.go-to-top-link')) {
+            closeScrollNotification();
+        }
+    });
+    
+    notificationTimeout = setTimeout(() => {
+        closeScrollNotification();
+    }, 8000);
+}
+
+function positionNotificationInCorner(notification) {
+    if (!notification) return;
+    
+    const notificationWidth = notification.offsetWidth;
+    const notificationHeight = notification.offsetHeight;
+    
+    let right = 40;
+    let bottom = 40;
+    
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    if (right + notificationWidth > viewportWidth - 20) {
+        right = 40;
+    }
+    
+    if (bottom + notificationHeight > viewportHeight - 20) {
+        bottom = 40;
+    }
+    
+    notification.style.position = 'fixed';
+    notification.style.right = right + 'px';
+    notification.style.bottom = bottom + 'px';
+    notification.style.left = 'auto';
+    notification.style.top = 'auto';
+}
+
+export function closeScrollNotification() {
+    if (scrollNotification) {
+        scrollNotification.remove();
+        scrollNotification = null;
+    }
+    if (notificationTimeout) {
+        clearTimeout(notificationTimeout);
+        notificationTimeout = null;
+    }
 }
 
 function escapeHtml(str) {
@@ -131,7 +225,6 @@ export function closeTips(markerId) {
         tip.el.remove();
         activeTips.splice(tipIndex, 1);
         
-        // Уведомляем о закрытии подсказки
         if (onTipCloseCallback) {
             onTipCloseCallback(markerId);
         }
@@ -147,7 +240,6 @@ export function closeAllTips() {
     });
     activeTips = [];
     
-    // Уведомляем о закрытии всех подсказок
     markerIds.forEach(markerId => {
         if (onTipCloseCallback) {
             onTipCloseCallback(markerId);
