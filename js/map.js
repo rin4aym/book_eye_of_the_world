@@ -2,6 +2,7 @@ import { createLightFx } from './lightFx.js';
 import { createMapMarkers } from './mapMarkers.js';
 import { initWindows } from './windows.js';
 import { initPathLines } from './pathLines.js';
+import { initWelcomePopup } from './welcome.js';
 
 export function initMap() {
     const container = document.getElementById('map');
@@ -328,4 +329,6 @@ export function initMap() {
         
         return Math.max(scaleX, scaleY);
     }
+
+    initWelcomePopup();
 }

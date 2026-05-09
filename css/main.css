@@ -140,7 +140,6 @@ p {
 }
    
 
-
 /* Градиентная обводка */
 .btn {
     border-image: var(--darkgold);
@@ -148,11 +147,11 @@ p {
 }
 
 .btn:hover {
-    background: var(--grey);
+    background: var(--menu);
 }
 
 .btn:active {
-    background: var(--lightgrey);
+    background: var(--grey);
 }
 
 
@@ -169,6 +168,7 @@ p {
     visibility: hidden !important;
     pointer-events: none; /* чтобы нельзя было кликнуть */
 }
+
 
 
 

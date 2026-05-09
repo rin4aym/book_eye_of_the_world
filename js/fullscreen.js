@@ -1,4 +1,3 @@
-// fullscreen.js
 
 let fullscreenToggle = null;
 let fullscreenLabel = null;
