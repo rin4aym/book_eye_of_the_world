@@ -9,22 +9,28 @@ export function createApp(containerId) {
   
   const width = container.clientWidth;
   const height = container.clientHeight;
+   // Добавить настройки для ретина-экранов
+   const pixelRatio = window.devicePixelRatio || 1;
   
-  app = new PIXI.Application({
+   app = new PIXI.Application({
     width: width,
     height: height,
+
     backgroundAlpha: 0,
-    antialias: false,
-    resolution: 1,
-    autoDensity: false,
-    powerPreference: "high-performance"
-  });
+
+    antialias: true,
+
+    resolution: window.devicePixelRatio || 1,
+
+    autoDensity: true,
+
+    powerPreference: "high-performance",
+});
   
   container.appendChild(app.view);
   
   const canvas = app.view;
-  canvas.style.width = '100%';
-  canvas.style.height = '100%';
+  canvas.style.display = 'block';
   
   window.addEventListener('resize', () => {
     if (currentSpine && originalBounds) {

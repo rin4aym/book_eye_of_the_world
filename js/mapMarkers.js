@@ -1,5 +1,7 @@
+// mapMarkers.js
 import { initSummary, toggleSummary, isSummaryOpen, getCurrentMarkerId } from './summaryPanel.js';
 import { initTips, showTips, updateTipsPositions, isTipOpen, closeTips } from './tipsPanel.js';
+import { isMobile, transformCoordinates } from './mapConfig.js';
 
 let summaryPanel = null;
 
@@ -35,6 +37,7 @@ export function createMapMarkers(camera) {
     
     let currentMarkersPositions = [];
 
+    // Оригинальные координаты (для десктопной карты)
     const markersConfig = [
         { x: 1667, y: 2488, type: 'type1', number: 1, label: 'Двуречье', chapters: 'Глава 7', eventPage: 'chapter_1.html',
         description: 'Наше дело не так однозначно, как может показаться: граница обучения кадров является качественно новой ступенью направлений прогрессивного развития. Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: базовый вектор развития представляет собой интересный эксперимент проверки новых предложений. представляет собой интересный эксперимент проверки новых предложений. Время от времени дворец подрагивал, словно сама земля содрогалась от воспоминаний и тяжко вздыхала, не желая поверить в случившееся'},
@@ -84,7 +87,17 @@ export function createMapMarkers(camera) {
     });
 
     markersConfig.forEach(cfg => {
-        const marker = createMarker(cfg, camera);
+        // Трансформируем координаты для мобильной версии
+        const transformedCoords = transformCoordinates(cfg.x, cfg.y);
+        
+        // Создаём копию конфига с трансформированными координатами
+        const transformedCfg = {
+            ...cfg,
+            x: transformedCoords.x,
+            y: transformedCoords.y
+        };
+        
+        const marker = createMarker(transformedCfg, camera);
         // Добавляем атрибут для идентификации маркера
         marker.el.setAttribute('data-marker-id', cfg.id || String(cfg.number));
         overlay.appendChild(marker.el);
@@ -95,6 +108,7 @@ export function createMapMarkers(camera) {
         const newPositions = [];
         
         for (const m of markers) {
+            // Используем трансформированные координаты из cfg
             const screen = worldToScreen(m.cfg.x, m.cfg.y, camera);
             m.el.style.left = screen.x + 'px';
             m.el.style.top = screen.y + 'px';

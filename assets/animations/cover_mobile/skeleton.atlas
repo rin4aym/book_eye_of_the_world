@@ -1,480 +1,461 @@
 
 skeleton.png
-size: 4090,2795
+size: 4081,2914
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Puple L
+  rotate: false
+  xy: 4061, 2893
+  size: 16, 17
+  orig: 81, 19
+  offset: 63, 1
+  index: -1
+after mor
   rotate: true
-  xy: 30, 2769
-  size: 22, 23
-  orig: 116, 27
-  offset: 91, 2
+  xy: 1437, 696
+  size: 1022, 876
+  orig: 1022, 876
+  offset: 0, 0
   index: -1
 arm L
-  rotate: true
-  xy: 422, 1721
-  size: 409, 880
-  orig: 412, 880
+  rotate: false
+  xy: 3037, 465
+  size: 287, 616
+  orig: 288, 616
   offset: 0, 0
   index: -1
 arm R
-  rotate: true
-  xy: 2308, 1511
-  size: 498, 543
-  orig: 498, 547
-  offset: 0, 4
+  rotate: false
+  xy: 1747, 311
+  size: 349, 381
+  orig: 349, 383
+  offset: 0, 2
   index: -1
 arm rand
   rotate: true
-  xy: 1261, 2134
-  size: 316, 583
-  orig: 316, 624
-  offset: 0, 41
+  xy: 1233, 7
+  size: 221, 408
+  orig: 221, 437
+  offset: 0, 29
   index: -1
 back sleeve R
-  rotate: true
-  xy: 1311, 2474
-  size: 217, 331
-  orig: 229, 334
-  offset: 0, 2
+  rotate: false
+  xy: 2001, 75
+  size: 152, 232
+  orig: 160, 234
+  offset: 0, 1
+  index: -1
+background
+  rotate: false
+  xy: 4, 1722
+  size: 2108, 1188
+  orig: 2108, 1945
+  offset: 0, 0
   index: -1
 befre mat
-  rotate: true
-  xy: 737, 863
-  size: 769, 1267
-  orig: 769, 1267
+  rotate: false
+  xy: 3519, 2023
+  size: 538, 887
+  orig: 538, 887
   offset: 0, 0
   index: -1
 bez R
   rotate: true
-  xy: 1015, 2727
-  size: 64, 90
-  orig: 66, 91
-  offset: 0, 1
+  xy: 4, 8
+  size: 45, 64
+  orig: 46, 64
+  offset: 0, 0
   index: -1
 body rand
-  rotate: true
-  xy: 2855, 1364
-  size: 542, 895
-  orig: 549, 1158
-  offset: 5, 263
+  rotate: false
+  xy: 3328, 446
+  size: 380, 627
+  orig: 384, 811
+  offset: 3, 184
   index: -1
 brigh_light
-  rotate: true
-  xy: 4, 4
-  size: 855, 1345
-  orig: 855, 1345
+  rotate: false
+  xy: 3329, 1077
+  size: 599, 942
+  orig: 599, 942
   offset: 0, 0
   index: -1
 chain
+  rotate: true
+  xy: 3207, 78
+  size: 132, 70
+  orig: 134, 71
+  offset: 1, 0
+  index: -1
+dark
   rotate: false
-  xy: 1864, 2691
-  size: 188, 100
-  orig: 191, 102
-  offset: 2, 0
+  xy: 4, 797
+  size: 1429, 921
+  orig: 1429, 921
+  offset: 0, 0
   index: -1
 eyelid L
   rotate: false
-  xy: 123, 2761
-  size: 52, 30
-  orig: 59, 45
-  offset: 5, 6
+  xy: 2640, 58
+  size: 37, 22
+  orig: 41, 32
+  offset: 3, 4
   index: -1
 eyelid R
-  rotate: false
-  xy: 338, 2754
-  size: 62, 37
-  orig: 69, 49
-  offset: 3, 9
+  rotate: true
+  xy: 3007, 492
+  size: 43, 26
+  orig: 48, 34
+  offset: 2, 6
   index: -1
 face
   rotate: true
-  xy: 804, 2161
-  size: 352, 453
-  orig: 359, 457
-  offset: 3, 3
+  xy: 3007, 214
+  size: 247, 317
+  orig: 251, 320
+  offset: 2, 2
+  index: -1
+fill
+  rotate: false
+  xy: 2116, 2102
+  size: 1399, 808
+  orig: 1399, 808
+  offset: 0, 0
   index: -1
 hair back L
-  rotate: true
-  xy: 1979, 2439
-  size: 226, 519
-  orig: 229, 523
-  offset: 3, 0
+  rotate: false
+  xy: 2100, 328
+  size: 158, 364
+  orig: 160, 366
+  offset: 2, 0
   index: -1
 hair back R
-  rotate: true
-  xy: 876, 2517
-  size: 191, 431
-  orig: 191, 431
+  rotate: false
+  xy: 3932, 1717
+  size: 134, 302
+  orig: 134, 302
   offset: 0, 0
   index: -1
 hair back back L
-  rotate: true
-  xy: 443, 2541
-  size: 185, 429
-  orig: 227, 523
-  offset: 42, 94
+  rotate: false
+  xy: 3932, 1413
+  size: 130, 300
+  orig: 159, 366
+  offset: 29, 66
   index: -1
 hair front
   rotate: false
-  xy: 4, 2243
-  size: 435, 311
-  orig: 435, 312
+  xy: 3712, 435
+  size: 304, 218
+  orig: 305, 218
   offset: 0, 0
   index: -1
 hand R
   rotate: false
-  xy: 2569, 2652
-  size: 181, 139
-  orig: 405, 261
-  offset: 1, 7
+  xy: 1233, 696
+  size: 127, 97
+  orig: 284, 183
+  offset: 0, 5
   index: -1
 long hair
-  rotate: true
-  xy: 2754, 2646
-  size: 145, 324
-  orig: 146, 328
-  offset: 0, 3
+  rotate: false
+  xy: 3965, 753
+  size: 102, 227
+  orig: 102, 230
+  offset: 0, 2
   index: -1
 mat body
-  rotate: true
-  xy: 1306, 1636
-  size: 442, 998
-  orig: 496, 1018
-  offset: 54, 0
+  rotate: false
+  xy: 919, 94
+  size: 310, 699
+  orig: 347, 713
+  offset: 37, 0
   index: -1
 mat face
-  rotate: true
-  xy: 3692, 2616
-  size: 175, 219
-  orig: 200, 231
-  offset: 22, 2
+  rotate: false
+  xy: 2875, 94
+  size: 123, 153
+  orig: 140, 162
+  offset: 15, 2
   index: -1
 mat fingers
-  rotate: true
-  xy: 1269, 2712
-  size: 79, 88
-  orig: 102, 132
-  offset: 3, 2
+  rotate: false
+  xy: 3965, 687
+  size: 56, 62
+  orig: 71, 92
+  offset: 2, 1
   index: -1
 mat hair back
-  rotate: true
-  xy: 1458, 2700
-  size: 91, 171
-  orig: 95, 171
-  offset: 2, 0
+  rotate: false
+  xy: 3591, 71
+  size: 65, 120
+  orig: 67, 120
+  offset: 1, 0
   index: -1
 mat palm
-  rotate: true
-  xy: 1109, 2719
-  size: 72, 156
-  orig: 99, 163
-  offset: 6, 1
+  rotate: false
+  xy: 2262, 583
+  size: 50, 109
+  orig: 69, 114
+  offset: 4, 1
   index: -1
 mat pants
-  rotate: true
-  xy: 2355, 2013
-  size: 355, 594
-  orig: 384, 594
-  offset: 29, 0
+  rotate: false
+  xy: 3712, 657
+  size: 249, 416
+  orig: 269, 416
+  offset: 20, 0
   index: -1
 mat sleeve
-  rotate: false
-  xy: 749, 2736
-  size: 77, 55
-  orig: 82, 60
-  offset: 5, 0
+  rotate: true
+  xy: 3978, 378
+  size: 53, 38
+  orig: 57, 42
+  offset: 4, 0
   index: -1
 met arm knife
   rotate: false
-  xy: 1848, 2082
-  size: 503, 353
-  orig: 526, 356
-  offset: 3, 3
+  xy: 3328, 195
+  size: 352, 247
+  orig: 368, 249
+  offset: 2, 2
   index: -1
 met chelca
   rotate: false
-  xy: 1361, 2710
-  size: 93, 81
-  orig: 106, 91
-  offset: 13, 7
+  xy: 1364, 736
+  size: 65, 57
+  orig: 74, 64
+  offset: 9, 5
   index: -1
 met elbo
   rotate: false
-  xy: 242, 2558
-  size: 197, 192
-  orig: 197, 200
-  offset: 0, 3
+  xy: 3449, 57
+  size: 138, 134
+  orig: 138, 140
+  offset: 0, 2
   index: -1
 met eyes
-  rotate: false
-  xy: 179, 2761
-  size: 77, 30
-  orig: 77, 30
+  rotate: true
+  xy: 4038, 1355
+  size: 54, 21
+  orig: 54, 21
   offset: 0, 0
   index: -1
 midle R
   rotate: false
-  xy: 830, 2730
-  size: 78, 61
-  orig: 81, 69
-  offset: 0, 7
+  xy: 3207, 31
+  size: 55, 43
+  orig: 57, 48
+  offset: 0, 5
   index: -1
 neck
   rotate: false
-  xy: 3564, 2319
-  size: 325, 293
-  orig: 325, 506
+  xy: 2408, 56
+  size: 228, 205
+  orig: 228, 354
   offset: 0, 0
   index: -1
 palm L
   rotate: false
-  xy: 1646, 2454
-  size: 329, 233
-  orig: 333, 263
-  offset: 4, 30
+  xy: 2640, 84
+  size: 231, 163
+  orig: 233, 184
+  offset: 2, 21
   index: -1
 palm R
   rotate: false
-  xy: 2792, 2372
-  size: 352, 270
-  orig: 356, 273
-  offset: 2, 2
+  xy: 2157, 72
+  size: 247, 189
+  orig: 249, 191
+  offset: 1, 1
   index: -1
 perin neck
   rotate: false
-  xy: 4, 2570
-  size: 234, 187
-  orig: 234, 189
-  offset: 0, 1
+  xy: 3281, 60
+  size: 164, 131
+  orig: 164, 132
+  offset: 0, 0
   index: -1
 perrin arm L
   rotate: true
-  xy: 4, 1833
-  size: 406, 414
-  orig: 456, 414
+  xy: 3684, 147
+  size: 284, 290
+  orig: 319, 290
   offset: 1, 0
   index: -1
 perrin arm r
   rotate: false
-  xy: 4, 1060
-  size: 729, 657
-  orig: 729, 659
-  offset: 0, 2
+  xy: 1233, 232
+  size: 510, 460
+  orig: 510, 461
+  offset: 0, 1
   index: -1
 perrin body
   rotate: false
-  xy: 2008, 586
-  size: 1023, 774
-  orig: 1448, 1127
+  xy: 2317, 539
+  size: 716, 542
+  orig: 1014, 789
   offset: 0, 0
   index: -1
 perrin bot
-  rotate: false
-  xy: 3148, 2345
-  size: 412, 282
-  orig: 412, 282
+  rotate: true
+  xy: 2116, 1810
+  size: 288, 197
+  orig: 288, 197
   offset: 0, 0
   index: -1
 perrin eye
-  rotate: false
-  xy: 260, 2758
-  size: 35, 33
-  orig: 35, 33
+  rotate: true
+  xy: 3492, 2073
+  size: 25, 23
+  orig: 25, 23
   offset: 0, 0
   index: -1
 perrin face
   rotate: false
-  xy: 2502, 2383
-  size: 286, 259
-  orig: 288, 347
-  offset: 2, 7
+  xy: 3002, 29
+  size: 201, 181
+  orig: 202, 243
+  offset: 1, 5
   index: -1
 perrin hair
   rotate: false
-  xy: 443, 2225
-  size: 357, 312
-  orig: 357, 322
+  xy: 1747, 88
+  size: 250, 219
+  orig: 250, 225
   offset: 0, 0
   index: -1
 perrin vorot
   rotate: true
-  xy: 1633, 2695
-  size: 96, 227
-  orig: 96, 227
+  xy: 3329, 2031
+  size: 67, 159
+  orig: 67, 159
   offset: 0, 0
   index: -1
 pinky R
   rotate: true
-  xy: 912, 2729
-  size: 62, 99
-  orig: 65, 102
-  offset: 2, 2
+  xy: 1645, 4
+  size: 44, 70
+  orig: 46, 71
+  offset: 1, 1
   index: -1
 podol
   rotate: true
-  xy: 2953, 1956
-  size: 385, 558
-  orig: 385, 558
+  xy: 2262, 265
+  size: 270, 391
+  orig: 270, 391
   offset: 0, 0
   index: -1
 prad 1
-  rotate: true
-  xy: 2314, 2669
-  size: 122, 251
-  orig: 122, 252
+  rotate: false
+  xy: 1645, 52
+  size: 85, 176
+  orig: 85, 176
   offset: 0, 0
   index: -1
 puple R
   rotate: false
-  xy: 4, 2771
-  size: 22, 20
-  orig: 121, 32
-  offset: 3, 3
+  xy: 2298, 1792
+  size: 15, 14
+  orig: 85, 22
+  offset: 2, 2
   index: -1
 rand blue
-  rotate: true
-  xy: 3035, 59
-  size: 1301, 1051
-  orig: 1301, 1051
+  rotate: false
+  xy: 4, 57
+  size: 911, 736
+  orig: 911, 736
   offset: 0, 0
   index: -1
 rand face
   rotate: true
-  xy: 3515, 1910
-  size: 405, 495
-  orig: 421, 503
-  offset: 9, 8
+  xy: 2657, 251
+  size: 284, 346
+  orig: 295, 352
+  offset: 6, 6
   index: -1
 rand lefteyelid
   rotate: false
-  xy: 584, 2748
-  size: 81, 43
-  orig: 89, 62
-  offset: 5, 13
+  xy: 919, 60
+  size: 56, 30
+  orig: 62, 43
+  offset: 4, 9
   index: -1
 rand puple L
   rotate: false
-  xy: 57, 2767
-  size: 25, 24
-  orig: 32, 29
-  offset: 4, 3
+  xy: 3660, 174
+  size: 18, 17
+  orig: 22, 20
+  offset: 2, 2
   index: -1
 rand puple r
   rotate: false
-  xy: 86, 2764
-  size: 33, 27
-  orig: 38, 33
-  offset: 3, 3
+  xy: 3492, 2050
+  size: 23, 19
+  orig: 27, 23
+  offset: 2, 2
   index: -1
 rand right eyelid
   rotate: true
-  xy: 299, 2758
-  size: 33, 35
-  orig: 40, 42
-  offset: 4, 4
+  xy: 3007, 465
+  size: 23, 24
+  orig: 28, 29
+  offset: 3, 3
   index: -1
 rand white L
   rotate: false
-  xy: 669, 2740
-  size: 76, 51
-  orig: 76, 51
+  xy: 1364, 696
+  size: 53, 36
+  orig: 53, 36
   offset: 0, 0
   index: -1
 rand white R
-  rotate: true
-  xy: 538, 2750
-  size: 41, 42
-  orig: 41, 42
+  rotate: false
+  xy: 3932, 1139
+  size: 29, 29
+  orig: 29, 29
   offset: 0, 0
   index: -1
 scarf
   rotate: true
-  xy: 2056, 2680
-  size: 111, 254
-  orig: 114, 256
-  offset: 1, 0
+  xy: 2116, 1727
+  size: 79, 178
+  orig: 80, 179
+  offset: 0, 0
   index: -1
 sleev back L
-  rotate: true
-  xy: 3424, 2631
-  size: 160, 264
-  orig: 180, 272
-  offset: 20, 8
+  rotate: false
+  xy: 3965, 984
+  size: 112, 184
+  orig: 126, 190
+  offset: 14, 6
   index: -1
 whire R
   rotate: false
-  xy: 404, 2754
-  size: 61, 37
-  orig: 62, 39
+  xy: 3965, 657
+  size: 43, 26
+  orig: 43, 27
   offset: 0, 1
   index: -1
 white R
   rotate: false
-  xy: 469, 2751
-  size: 65, 40
-  orig: 65, 42
-  offset: 0, 2
+  xy: 2262, 551
+  size: 46, 28
+  orig: 46, 29
+  offset: 0, 1
   index: -1
 wing R
-  rotate: false
-  xy: 3082, 2646
-  size: 338, 145
-  orig: 341, 145
-  offset: 3, 0
-  index: -1
-
-skeleton2.png
-size: 3499,2704
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
-after mor
-  rotate: false
-  xy: 2007, 1448
-  size: 1460, 1252
-  orig: 1460, 1252
-  offset: 0, 0
-  index: -1
-dark
-  rotate: false
-  xy: 4, 129
-  size: 2041, 1315
-  orig: 2041, 1315
-  offset: 0, 0
-  index: -1
-fill
-  rotate: false
-  xy: 4, 1546
-  size: 1999, 1154
-  orig: 1999, 1154
-  offset: 0, 0
+  rotate: true
+  xy: 3932, 1172
+  size: 237, 102
+  orig: 239, 102
+  offset: 2, 0
   index: -1
 Слой 487
-  rotate: true
-  xy: 2049, 4
-  size: 1440, 1446
-  orig: 1673, 1680
-  offset: 233, 0
-  index: -1
-
-skeleton3.png
-size: 3194,3020
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
-background
-  rotate: true
-  xy: 4, 4
-  size: 3012, 1697
-  orig: 3012, 2779
-  offset: 0, 0
-  index: -1
-Группа 3
   rotate: false
-  xy: 1705, 597
-  size: 1485, 2419
-  orig: 1634, 2419
-  offset: 139, 0
+  xy: 2317, 1085
+  size: 1008, 1013
+  orig: 1171, 1176
+  offset: 163, 0
   index: -1

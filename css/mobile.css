@@ -2,22 +2,29 @@
 
 @media (max-width: 500px) and (orientation: portrait) {
     /* Переопределяем overlay */
+    * {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+    }
+
     .overlay {
         right: auto;
         left: 0;
         width: 100%;
         max-width: 100%;
         justify-content: end;
-        gap: 32px;
+        gap: 16px;
     }
+
     
     /* Логотип - над кнопкой */
     .logo {
-        margin-top: 0;
-        width: auto;
-        min-width: auto;
-        max-width: 100%;
+        min-width: none;
+        width: 264px;
+        height: auto;
+        max-width: none;
     }
+
     
     /* Кнопка - убираем отступ */
     .start_button {
@@ -38,13 +45,14 @@
     #goldButton{
         max-width: 264px;
         max-height: auto;
-        padding-bottom: 40px;
+        padding-bottom: 24px;
     }
 
         /* Наведение — затемняем шестиугольник */
     #goldButton:active #hexagon-solid {
         opacity: 0;
         transition: opacity 0.2s ease;
+        fill: none;
     }
 
     #goldButton:active #hexagon-gradient {
@@ -60,5 +68,97 @@
     #goldButton:hover #hexagon-solid {
         opacity: none;
         transition: opacity 0.2s ease;
+    }
+}
+
+
+@media (max-width: 500px) and (orientation: portrait) {
+    .btn{
+        width: 48px;
+        height: 48px;
+        top: 24px;
+    }
+
+    .btn-right {
+        right: none;
+        left: 0;
+    }
+
+}
+
+
+/* Мобильная карта */
+@media (max-width: 500px) and (orientation: portrait) {
+    #map {
+        width: 100vw !important;
+        height: 100dvh !important;
+    }
+    
+    #map canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    
+    /* Упрощаем маркеры для производительности */
+    .marker-svg {
+        transform: scale(0.8);
+    }
+    
+    .marker-number {
+        font-size: 22px;
+    }
+    
+    /* Отключаем hover-эффекты на мобилках */
+    [data-type="type1"] #sobytie:hover #rectang-group {
+        transform: none;
+    }
+
+    body[data-page="map"] {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+    
+    #map {
+        overflow: hidden;
+    }
+    
+    #map canvas {
+        touch-action: none;
+    }
+}
+
+/* ========== МОБИЛЬНОЕ МЕНЮ (до 500px) ========== */
+
+/* Мобильное нижнее меню */
+.mobile-bottom-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 64px;
+    background: var(--menu);
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+    border-top: 2px solid;
+    border-image: var(--darkgold) 2;
+    border-image-slice: 2;
+}
+
+@media (max-width: 500px) and (orientation: portrait) {
+    .btn {
+        display: none !important;
+    }
+    
+    .mobile-bottom-menu {
+        display: flex !important;
     }
 }

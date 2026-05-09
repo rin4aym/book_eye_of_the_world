@@ -9,6 +9,9 @@ import { removeRandAnimation } from './Rand_anim.js';
 import { removeBattleAnimation } from './Battle.js';
 import { saveScrollPosition, restoreScrollPosition } from './storage.js';
 import { initWelcomePopup } from './welcome.js';
+import { initMobileMenu } from './toolbar.js';
+
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   const page = document.body.dataset.page;
@@ -94,6 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   if (page === 'map') {
     initMap();
+    initMobileMenu();
     removeRandAnimation();
     removeBattleAnimation();
   }
