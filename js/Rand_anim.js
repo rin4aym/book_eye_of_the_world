@@ -279,6 +279,7 @@ export function initRandAnimation() {
         canvas.style.height = 'auto';
         canvas.style.display = 'block';
         canvas.style.position = 'relative';
+        canvas.style.pointerEvents = 'none';
         canvas.style.zIndex = '1';
     }
     

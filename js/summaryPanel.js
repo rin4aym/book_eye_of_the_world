@@ -1,22 +1,24 @@
 let summaryEl;
+let summaryMobileEl;
 let isOpen = false;
 let currentMarkerId = null;
 let onSummaryCloseCallback = null;
 let currentEventPage = null;
+let isMobile = false;
 
+function checkMobile() {
+    return window.innerWidth <= 500;
+}
 
-export function initSummary(onClose) {
-    // Сохраняем колбэк для уведомления о закрытии
-    onSummaryCloseCallback = onClose;
-    
-    summaryEl = document.createElement('div');
-    summaryEl.className = 'summary';
-
-    summaryEl.innerHTML = `
+// Создаём десктопное окно
+function createDesktopSummary() {
+    const el = document.createElement('div');
+    el.className = 'summary';
+    el.innerHTML = `
         <div class="summary-header">
             <h1 class="summary-title"></h1>
             <div class="summary-close">
-                <svg class="close" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="close" width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6L18 18" stroke="#696B62" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </div>
@@ -25,42 +27,15 @@ export function initSummary(onClose) {
             <p class="summary-chapters-text"></p>
         </div>
         <div class="ornament_header">
-            <?xml version="1.0" encoding="UTF-8"?>
             <svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.74 36.11">
-            <defs>
-                <style>
-                .cls-1 {
-                    fill: none;
-                    stroke: #585c62;
-                    stroke-miterlimit: 10;
-                    stroke-width: 2.83px;
-                }
-
-                .cls-2 {
-                    fill: #585c62;
-                }
-                </style>
-            </defs>
-            <g id="_Слой_2-2" data-name="Слой 2">
-                <g>
-                <path class="cls-1" d="M608.23,20.14h-137.36"/>
-                <path class="cls-1" d="M779.74,14.16H429.04"/>
-                <path class="cls-2" d="M319.84,18.62s26.65-6.6,30.14,7.33c.24,.95-7.09,9.81-9.69,2.13-2.6-7.68-13.24-9.22-20.45-9.45h0Z"/>
-                <path class="cls-2" d="M459.54,18.62s-26.65-6.6-30.14,7.33c-.24,.95,7.09,9.81,9.69,2.13,2.6-7.68,13.24-9.22,20.45-9.45h0Z"/>
-                <path class="cls-2" d="M404.37,14.69l-14.69-14.69-14.69,14.69,14.69,14.69,14.69-14.69Z"/>
-                <path class="cls-2" d="M394.77,36.11s7.24-23.1,30.73-23.99c2.76-.11,7.64,.16,10.87,.71-2.83,.9,.55,2.45-7.3,3.31-1.01,.11-2.1,.57-3.25,1-3.7,1.38-5.08,3.68-5.52,6.2-.71,4.02-1.65,9.93-12.53,9.22-10.87-.71-13,3.55-13,3.55Z"/>
-                <path class="cls-1" d="M0,14.16H350.21"/>
-                <path class="cls-2" d="M384.49,36.11s-7.24-23.1-30.73-23.99c-2.76-.11-7.64,.16-10.87,.71,2.83,.9-.55,2.45,7.3,3.31,1.01,.11,2.1,.57,3.25,1,3.7,1.38,5.08,3.68,5.52,6.2,.71,4.02,1.65,9.93,12.53,9.22,10.87-.71,13,3.55,13,3.55Z"/>
-                <path class="cls-1" d="M309.47,20.14H172.11"/>
-                </g>
-            </g>
+                <defs><style>.cls-1{fill:none;stroke:#585c62;stroke-miterlimit:10;stroke-width:2.83px;}.cls-2{fill:#585c62;}</style></defs>
+                <g><path class="cls-1" d="M608.23,20.14h-137.36"/><path class="cls-1" d="M779.74,14.16H429.04"/><path class="cls-2" d="M319.84,18.62s26.65-6.6,30.14,7.33c.24,.95-7.09,9.81-9.69,2.13-2.6-7.68-13.24-9.22-20.45-9.45h0Z"/><path class="cls-2" d="M459.54,18.62s-26.65-6.6-30.14,7.33c-.24,.95,7.09,9.81,9.69,2.13,2.6-7.68,13.24-9.22,20.45-9.45h0Z"/><path class="cls-2" d="M404.37,14.69l-14.69-14.69-14.69,14.69,14.69,14.69,14.69-14.69Z"/><path class="cls-2" d="M394.77,36.11s7.24-23.1,30.73-23.99c2.76-.11,7.64,.16,10.87,.71-2.83,.9,.55,2.45-7.3,3.31-1.01,.11-2.1,.57-3.25,1-3.7,1.38-5.08,3.68-5.52,6.2-.71,4.02-1.65,9.93-12.53,9.22-10.87-.71-13,3.55-13,3.55Z"/><path class="cls-1" d="M0,14.16H350.21"/><path class="cls-2" d="M384.49,36.11s-7.24-23.1-30.73-23.99c-2.76-.11-7.64,.16-10.87,.71,2.83,.9-.55,2.45,7.3,3.31,1.01,.11,2.1,.57,3.25,1,3.7,1.38,5.08,3.68,5.52,6.2,.71,4.02,1.65,9.93,12.53,9.22,10.87-.71,13,3.55,13,3.55Z"/><path class="cls-1" d="M309.47,20.14H172.11"/></g>
             </svg>
-
         </div>
         <div class="summary-content">
             <p class="summary-text"></p>
         </div>
-        <div class="summary-button">
+                <div class="summary-button">
             <button class="summary-action-btn">
                 <svg class="read" width="487" height="70" viewBox="0 0 487 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path id="active" d="M42.5885 1H444.564L484.566 35L444.564 69H42.5885L1.56641 35L42.5885 1Z" fill="url(#paint0_linear_1062_951)" stroke="url(#paint1_linear_1062_951)" stroke-width="2" stroke-linecap="round"/>
@@ -111,45 +86,245 @@ export function initSummary(onClose) {
                 </svg>
             </button>
         </div>
+        </div>
     `;
+    return el;
+}
 
+// Создаём мобильное окно
+function createMobileSummary() {
+    const el = document.createElement('div');
+    el.className = 'summary-mobile';
+    el.innerHTML = `
+        <div class="summary-mobile-drag-bar">
+            <div class="summary-mobile-drag-line"></div>
+        </div>
+        <div class="summary-mobile-content">
+            <div class="summary-mobile-header">
+                <h1 class="summary-mobile-title"></h1>
+                <div class="summary-mobile-close">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="#696B62" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="summary-mobile-chapters">
+                <p class="summary-mobile-chapters-text"></p>
+            </div>
+            <div class="summary-mobile-ornament">
+               <svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.74 36.11">
+                <defs><style>.cls-1{fill:none;stroke:#585c62;stroke-miterlimit:10;stroke-width:2.83px;}.cls-2{fill:#585c62;}</style></defs>
+                <g><path class="cls-1" d="M608.23,20.14h-137.36"/><path class="cls-1" d="M779.74,14.16H429.04"/><path class="cls-2" d="M319.84,18.62s26.65-6.6,30.14,7.33c.24,.95-7.09,9.81-9.69,2.13-2.6-7.68-13.24-9.22-20.45-9.45h0Z"/><path class="cls-2" d="M459.54,18.62s-26.65-6.6-30.14,7.33c-.24,.95,7.09,9.81,9.69,2.13,2.6-7.68,13.24-9.22,20.45-9.45h0Z"/><path class="cls-2" d="M404.37,14.69l-14.69-14.69-14.69,14.69,14.69,14.69,14.69-14.69Z"/><path class="cls-2" d="M394.77,36.11s7.24-23.1,30.73-23.99c2.76-.11,7.64,.16,10.87,.71-2.83,.9,.55,2.45-7.3,3.31-1.01,.11-2.1,.57-3.25,1-3.7,1.38-5.08,3.68-5.52,6.2-.71,4.02-1.65,9.93-12.53,9.22-10.87-.71-13,3.55-13,3.55Z"/><path class="cls-1" d="M0,14.16H350.21"/><path class="cls-2" d="M384.49,36.11s-7.24-23.1-30.73-23.99c-2.76-.11-7.64,.16-10.87,.71,2.83,.9-.55,2.45,7.3,3.31,1.01,.11,2.1,.57,3.25,1,3.7,1.38,5.08,3.68,5.52,6.2,.71,4.02,1.65,9.93,12.53,9.22,10.87-.71,13,3.55,13,3.55Z"/><path class="cls-1" d="M309.47,20.14H172.11"/></g>
+            </svg>
+            </div>
+            <div class="summary-mobile-text"></div>
+            <div class="summary-button">
+                <button class="summary-action-btn">
+                    <svg class="read" width="282" height="48" viewBox="0 0 282 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="active" d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="url(#paint0_linear_1183_1512)" stroke="url(#paint1_linear_1183_1512)" stroke-width="1.47486" stroke-linecap="round"/>
+<path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="url(#paint2_linear_1183_1512)"/>
+<path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="black" fill-opacity="0.2"/>
+<path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" stroke="url(#paint3_linear_1183_1512)" stroke-width="1.47486" stroke-linecap="round"/>
+<path id="defoult" d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="#585C62"/>
+<path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" stroke="url(#paint4_linear_1183_1512)" stroke-width="1.47486" stroke-linecap="round"/>
+<path d="M115.081 29.7344V28.8334H115.795C115.965 28.8334 116.112 28.8107 116.237 28.7654C116.373 28.7087 116.475 28.601 116.543 28.4424C116.622 28.2837 116.662 28.0457 116.662 27.7284V24.8044C116.469 24.8837 116.231 24.9687 115.948 25.0594C115.665 25.15 115.33 25.2294 114.945 25.2974C114.56 25.3654 114.123 25.3994 113.636 25.3994C113.058 25.3994 112.537 25.3427 112.072 25.2294C111.619 25.1047 111.228 24.9064 110.899 24.6344C110.582 24.351 110.332 23.9714 110.151 23.4954C109.981 23.0194 109.896 22.43 109.896 21.7274V19.6024C109.896 19.2737 109.856 19.0357 109.777 18.8884C109.709 18.7297 109.607 18.6277 109.471 18.5824C109.346 18.5257 109.199 18.4974 109.029 18.4974H108.485V17.5964H114.18V18.4974H113.466C113.307 18.4974 113.16 18.5257 113.024 18.5824C112.888 18.6277 112.78 18.7297 112.701 18.8884C112.633 19.0357 112.599 19.2737 112.599 19.6024V21.6764C112.599 22.277 112.667 22.753 112.803 23.1044C112.939 23.4444 113.154 23.688 113.449 23.8354C113.755 23.9714 114.14 24.0394 114.605 24.0394C114.888 24.0394 115.16 24.0167 115.421 23.9714C115.693 23.926 115.937 23.875 116.152 23.8184C116.367 23.7504 116.537 23.688 116.662 23.6314V19.6024C116.662 19.2737 116.622 19.0357 116.543 18.8884C116.475 18.7297 116.373 18.6277 116.237 18.5824C116.112 18.5257 115.965 18.4974 115.795 18.4974H115.081V17.5964H120.946V18.4974H120.232C120.073 18.4974 119.926 18.5257 119.79 18.5824C119.654 18.6277 119.546 18.7297 119.467 18.8884C119.399 19.0357 119.365 19.2737 119.365 19.6024V27.7284C119.365 28.0457 119.399 28.2837 119.467 28.4424C119.546 28.601 119.654 28.7087 119.79 28.7654C119.926 28.8107 120.073 28.8334 120.232 28.8334H120.946V29.7344H115.081ZM121.716 29.7344V28.8334H121.92C122.09 28.8334 122.265 28.8107 122.447 28.7654C122.639 28.7087 122.798 28.601 122.923 28.4424C123.059 28.2837 123.127 28.0457 123.127 27.7284V22.6284C123.127 22.2997 123.059 22.0617 122.923 21.9144C122.798 21.7557 122.639 21.6537 122.447 21.6084C122.265 21.5517 122.09 21.5234 121.92 21.5234H121.716V20.6224H126.867V21.5234H126.833C126.685 21.5234 126.521 21.5517 126.34 21.6084C126.17 21.6537 126.022 21.7557 125.898 21.9144C125.773 22.0617 125.711 22.2997 125.711 22.6284V26.2494L128.89 22.7644V22.6284C128.89 22.2997 128.827 22.0617 128.703 21.9144C128.578 21.7557 128.431 21.6537 128.261 21.6084C128.091 21.5517 127.926 21.5234 127.768 21.5234H127.734V20.6224H132.885V21.5234H132.681C132.522 21.5234 132.346 21.5517 132.154 21.6084C131.961 21.6537 131.797 21.7557 131.661 21.9144C131.536 22.0617 131.474 22.2997 131.474 22.6284V27.7284C131.474 28.0457 131.536 28.2837 131.661 28.4424C131.797 28.601 131.961 28.7087 132.154 28.7654C132.346 28.8107 132.522 28.8334 132.681 28.8334H132.885V29.7344H127.734V28.8334H127.768C127.926 28.8334 128.091 28.8107 128.261 28.7654C128.431 28.7087 128.578 28.601 128.703 28.4424C128.827 28.2837 128.89 28.0457 128.89 27.7284V24.0734L125.711 27.5584V27.7284C125.711 28.0457 125.773 28.2837 125.898 28.4424C126.022 28.601 126.17 28.7087 126.34 28.7654C126.521 28.8107 126.685 28.8334 126.833 28.8334H126.867V29.7344H121.716ZM135.306 29.7344V28.8334H135.493C135.719 28.8334 135.923 28.805 136.105 28.7484C136.286 28.6804 136.433 28.5614 136.547 28.3914C136.66 28.2214 136.717 27.989 136.717 27.6944V21.5914H135.731C135.527 21.5914 135.362 21.631 135.238 21.7104C135.113 21.7897 135.011 21.9314 134.932 22.1354C134.864 22.328 134.807 22.6057 134.762 22.9684L134.694 23.5294H133.521L133.623 20.6224H142.378L142.48 23.5294H141.307L141.239 22.9684C141.193 22.6057 141.137 22.328 141.069 22.1354C141.001 21.9314 140.904 21.7897 140.78 21.7104C140.655 21.631 140.485 21.5914 140.27 21.5914H139.301V27.6944C139.301 27.989 139.352 28.2214 139.454 28.3914C139.567 28.5614 139.709 28.6804 139.879 28.7484C140.049 28.805 140.236 28.8334 140.44 28.8334H140.627V29.7344H135.306ZM146.26 29.9044C145.762 29.9044 145.308 29.808 144.9 29.6154C144.504 29.4114 144.186 29.1054 143.948 28.6974C143.71 28.278 143.591 27.7567 143.591 27.1334C143.591 26.2154 143.909 25.5354 144.543 25.0934C145.178 24.6514 146.13 24.4077 147.399 24.3624L148.793 24.3114V23.3764C148.793 22.991 148.771 22.6567 148.725 22.3734C148.68 22.0787 148.584 21.852 148.436 21.6934C148.289 21.5234 148.057 21.4384 147.739 21.4384C147.456 21.4384 147.229 21.5177 147.059 21.6764C146.889 21.835 146.77 22.056 146.702 22.3394C146.634 22.6114 146.6 22.923 146.6 23.2744C145.841 23.2744 145.269 23.1894 144.883 23.0194C144.498 22.8494 144.305 22.5547 144.305 22.1354C144.305 21.716 144.464 21.3817 144.781 21.1324C145.099 20.883 145.524 20.7017 146.056 20.5884C146.589 20.4637 147.173 20.4014 147.807 20.4014C148.997 20.4014 149.887 20.6167 150.476 21.0474C151.077 21.478 151.377 22.226 151.377 23.2914V27.6264C151.377 27.9324 151.406 28.176 151.462 28.3574C151.53 28.5274 151.638 28.652 151.785 28.7314C151.944 28.7994 152.148 28.8334 152.397 28.8334H152.465V29.7344H149.303L148.946 28.5614H148.793C148.544 28.8674 148.306 29.1224 148.079 29.3264C147.864 29.519 147.615 29.6607 147.331 29.7514C147.048 29.8534 146.691 29.9044 146.26 29.9044ZM147.195 28.6634C147.524 28.6634 147.807 28.5784 148.045 28.4084C148.283 28.227 148.465 27.972 148.589 27.6434C148.725 27.3147 148.793 26.9294 148.793 26.4874V25.2124L148.028 25.2634C147.575 25.286 147.218 25.3767 146.957 25.5354C146.697 25.6827 146.51 25.898 146.396 26.1814C146.283 26.4534 146.226 26.7934 146.226 27.2014C146.226 27.5187 146.26 27.7907 146.328 28.0174C146.396 28.2327 146.504 28.397 146.651 28.5104C146.799 28.6124 146.98 28.6634 147.195 28.6634ZM154.796 29.7344V28.8334H154.983C155.21 28.8334 155.414 28.805 155.595 28.7484C155.776 28.6804 155.924 28.5614 156.037 28.3914C156.15 28.2214 156.207 27.989 156.207 27.6944V21.5914H155.221C155.017 21.5914 154.853 21.631 154.728 21.7104C154.603 21.7897 154.501 21.9314 154.422 22.1354C154.354 22.328 154.297 22.6057 154.252 22.9684L154.184 23.5294H153.011L153.113 20.6224H161.868L161.97 23.5294H160.797L160.729 22.9684C160.684 22.6057 160.627 22.328 160.559 22.1354C160.491 21.9314 160.395 21.7897 160.27 21.7104C160.145 21.631 159.975 21.5914 159.76 21.5914H158.791V27.6944C158.791 27.989 158.842 28.2214 158.944 28.3914C159.057 28.5614 159.199 28.6804 159.369 28.7484C159.539 28.805 159.726 28.8334 159.93 28.8334H160.117V29.7344H154.796ZM162.605 29.7344V28.8334H162.792C163.076 28.8334 163.302 28.7937 163.472 28.7144C163.654 28.635 163.79 28.516 163.88 28.3574C163.971 28.1874 164.016 27.9834 164.016 27.7454V22.6284C164.016 22.3677 163.971 22.158 163.88 21.9994C163.79 21.8294 163.654 21.7104 163.472 21.6424C163.291 21.563 163.064 21.5234 162.792 21.5234H162.605V20.6224H168.215V21.5914H167.994C167.745 21.5914 167.513 21.6254 167.297 21.6934C167.093 21.75 166.923 21.852 166.787 21.9994C166.663 22.1467 166.6 22.3564 166.6 22.6284V24.5494H168.232C168.935 24.5494 169.581 24.6117 170.17 24.7364C170.76 24.861 171.236 25.1047 171.598 25.4674C171.961 25.8187 172.142 26.3514 172.142 27.0654C172.142 27.8247 171.825 28.4594 171.19 28.9694C170.567 29.4794 169.609 29.7344 168.317 29.7344H162.605ZM167.875 28.7484C168.442 28.7484 168.844 28.618 169.082 28.3574C169.32 28.0854 169.439 27.6377 169.439 27.0144C169.439 26.4817 169.298 26.102 169.014 25.8754C168.731 25.6487 168.329 25.5354 167.807 25.5354H166.6V28.7484H167.875Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_1183_1512" x1="271.717" y1="-17.8734" x2="-29.8376" y2="132.798" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C7AA7F"/>
+<stop offset="0.0001" stop-color="#CCAA79"/>
+<stop offset="0.211538" stop-color="#A98959"/>
+<stop offset="0.514423" stop-color="#E5CCA8"/>
+<stop offset="0.75" stop-color="#AA8A59"/>
+<stop offset="0.870192" stop-color="#F0DBBC"/>
+</linearGradient>
+<linearGradient id="paint1_linear_1183_1512" x1="264.463" y1="-20.0902" x2="-32.5423" y2="113.379" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C7AA7F"/>
+<stop offset="0.211538" stop-color="#785C32"/>
+<stop offset="0.514423" stop-color="#D9AF72"/>
+<stop offset="0.75" stop-color="#9C8460"/>
+<stop offset="0.870192" stop-color="#F8F4EE"/>
+</linearGradient>
+<linearGradient id="paint2_linear_1183_1512" x1="271.717" y1="-17.8734" x2="-29.8376" y2="132.798" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C7AA7F"/>
+<stop offset="0.0001" stop-color="#CCAA79"/>
+<stop offset="0.211538" stop-color="#A98959"/>
+<stop offset="0.514423" stop-color="#E5CCA8"/>
+<stop offset="0.75" stop-color="#AA8A59"/>
+<stop offset="0.870192" stop-color="#F0DBBC"/>
+</linearGradient>
+<linearGradient id="paint3_linear_1183_1512" x1="264.463" y1="-20.0902" x2="-32.5423" y2="113.379" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C7AA7F"/>
+<stop offset="0.211538" stop-color="#785C32"/>
+<stop offset="0.514423" stop-color="#D9AF72"/>
+<stop offset="0.75" stop-color="#9C8460"/>
+<stop offset="0.870192" stop-color="#F8F4EE"/>
+</linearGradient>
+<linearGradient id="paint4_linear_1183_1512" x1="264.463" y1="-20.0902" x2="-32.5423" y2="113.379" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C7AA7F"/>
+<stop offset="0.211538" stop-color="#785C32"/>
+<stop offset="0.514423" stop-color="#D9AF72"/>
+<stop offset="0.75" stop-color="#9C8460"/>
+<stop offset="0.870192" stop-color="#F8F4EE"/>
+</linearGradient>
+</defs>
+</svg>
+
+                </button>
+            </div>
+        </div>
+    `;
+    return el;
+}
+
+export function initSummary(onClose) {
+    onSummaryCloseCallback = onClose;
+    
+    // Создаём оба окна
+    summaryEl = createDesktopSummary();
+    summaryMobileEl = createMobileSummary();
+    
     document.body.appendChild(summaryEl);
-
-    // Закрытие по крестику
-    summaryEl.querySelector('.summary-close').addEventListener('click', () => {
+    document.body.appendChild(summaryMobileEl);
+    
+    // Закрытие по крестику (десктоп)
+    summaryEl.querySelector('.summary-close')?.addEventListener('click', () => {
         closeSummary();
     });
     
-    // Обработчик для кнопки
+    // Закрытие по крестику (мобилка)
+    summaryMobileEl.querySelector('.summary-mobile-close')?.addEventListener('click', () => {
+        closeSummary();
+    });
+    
+    // Закрытие по оверлею (мобилка)
+    // Добавь это, если есть оверлей
+    const overlay = document.querySelector('.menu-mobile-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            closeSummary();
+        });
+    }
+    
+    // Закрытие по drag bar (мобилка) - свайп вниз
+    const dragBar = summaryMobileEl.querySelector('.summary-mobile-drag-bar');
+    let startY = 0;
+    
+    dragBar.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+    });
+    
+    dragBar.addEventListener('touchmove', (e) => {
+        const deltaY = e.touches[0].clientY - startY;
+        if (deltaY > 0) {
+            summaryMobileEl.style.transform = `translateY(${deltaY}px)`;
+        }
+    });
+    
+    dragBar.addEventListener('touchend', (e) => {
+        const deltaY = e.changedTouches[0].clientY - startY;
+        if (deltaY > 100) {
+            closeSummary();  // ← Здесь вызываем closeSummary()
+        } else {
+            summaryMobileEl.style.transform = '';
+        }
+    });
+    
+    // Обработчик для кнопки (десктоп)
     const actionBtn = summaryEl.querySelector('.summary-action-btn');
     if (actionBtn) {
         actionBtn.addEventListener('click', () => {
             if (currentEventPage) {
                 window.location.href = currentEventPage;
-            } else {
-                console.log('Страница события не указана для маркера', currentMarkerId);
             }
         });
+    }
+    
+    // Обработчик для кнопки (мобилка)
+    const mobileActionBtn = summaryMobileEl.querySelector('.summary-action-btn');
+    if (mobileActionBtn) {
+        mobileActionBtn.addEventListener('click', () => {
+            if (currentEventPage) {
+                window.location.href = currentEventPage;
+            }
+        });
+    }
+    
+    // Слушаем изменение размера окна
+    window.addEventListener('resize', () => {
+        if (isOpen) {
+            updateVisibility();
+        }
+    });
+    
+    return summaryEl;
+}
+
+function updateVisibility() {
+    isMobile = checkMobile();
+    
+    if (isMobile) {
+        summaryEl.classList.remove('open');
+        summaryEl.style.display = 'none';
+        summaryMobileEl.style.display = 'flex';
+    } else {
+        summaryMobileEl.classList.remove('open');
+        summaryMobileEl.style.display = 'none';
+        summaryEl.style.display = 'flex';
     }
 }
 
 export function toggleSummary(data, markerId) {
     console.log('toggleSummary called with data:', data);
     
-    // Если окно открыто и кликнули по ТОМУ ЖЕ маркеру -> закрываем
     if (isOpen && currentMarkerId === markerId) {
         closeSummary();
         return;
     }
     
-    // Если окно открыто, но кликнули по ДРУГОМУ маркеру
-    // Просто обновляем данные, не закрывая окно
+    isMobile = checkMobile();
+    
     if (isOpen && currentMarkerId !== markerId) {
-        // Обновляем данные нового маркера
         currentMarkerId = markerId;
         currentEventPage = data.page || null;
         
-        // Обновляем содержимое окна
+        updateContent(data);
+        return;
+    }
+    
+    currentMarkerId = markerId;
+    currentEventPage = data.page || null;
+    
+    updateContent(data);
+    
+    if (isMobile) {
+        summaryMobileEl.classList.add('open');
+    } else {
+        summaryEl.classList.add('open');
+    }
+    isOpen = true;
+}
+
+function updateContent(data) {
+    if (isMobile) {
+        summaryMobileEl.querySelector('.summary-mobile-title').textContent = data.title || '';
+        
+        const chaptersText = summaryMobileEl.querySelector('.summary-mobile-chapters-text');
+        if (data.chapters) {
+            chaptersText.textContent = data.chapters;
+            chaptersText.parentElement.style.display = 'block';
+        } else {
+            chaptersText.parentElement.style.display = 'none';
+        }
+        
+        const textEl = summaryMobileEl.querySelector('.summary-mobile-text');
+        if (data.text) {
+            textEl.innerHTML = data.text;
+        } else {
+            textEl.textContent = 'Нет описания';
+        }
+        
+        textEl.scrollTop = 0;
+    } else {
         summaryEl.querySelector('.summary-title').textContent = data.title || '';
         
         const chaptersText = summaryEl.querySelector('.summary-chapters-text');
@@ -168,77 +343,32 @@ export function toggleSummary(data, markerId) {
         }
         
         const contentEl = summaryEl.querySelector('.summary-content');
-        if (contentEl) {
-            contentEl.scrollTop = 0;
-        }
-        
-        return;
+        if (contentEl) contentEl.scrollTop = 0;
     }
-    
-    // Если окно закрыто - открываем с новыми данными
-    currentMarkerId = markerId;
-    currentEventPage = data.page || null;
-    
-    summaryEl.querySelector('.summary-title').textContent = data.title || '';
-    
-    const chaptersText = summaryEl.querySelector('.summary-chapters-text');
-    if (data.chapters) {
-        chaptersText.textContent = data.chapters;
-        chaptersText.parentElement.style.display = 'block';
-    } else {
-        chaptersText.parentElement.style.display = 'none';
-    }
-    
-    const textEl = summaryEl.querySelector('.summary-text');
-    if (data.text) {
-        textEl.innerHTML = data.text;
-    } else {
-        textEl.textContent = 'Нет описания';
-    }
-    
-    const contentEl = summaryEl.querySelector('.summary-content');
-    if (contentEl) {
-        contentEl.scrollTop = 0;
-    }
-    
-    summaryEl.classList.add('open');
-    isOpen = true;
 }
 
 export function closeSummary() {
-    summaryEl.classList.remove('open');
-    
-    // Уведомляем о закрытии, чтобы деактивировать маркер (вернуть в состояние default)
+    if (isMobile) {
+        summaryMobileEl.classList.remove('open');
+        summaryMobileEl.style.transform = '';
+    } else {
+        summaryEl.classList.remove('open');
+    }
+
+    document.activeElement?.blur();
+
     if (onSummaryCloseCallback) {
         onSummaryCloseCallback(currentMarkerId);
     }
-    
+
     isOpen = false;
     currentMarkerId = null;
 }
 
 export function updateSummaryContent(data) {
     if (!isOpen) return;
-    
-    if (data.title) {
-        summaryEl.querySelector('.summary-title').textContent = data.title;
-    }
-    if (data.chapters !== undefined) {
-        const chaptersText = summaryEl.querySelector('.summary-chapters-text');
-        if (data.chapters) {
-            chaptersText.textContent = data.chapters;
-            chaptersText.parentElement.style.display = 'block';
-        } else {
-            chaptersText.parentElement.style.display = 'none';
-        }
-    }
-    if (data.text) {
-        summaryEl.querySelector('.summary-text').innerHTML = data.text;
-    }
-
-    
+    updateContent(data);
 }
-
 
 export function isSummaryOpen() {
     return isOpen;
@@ -247,4 +377,3 @@ export function isSummaryOpen() {
 export function getCurrentMarkerId() {
     return currentMarkerId;
 }
-

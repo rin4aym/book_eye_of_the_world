@@ -1,5 +1,8 @@
-// ========== КООРДИНАТЫ ПУТЕЙ ГЕРОЕВ ==========
-export const heroPathsData = {
+// pathLines.js
+import { isMobile, transformCoordinates } from './mapConfig.js';
+
+// ========== КООРДИНАТЫ ПУТЕЙ ГЕРОЕВ (оригинальные, для десктопа) ==========
+const heroPathsDataRaw = {
     mor: {
         color: '#3E61D2',
         name: 'Мор',
@@ -64,6 +67,64 @@ export const heroPathsData = {
     }
 };
 
+// Трансформированные координаты для мобильной версии
+export const heroPathsData = {};
+
+// Применяем трансформацию координат при загрузке
+function transformHeroPaths() {
+    for (const heroId in heroPathsDataRaw) {
+        const hero = heroPathsDataRaw[heroId];
+        heroPathsData[heroId] = {
+            color: hero.color,
+            name: hero.name,
+            points: hero.points.map(point => transformCoordinates(point.x, point.y))
+        };
+    }
+}
+
+// Вызываем трансформацию сразу
+transformHeroPaths();
+
+// Обновляем трансформацию при изменении размера окна
+if (typeof window !== 'undefined') {
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            transformHeroPaths();
+            // Перерисовываем активные пути с новыми координатами
+            redrawActivePaths();
+        }, 200);
+    });
+}
+
+// Перерисовка активных путей
+function redrawActivePaths() {
+    // Сохраняем ID активных путей
+    const activeIds = activePaths.map(p => p.id);
+    
+    // Очищаем все пути
+    clearAllPaths();
+    
+    // Восстанавливаем пути с новыми координатами (без анимации)
+    activeIds.forEach(id => {
+        const heroData = heroPathsData[id];
+        if (heroData) {
+            const { graphics } = drawSmoothPath(heroData.points, heroData.color, 4);
+            if (graphics) {
+                linesLayer.addChild(graphics);
+                activePaths.push({
+                    id: id,
+                    graphics: graphics,
+                    color: heroData.color,
+                    name: heroData.name,
+                    points: heroData.points
+                });
+            }
+        }
+    });
+}
+
 // ========== ПЕРЕМЕННЫЕ ==========
 let activePaths = [];
 let linesLayer = null;
@@ -98,16 +159,12 @@ export function initPathLines(cameraRef) {
 function getCurvePoints(points, segments = 50) {
     if (points.length < 2) return points;
     if (points.length === 2) {
-        // Для двух точек просто прямая
         return [points[0], points[1]];
     }
     
     const result = [];
-    
-    // Добавляем первую точку
     result.push({ x: points[0].x, y: points[0].y });
     
-    // Для каждого сегмента между точками
     for (let i = 0; i < points.length - 1; i++) {
         const p0 = points[Math.max(0, i - 1)];
         const p1 = points[i];
@@ -132,7 +189,6 @@ function getCurvePoints(points, segments = 50) {
         }
     }
     
-    // Добавляем последнюю точку
     result.push({ x: points[points.length - 1].x, y: points[points.length - 1].y });
     
     return result;
@@ -140,7 +196,7 @@ function getCurvePoints(points, segments = 50) {
 
 // ========== ОТРИСОВКА ПЛАВНОЙ ЛИНИИ ==========
 function drawSmoothPath(points, color, lineWidth = 4) {
-    if (!points || points.length < 2) return null;
+    if (!points || points.length < 2) return { graphics: null, smoothPoints: [] };
     
     const smoothPoints = getCurvePoints(points, 40);
     const graphics = new PIXI.Graphics();
@@ -153,21 +209,19 @@ function drawSmoothPath(points, color, lineWidth = 4) {
         graphics.lineTo(smoothPoints[i].x, smoothPoints[i].y);
     }
     
-    // Добавляем свечение (внешняя линия)
+    // Добавляем свечение
     graphics.lineStyle(lineWidth + 2, parseInt(color.replace('#', '0x')), 0.3);
     graphics.moveTo(smoothPoints[0].x, smoothPoints[0].y);
     for (let i = 1; i < smoothPoints.length; i++) {
         graphics.lineTo(smoothPoints[i].x, smoothPoints[i].y);
     }
     
-    // Рисуем точки в местах маркеров
+    // Рисуем точки
     points.forEach(point => {
-        // Внешняя точка
         graphics.beginFill(parseInt(color.replace('#', '0x')), 0.8);
         graphics.drawCircle(point.x, point.y, 8);
         graphics.endFill();
         
-        // Внутренняя точка
         graphics.beginFill(0xffffff, 0.9);
         graphics.drawCircle(point.x, point.y, 4);
         graphics.endFill();
@@ -226,7 +280,6 @@ class AnimatedPath {
         const totalPoints = this.smoothPoints.length;
         const pointsToDraw = Math.max(2, Math.floor(totalPoints * this.progress));
         
-        // Рисуем основную линию
         this.graphics.lineStyle(this.lineWidth, parseInt(this.color.replace('#', '0x')), 0.8);
         this.graphics.moveTo(this.smoothPoints[0].x, this.smoothPoints[0].y);
         
@@ -234,14 +287,12 @@ class AnimatedPath {
             this.graphics.lineTo(this.smoothPoints[i].x, this.smoothPoints[i].y);
         }
         
-        // Рисуем свечение
         this.graphics.lineStyle(this.lineWidth + 2, parseInt(this.color.replace('#', '0x')), 0.3);
         this.graphics.moveTo(this.smoothPoints[0].x, this.smoothPoints[0].y);
         for (let i = 1; i < pointsToDraw; i++) {
             this.graphics.lineTo(this.smoothPoints[i].x, this.smoothPoints[i].y);
         }
         
-        // Рисуем точки только если анимация почти завершена
         if (this.progress > 0.7) {
             this.points.forEach(point => {
                 this.graphics.beginFill(parseInt(this.color.replace('#', '0x')), 0.8);
@@ -260,21 +311,18 @@ class AnimatedPath {
         
         this.graphics.clear();
         
-        // Рисуем основную линию
         this.graphics.lineStyle(this.lineWidth, parseInt(this.color.replace('#', '0x')), 0.8);
         this.graphics.moveTo(this.smoothPoints[0].x, this.smoothPoints[0].y);
         for (let i = 1; i < this.smoothPoints.length; i++) {
             this.graphics.lineTo(this.smoothPoints[i].x, this.smoothPoints[i].y);
         }
         
-        // Рисуем свечение
         this.graphics.lineStyle(this.lineWidth + 2, parseInt(this.color.replace('#', '0x')), 0.3);
         this.graphics.moveTo(this.smoothPoints[0].x, this.smoothPoints[0].y);
         for (let i = 1; i < this.smoothPoints.length; i++) {
             this.graphics.lineTo(this.smoothPoints[i].x, this.smoothPoints[i].y);
         }
         
-        // Рисуем точки
         this.points.forEach(point => {
             this.graphics.beginFill(parseInt(this.color.replace('#', '0x')), 0.8);
             this.graphics.drawCircle(point.x, point.y, 8);
@@ -309,7 +357,6 @@ function startAnimationLoop() {
             if (path.update(now)) {
                 hasActive = true;
             } else if (path.isComplete) {
-                // Анимация завершена, оставляем путь на месте
                 hasActive = true;
             }
         }
@@ -325,7 +372,7 @@ function startAnimationLoop() {
     animationFrame = requestAnimationFrame(animate);
 }
 
-// ========== ПОКАЗАТЬ ПУТЬ ГЕРОЯ С АНИМАЦИЕЙ ==========
+// ========== ПОКАЗАТЬ ПУТЬ ГЕРОЯ ==========
 export function showHeroPath(heroId, animated = true) {
     const heroData = heroPathsData[heroId];
     
@@ -334,7 +381,6 @@ export function showHeroPath(heroId, animated = true) {
         return false;
     }
     
-    // Проверяем, не добавлен ли уже этот путь
     const existingPath = activePaths.find(p => p.id === heroId);
     if (existingPath) {
         console.log('Path already active:', heroId);
@@ -344,7 +390,6 @@ export function showHeroPath(heroId, animated = true) {
     console.log('Showing path for hero:', heroData.name);
     
     if (animated) {
-        // Создаём анимированный путь
         const animatedPath = new AnimatedPath(heroData.points, heroData.color, 4, 2000);
         animatedPath.start();
         
@@ -359,7 +404,6 @@ export function showHeroPath(heroId, animated = true) {
         
         startAnimationLoop();
     } else {
-        // Без анимации
         const { graphics } = drawSmoothPath(heroData.points, heroData.color, 4);
         if (graphics) {
             linesLayer.addChild(graphics);

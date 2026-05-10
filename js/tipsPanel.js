@@ -52,11 +52,7 @@ export function showTips(data, markerId, markerX, markerY) {
         return;
     }
     container.appendChild(tipEl);
-    
-    setTimeout(() => {
-        positionTip(tipEl, markerX, markerY);
-        tipEl.style.opacity = '1';
-    }, 10);
+
     
     const closeBtn = tipEl.querySelector('.tips-close');
     closeBtn.addEventListener('click', (e) => {
@@ -111,10 +107,13 @@ export function showScrollRestoreNotification(savedPosition) {
     
     container.appendChild(scrollNotification);
     
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         positionNotificationInCorner(scrollNotification);
-        scrollNotification.style.opacity = '1';
-    }, 10);
+    
+        requestAnimationFrame(() => {
+            scrollNotification.classList.add('open');
+        });
+    });
     
     const closeBtn = scrollNotification.querySelector('.scroll-close');
     closeBtn.addEventListener('click', (e) => {
@@ -261,3 +260,5 @@ export function updateTipsPositions(markersPositions) {
 export function isTipOpen(markerId) {
     return activeTips.some(tip => tip.markerId === markerId);
 }
+
+

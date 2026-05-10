@@ -11,7 +11,6 @@ export function initNaymAnimation() {
     container.innerHTML = '';
     container.style.position = 'relative';
     container.style.width = '100%';
-    container.style.minHeight = '600px';
     container.style.overflow = 'visible';
     
     let spineCharacter = null;
@@ -20,14 +19,7 @@ export function initNaymAnimation() {
     
     // ========== СОЗДАНИЕ ШКАЛЫ ==========
     const scaleContainer = document.createElement('div');
-    scaleContainer.style.cssText = `
-        position: absolute;
-        bottom: 240px;
-        left: 120px;
-        width: 73px;
-        height: 278px;
-        z-index: 1001;
-    `;
+scaleContainer.className = 'naym-scale-container';
     
     // SVG шкалы
     const scaleSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -98,6 +90,7 @@ export function initNaymAnimation() {
     
     // Полоса для заполнения
     const fillRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    fillRect.classList.add('naym-fill');
     fillRect.setAttribute('x', '0');
     fillRect.setAttribute('y', '0');
     fillRect.setAttribute('width', '73');
@@ -127,7 +120,45 @@ export function initNaymAnimation() {
     // ========== КРУГ ДЛЯ ПЕРЕТАСКИВАНИЯ ==========
     const handle = document.createElement('div');
     handle.className = 'naym-handle';
+    handle.style.touchAction = 'none';
     scaleContainer.appendChild(handle);
+
+    // ========== ОБРАБОТЧИКИ ДЛЯ ТЕЛЕФОНА ==========
+handle.addEventListener('touchstart', (e) => {
+    if (isLightningPlaying) return;
+    e.preventDefault();
+    e.stopPropagation();
+    
+    isDragging = true;
+    handle.style.cursor = 'grabbing';
+    
+    const currentTop = parseFloat(handle.style.top);
+    startY = e.touches[0].clientY;
+    startTop = isNaN(currentTop) ? 0 : currentTop;
+});
+
+document.addEventListener('touchmove', (e) => {
+    if (!isDragging || isLightningPlaying) return;
+    e.preventDefault();
+    
+    const deltaY = e.touches[0].clientY - startY;
+    let newTop = startTop + deltaY;
+    
+    const containerHeight = scaleContainer.clientHeight;
+    const scale = containerHeight / 278;
+    const minTop = (minHandleY - handleRadius) * scale;
+    const maxTop = (maxHandleY - handleRadius) * scale;
+    
+    if (newTop < minTop) newTop = minTop;
+    newTop = Math.max(minTop, Math.min(newTop, maxTop));
+    
+    updateProgressFromTop(newTop);
+}, { passive: false });
+
+document.addEventListener('touchend', () => {
+    isDragging = false;
+    handle.style.cursor = 'grab';
+});
     
     // ========== ЛОГИКА ПЕРЕТАСКИВАНИЯ ==========
     let isDragging = false;
@@ -261,16 +292,16 @@ export function initNaymAnimation() {
     // ========== SPINE АНИМАЦИЯ ==========
     function initApp() {
         const containerWidth = container.clientWidth;
-        const containerHeight = 500;
+        const containerHeight = 300;
         
         app = new PIXI.Application({
             width: containerWidth,
             height: containerHeight,
             backgroundAlpha: 0,
-            antialias: false,
-            resolution: 1,
-            autoDensity: false,
-            powerPreference: "high-performance"
+            antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
+            resolution: window.devicePixelRatio || 1,           // Не используй retina-разрешение
+            autoDensity: true,      // Отключи авто-плотность
+            powerPreference: "high-performance"  // Запрос высокой производительности
         });
         
         container.appendChild(app.view);
@@ -279,6 +310,10 @@ export function initNaymAnimation() {
         canvas.style.width = '100%';
         canvas.style.height = 'auto';
         canvas.style.display = 'block';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.touchAction = 'all'; // ← ДОБАВЬ ЭТУ СТРОКУ - разрешаем скролл
+        canvas.style.cursor = 'default';    // ← меняем курсор
+        canvas.style.userSelect = 'none';   // ← запрещаем выделение
     }
     
     function updateSizeAndPosition() {

@@ -27,8 +27,8 @@ export function initBattleAnimation() {
             height: containerHeight,
             backgroundAlpha: 0,
             antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
-            resolution: 1,           // Не используй retina-разрешение
-            autoDensity: false,      // Отключи авто-плотность
+            resolution: window.devicePixelRatio || 1,           // Не используй retina-разрешение
+            autoDensity: true,      // Отключи авто-плотность
             powerPreference: "high-performance"  // Запрос высокой производительности
         });
         
@@ -38,6 +38,7 @@ export function initBattleAnimation() {
         canvas.style.width = '100%';
         canvas.style.height = 'auto';
         canvas.style.display = 'block';
+        canvas.style.pointerEvents = 'none';
     }
     
     function updateSizeAndPosition() {

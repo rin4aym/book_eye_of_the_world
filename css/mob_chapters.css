@@ -1,0 +1,323 @@
+@media (max-width: 500px) {
+
+    .blue_btn {
+        display: none !important;
+    }
+
+    .mobile-bottom-menu.m_chap{
+        background: rgba(54, 63, 75, 0.8); /* 50% прозрачности */
+    }
+    
+    .container{
+        max-width: 100vw;
+        margin: 0 auto;
+        background-color: white;
+    }
+    
+    .container_without{
+        max-width: 100vw;
+        margin: 0 auto;
+    }
+    
+    
+    .chapter{
+        padding-top: 48px;
+        display: flex;
+        justify-content: center;
+        
+    }
+    
+    
+    .chapter h1{
+        font-size: 28px;
+        color: var(--ui);
+        max-width: 300px;
+        text-align: center;
+    }
+    
+    
+    
+    .top{
+        margin-top: 72px;
+    }
+    
+    .chapter_orn {
+        margin-bottom: -10px;
+        max-width: 1160px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .chapter_orn svg {
+        width: 100%;
+        max-width: 1160px; /* или любое другое значение */
+        height: auto;
+    }
+    
+    .end_orn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 24px;
+    }
+    
+    .end_orn svg {
+        width: 100%;
+        max-width: 300px; /* или любое другое значение */
+        height: auto;
+    }
+    
+    .end_chapter{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -35px;
+    }
+    
+    .end_chapter svg {
+        margin-bottom: -72px;
+        max-width: 1160px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .start_orn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 32px;
+    }
+    
+    .start_orn svg {
+        width: 100%;
+        max-width: 300px; /* или любое другое значение */
+        height: auto;
+    }
+    
+    .text{
+        padding: none;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    
+    .chapter_number{
+        padding: 16px 0px 24px 0px;
+        text-align: center;
+    }
+    
+    .chapter_number h1 {
+        font-size: var(--current-head-size);
+        color: var(--ui);
+    }
+    
+    .text p{
+        font-size: var(--current-text-size);
+        line-height: var(--current-line-size);
+        text-align: justify;
+        text-indent: 40px;
+    }
+    
+    
+    .animation_rand {
+        width: 100%;
+        position: relative;
+    }
+    
+    .illust{
+        display: flex;
+    }
+    
+    .illust img{
+        width: 100%;
+    }
+    
+    .navig_btns{
+    
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 20px;
+        padding-top: 120px;
+        padding-bottom: 40px;
+    }
+    
+    .blue_btn{
+     transition: 0.2s;
+     cursor: pointer;
+    }
+    
+    
+    .blue_btn:hover .blue_fill{
+        fill: var(--grey);
+    }
+    
+    .blue_btn:active .blue_fill{
+        fill: var(--menu);
+    }
+    
+    .blue_btn.disabled  .blue_fill{
+        fill: var(--grey);
+    }
+    .blue_btn.disabled  {
+        cursor: default;
+    }
+    
+
+
+
+
+
+
+
+/* Контейнер для кнопки и шкалы (общий) */
+.ui-container {
+    position: relative;
+    bottom: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1001;
+}
+
+/* Контейнер шкалы */
+.naym-scale-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: none;
+    height: none;
+    bottom: 0px;
+    left: 0px;
+    margin: 0 auto;
+    margin-bottom: -80px;
+}
+
+.naym-scale-container {
+    touch-action: pan-y; /* разрешаем вертикальный скролл */
+}
+
+.naym-handle {
+    touch-action: none; /* отключаем скролл только на кружке */
+}
+
+.animation_nayn {
+    touch-action: pan-y; /* разрешаем вертикальный скролл */
+    min-height: none;
+}
+
+/* Контейнер шкалы - разрешаем скролл */
+.naym-scale-container {
+    touch-action: pan-y; /* разрешаем скролл на шкале */
+}
+
+
+
+
+
+
+
+
+
+
+}
+
+
+/* Для мобильной версии */
+@media (max-width: 500px) and (orientation: portrait) {
+
+    .tips.scroll-notification {
+        position: fixed !important;
+
+        bottom: 96px !important;
+        left: 16px !important;
+        right: 16px !important;
+
+        width: auto !important;
+
+        background: var(--grey);
+        border: 1px solid rgba(199, 170, 127, 0.3);
+
+        z-index: 10002;
+
+        cursor: pointer;
+
+        padding: 24px;
+
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+
+        border-radius: 16px;
+
+        transform: translateY(500px);
+        opacity: 0;
+
+        transition: transform 0.32s ease, opacity 0.32s ease;
+    }
+
+    /* ОТКРЫТОЕ СОСТОЯНИЕ */
+    .tips.scroll-notification.open {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    /* Заголовок */
+    .tips.scroll-notification .tips-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+    }
+
+    .tips.scroll-notification .tips-title {
+        flex: 1;
+        color: white;
+        font-size: 22px;
+        margin: 0;
+        padding-right: 16px;
+    }
+
+    .tips.scroll-notification .tips-close {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    .tips.scroll-notification .tips-close svg {
+        width: 20px;
+        height: 20px;
+        transition: stroke 0.2s ease;
+    }
+
+    .tips.scroll-notification .tips-close:active svg path {
+        stroke: white;
+    }
+
+    .tips.scroll-notification .tips-text {
+        color: white;
+        font-size: 17px;
+        line-height: 21px;
+        margin: 0;
+    }
+
+    .tips.scroll-notification .go-to-top-link {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-block;
+        color: var(--lightgrey);
+    }
+
+    .tips.scroll-notification .go-to-top-link:active {
+        color: var(--lipa);
+    }
+
+    .mobile-bottom-menu + .tips.scroll-notification {
+        margin-bottom: 98px;
+    }
+}

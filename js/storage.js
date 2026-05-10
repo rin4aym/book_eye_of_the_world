@@ -1,5 +1,6 @@
 // storage.js
-import { showScrollRestoreNotification, closeScrollNotification } from './tipsPanel.js';
+import { showScrollRestoreNotification  } from './tipsPanel.js';
+
 
 const STORAGE_KEY = 'scrollPosition';
 

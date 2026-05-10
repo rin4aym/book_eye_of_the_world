@@ -58,6 +58,20 @@
     --head_size_M: 32px;
     --head_size_L: 50px;
 
+
+
+    --text_mob_S: 15px;
+    --text_mob_M: 17px;
+    --text_mob_L: 20px;
+
+    --line_mob_S: 19px;
+    --line_mob_M: 21px;
+    --line_mob_L: 27px;
+
+    --head_mob_S: 20px;
+    --head_mob_M: 24px;
+    --head_mob_L: 28px;
+
         /* Текущие значения (меняются через JS) */
     --current-text-size: var(--text_size_M);
     --current-line-size: var(--line_size_M);
@@ -109,7 +123,8 @@ p {
     top: 40px;
     width: 56px;
     height: 56px;
-    background: var(--ui);
+    background: rgba(49, 50, 54, 0.7); /* 50% прозрачности */
+    backdrop-filter: blur(10px);
     border: 2px solid transparent;
     cursor: pointer;
     display: flex;
@@ -169,6 +184,31 @@ p {
     pointer-events: none; /* чтобы нельзя было кликнуть */
 }
 
+
+
+
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--menu);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--grey);
+    border-radius: 10px ;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--lightgrey);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: var(--puregold);
+}
 
 
 
@@ -482,3 +522,25 @@ p {
     cursor: not-allowed;
 }
 
+
+/* naym.css */
+
+/* Контейнер шкалы */
+.naym-scale-container {
+    position: absolute;
+    bottom: 240px;
+    left: 120px;
+    width: 73px;
+    height: 278px;
+    z-index: 1001;
+}
+
+
+/* Заливка шкалы */
+.naym-fill {
+    transition: height 0.05s linear;
+}
+
+.naym-fill.active {
+    fill: #8F9CAE;
+}

@@ -21,10 +21,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   let scrollThreshold = 500;
   let lastScrollY = window.scrollY;
   let isHidden = false;
+
   
   function handleScrollButtons() {
     const currentScrollY = window.scrollY;
-    
+
     // Скроллим вниз и прошли порог - скрываем
     if (currentScrollY > scrollThreshold && currentScrollY > lastScrollY && !isHidden) {
       disappearButtons.forEach(btn => {
@@ -97,9 +98,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   if (page === 'map') {
     initMap();
-    initMobileMenu();
     removeRandAnimation();
     removeBattleAnimation();
+    initMobileMenu();
   }
 
 // В секции event

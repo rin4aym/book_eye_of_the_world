@@ -1,13 +1,4 @@
-/* Контейнер для карты */
-#map {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-    background: #000;
-    overflow: hidden;
-}
+
 
 /* Canvas внутри контейнера */
 #map canvas {
@@ -26,7 +17,7 @@ body[data-page="map"] {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background: black;
 }
 
@@ -168,6 +159,8 @@ body[data-page="map"] {
     transition: transform 0.3s ease;
 }
 
+
+
 /* Ховер */
 [data-type="type1"] #sobytie {
     transition: 0.7s;
@@ -178,12 +171,20 @@ body[data-page="map"] {
     transition: transform 0.3s ease;
 }
 
-[data-type="type1"] #sobytie:hover #rectang-group {
-    transform: rotate(45deg);
-}
+@media (hover: hover) {
+    .marker:hover {
+        transform: scale(1.1);
+        opacity: 1;
+    }
 
-[data-type="type1"] #sobytie:hover #circ {
-    fill: var(--grey);
+    [data-type="type1"] #sobytie:hover #rectang-group {
+        transform: rotate(45deg);
+    }
+
+    [data-type="type1"] #sobytie:hover #circ {
+        fill: var(--grey);
+    }
+
 }
 
 [data-type="type1"] #sobytie.active #rectang-group {
@@ -193,6 +194,9 @@ body[data-page="map"] {
 [data-type="type1"] #sobytie.active #circ {
     fill: var(--red);
 }
+
+
+
 
 /* =========================
    TYPE2 (маленький маркер)
@@ -394,17 +398,17 @@ body[data-page="map"] {
     height: 48px;
 
     flex-shrink: 0;
+    border-radius: 50%;
 }
 
 .hero-path-avatar img {
-    width: 100%;
-    height: 100%;
+    width: 48px;
+    height: 48px;
 
     border-radius: 50%;
 
-    object-fit: cover;
-
     border: none;
+    display: block;
 }
 
 /* Темный слой */
@@ -423,6 +427,7 @@ body[data-page="map"] {
     z-index: 1;
 
     transition: opacity 0.2s ease;
+    pointer-events: none;
 }
 
 /* ======================================================
@@ -472,11 +477,12 @@ body[data-page="map"] {
 }
 
 /* ======================================================
-   ACTIVE
+   ACTIVE - ОБВОДКА ВОКРУГ АВАТАРА (БЕЗ СДВИГА)
 ====================================================== */
 
+/* Используем box-shadow вместо border - не влияет на размер */
 .hero-path-item.active .hero-path-avatar img {
-    border: 2px solid #C7AA7F;
+    box-shadow: 0 0 0 2px #C7AA7F;
 }
 
 .hero-path-item.active .hero-path-avatar::before {
@@ -491,38 +497,24 @@ body[data-page="map"] {
     opacity: 1;
 }
 
-/* Обводка */
-
-.hero-path-item.active .hero-path-circle {
+/* Обводка через псевдоэлемент (альтернатива) */
+.hero-path-item.active .hero-path-avatar::after {
+    content: '';
     position: absolute;
-
     top: -2px;
     left: -2px;
     right: -2px;
     bottom: -2px;
-
     border-radius: 50%;
-
-    background: linear-gradient(
-        135deg,
-        #C7AA7F,
-        #785C32,
-        #D9AF72,
-        #9C8460,
-        #F8F4EE
-    );
-
-    -webkit-mask: radial-gradient(
-        transparent 70%,
-        #000 70%
-    );
-
-    mask: radial-gradient(
-        transparent 70%,
-        #000 70%
-    );
-
+    border: 2px solid #C7AA7F;
     pointer-events: none;
+    z-index: 2;
+}
+
+/* Убираем padding, который сдвигал картинку */
+.hero-path-item.active .hero-path-avatar {
+    background: none;
+    padding: 0;
 }
 
 /* ======================================================
@@ -650,13 +642,22 @@ body[data-page="map"] {
 /* Иконка */
 
 .marks-icon {
-    width: 48px;
-    height: 48px;
 
     flex-shrink: 0;
 
     text-align: center;
     align-content: center;
+}
+
+.ev{
+    width: 54px;
+    height: 54px;
+}
+
+.loc{
+    width: 40px;
+    height: 40px;
+    padding-left: 7px;
 }
 
 /* Подпись */

@@ -49,9 +49,6 @@ export function initMap() {
     const canvas = app.view;
     canvas.style.display = 'block';
     
-    if (mobile) {
-        canvas.style.touchAction = 'none';
-    }
 
     const camera = new PIXI.Container();
     app.stage.addChild(camera);

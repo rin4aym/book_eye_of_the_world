@@ -25,10 +25,10 @@ export function initIschezAnimation() {
             width: containerWidth,
             height: containerHeight,
             backgroundAlpha: 0,
-            antialias: false,
-            resolution: 1,
-            autoDensity: false,
-            powerPreference: "high-performance"
+            antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
+            resolution: window.devicePixelRatio || 1,           // Не используй retina-разрешение
+            autoDensity: true,      // Отключи авто-плотность
+            powerPreference: "high-performance"  // Запрос высокой производительности
         });
         
         container.appendChild(app.view);
@@ -37,6 +37,7 @@ export function initIschezAnimation() {
         canvas.style.width = '100%';
         canvas.style.height = 'auto';
         canvas.style.display = 'block';
+        canvas.style.pointerEvents = 'none';
     }
     
     function updateSizeAndPosition() {
