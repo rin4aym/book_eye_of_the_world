@@ -1,4 +1,5 @@
 // textSize.js
+import { playSliderSnapSound } from './sound.js';
 
 const desktopTextSizes = {
     small: {
@@ -102,14 +103,35 @@ export function initTextSizeSlider() {
         updateSliderPosition();
     }
 
-    function getSizeFromPos(pos) {
+    let lastSliderSize = null;
 
-        if (pos < 0.33) return 'small';
+function getSizeFromPos(pos) {
 
-        if (pos > 0.66) return 'large';
+    let size;
 
-        return 'medium';
+    if (pos < 0.33) {
+
+        size = 'small';
+
+    } else if (pos > 0.66) {
+
+        size = 'large';
+
+    } else {
+
+        size = 'medium';
     }
+
+    // звук только при смене позиции
+    if (lastSliderSize !== size) {
+
+        lastSliderSize = size;
+
+        playSliderSnapSound();
+    }
+
+    return size;
+}
 
     sliderContainer.addEventListener('click', (e) => {
 

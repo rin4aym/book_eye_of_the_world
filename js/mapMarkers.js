@@ -37,10 +37,9 @@ export function createMapMarkers(camera) {
     
     let currentMarkersPositions = [];
 
-    // Оригинальные координаты (для десктопной карты)
     const markersConfig = [
         { x: 1667, y: 2488, type: 'type1', number: 1, label: 'Двуречье', chapters: 'Глава 7', eventPage: 'chapter_1.html',
-        description: 'Наше дело не так однозначно, как может показаться: граница обучения кадров является качественно новой ступенью направлений прогрессивного развития. Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: базовый вектор развития представляет собой интересный эксперимент проверки новых предложений. представляет собой интересный эксперимент проверки новых предложений. Время от времени дворец подрагивал, словно сама земля содрогалась от воспоминаний и тяжко вздыхала, не желая поверить в случившееся'},
+        description: 'Описание Двуречья...'},
         { x: 1903, y: 2209, type: 'type1', number: 2, label: 'Шадар Лагот', chapters: 'Глава 8', eventPage: 'chapter_2.html',
         description: 'Описание Шадар Лагот...' },
         { x: 2633, y: 2489, type: 'type1', number: 3, label: 'Лагерь Белоплащников', chapters: 'Глава 9', eventPage: 'chapter_3.html',
@@ -71,9 +70,8 @@ export function createMapMarkers(camera) {
 
     const markers = [];
 
-    // Инициализируем панель с колбэком для деактивации маркера
     summaryPanel = initSummary((closedMarkerId) => {
-        // Деактивируем маркер, который был закрыт
+
         if (closedMarkerId) {
             const marker = document.querySelector(`.map-marker[data-marker-id="${closedMarkerId}"]`);
             if (marker) {

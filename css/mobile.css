@@ -172,11 +172,9 @@
 }
 
 
-/* ========== МОБИЛЬНАЯ ВЕРСИЯ SUMMARY ========== */
 @media (max-width: 500px) and (orientation: portrait) {
 
     
-    /* Десктопная версия скрыта */
     .summary {
         display: none !important;
     }

@@ -1,5 +1,7 @@
 // mobileMenu.js
 
+import { playMobileMenuSound } from './sound.js';
+
 export function initMobileMenu() {
     const isMobile = window.innerWidth <= 500;
     const mobileMenu = document.querySelector('.mobile-bottom-menu');
@@ -21,6 +23,10 @@ export function initMobileMenu() {
         if (menuItem && menuBtn) {
             const newMenuItem = menuItem.cloneNode(true);
             menuItem.parentNode.replaceChild(newMenuItem, menuItem);
+            
+            // Добавляем звук
+            attachSoundToMobileItem(newMenuItem);
+            
             newMenuItem.addEventListener('click', (e) => {
                 e.stopPropagation();
                 menuBtn.click();
@@ -40,6 +46,7 @@ export function initMobileMenu() {
             if (backItem && backBtn) {
                 const newBackItem = backItem.cloneNode(true);
                 backItem.parentNode.replaceChild(newBackItem, backItem);
+                attachSoundToMobileItem(newBackItem);
                 newBackItem.addEventListener('click', (e) => {
                     e.stopPropagation();
                     backBtn.click();
@@ -49,6 +56,7 @@ export function initMobileMenu() {
             if (marksItem && marksBtn) {
                 const newMarksItem = marksItem.cloneNode(true);
                 marksItem.parentNode.replaceChild(newMarksItem, marksItem);
+                attachSoundToMobileItem(newMarksItem);
                 newMarksItem.addEventListener('click', (e) => {
                     e.stopPropagation();
                     marksBtn.click();
@@ -58,6 +66,7 @@ export function initMobileMenu() {
             if (pathItem && pathBtn) {
                 const newPathItem = pathItem.cloneNode(true);
                 pathItem.parentNode.replaceChild(newPathItem, pathItem);
+                attachSoundToMobileItem(newPathItem);
                 newPathItem.addEventListener('click', (e) => {
                     e.stopPropagation();
                     pathBtn.click();
@@ -74,6 +83,7 @@ export function initMobileMenu() {
             if (prevItem) {
                 const newPrevItem = prevItem.cloneNode(true);
                 prevItem.parentNode.replaceChild(newPrevItem, prevItem);
+                attachSoundToMobileItem(newPrevItem);
                 
                 if (currentChapter <= 1) {
                     newPrevItem.style.opacity = '0.5';
@@ -91,6 +101,7 @@ export function initMobileMenu() {
             if (upItem) {
                 const newUpItem = upItem.cloneNode(true);
                 upItem.parentNode.replaceChild(newUpItem, upItem);
+                attachSoundToMobileItem(newUpItem);
                 newUpItem.addEventListener('click', (e) => {
                     e.stopPropagation();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -102,6 +113,7 @@ export function initMobileMenu() {
             if (mapItem) {
                 const newMapItem = mapItem.cloneNode(true);
                 mapItem.parentNode.replaceChild(newMapItem, mapItem);
+                attachSoundToMobileItem(newMapItem);
                 newMapItem.addEventListener('click', (e) => {
                     e.stopPropagation();
                     window.location.href = 'map.html';
@@ -113,6 +125,7 @@ export function initMobileMenu() {
             if (nextItem) {
                 const newNextItem = nextItem.cloneNode(true);
                 nextItem.parentNode.replaceChild(newNextItem, nextItem);
+                attachSoundToMobileItem(newNextItem);
                 
                 if (currentChapter >= totalChapters) {
                     newNextItem.style.opacity = '0.5';
@@ -129,6 +142,22 @@ export function initMobileMenu() {
     } else {
         mobileMenu.style.display = 'none';
     }
+}
+
+// Функция для привязки звука к элементу мобильного меню
+function attachSoundToMobileItem(item) {
+    if (!item) return;
+    
+    // Удаляем старый атрибут, чтобы звук точно добавился
+    delete item.dataset.mobileSoundAttached;
+    
+    // Добавляем обработчик звука
+    item.addEventListener('pointerdown', () => {
+        playMobileMenuSound();
+    }, { passive: true });
+    
+    // Помечаем, что звук привязан
+    item.dataset.mobileSoundAttached = 'true';
 }
 
 function getCurrentChapter() {

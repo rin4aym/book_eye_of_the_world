@@ -2,7 +2,7 @@
 import { initCover } from './index.js';
 import { initMap } from './map.js';
 import { initMenuButton } from './menu.js';
-import { initSoundToggle } from './sound.js';
+import { initSoundToggle, playClickSound } from './sound.js';
 import { initTextSizeSlider } from './textSize.js';
 import { initFullscreenToggle } from './fullscreen.js';
 import { removeRandAnimation } from './Rand_anim.js';
@@ -10,11 +10,31 @@ import { removeBattleAnimation } from './Battle.js';
 import { saveScrollPosition, restoreScrollPosition } from './storage.js';
 import { initWelcomePopup } from './welcome.js';
 import { initMobileMenu } from './toolbar.js';
-
-
+import { initBackgroundMusic, switchMusicForPage } from './music.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const page = document.body.dataset.page;
+
+  // ========== ИНИЦИАЛИЗАЦИЯ МУЗЫКИ ==========
+  // Инициализируем музыку на всех страницах
+  initBackgroundMusic();
+
+  // Отслеживаем переходы между страницами для смены музыки
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (link && link.href && !link.target) {
+      const url = new URL(link.href);
+      const pathname = url.pathname;
+      
+      if (pathname.includes('map.html')) {
+        switchMusicForPage('map');
+      } else if (pathname.includes('index.html') || pathname === '/' || pathname === '/index.html') {
+        switchMusicForPage('index');
+      } else if (pathname.includes('chapter_')) {
+        switchMusicForPage('event');
+      }
+    }
+  });
 
   // Кнопки, которые исчезают при скролле вниз и появляются при скролле вверх
   const disappearButtons = document.querySelectorAll('.btn.disappear');
@@ -22,7 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   let lastScrollY = window.scrollY;
   let isHidden = false;
 
-  
   function handleScrollButtons() {
     const currentScrollY = window.scrollY;
 
@@ -94,6 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (page === 'index') {
     initCover();
+    initWelcomePopup(); // Приветственное окно только на главной
   }
   
   if (page === 'map') {
@@ -103,21 +123,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     initMobileMenu();
   }
 
-// В секции event
-if (page === 'event') {
-  restoreScrollPosition();
-  
-  // Сохраняем при скролле с задержкой
-  let saveTimeout;
-  window.addEventListener('scroll', () => {
+  // В секции event
+  if (page === 'event') {
+    restoreScrollPosition();
+    
+    // Сохраняем при скролле с задержкой
+    let saveTimeout;
+    window.addEventListener('scroll', () => {
       if (saveTimeout) clearTimeout(saveTimeout);
       saveTimeout = setTimeout(() => {
-          saveScrollPosition();
+        saveScrollPosition();
       }, 500);
-  });
-  
-  window.addEventListener('beforeunload', saveScrollPosition);
-}
-
-
+    });
+    
+    window.addEventListener('beforeunload', saveScrollPosition);
+  }
 });

@@ -83,31 +83,24 @@ export function initBattleAnimation() {
                     y: bounds.y
                 };
                 
-                console.log('Battle animation bounds:', originalBounds);
                 
                 updateSizeAndPosition();
                 app.stage.addChild(spineCharacter);
                 
-                // Запускаем зацикленную анимацию
-                // Получаем список всех анимаций
+
                 const animations = spineCharacter.state.data.skeletonData.animations;
                 console.log('Available animations:', animations.map(a => a.name));
                 
-                // Запускаем первую анимацию зацикленно, или можно указать конкретную
                 if (animations && animations.length > 0) {
                     const firstAnimation = animations[0].name;
                     spineCharacter.state.setAnimation(0, firstAnimation, true);
-                    console.log('Playing animation:', firstAnimation);
                 } else {
-                    // Если анимаций нет в списке, пробуем стандартные названия
                     const possibleAnimations = ["animation", "idle", "battle", "fight", "attack"];
                     for (const animName of possibleAnimations) {
                         try {
                             spineCharacter.state.setAnimation(0, animName, true);
-                            console.log('Playing animation:', animName);
                             break;
                         } catch(e) {
-                            // анимации с таким именем нет
                         }
                     }
                 }
