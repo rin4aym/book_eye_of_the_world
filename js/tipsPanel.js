@@ -1,10 +1,14 @@
-// tipsPanel.js (дополненный)
+// tipsPanel.js
 
 let activeTips = [];
 let onTipOpenCallback = null;
 let onTipCloseCallback = null;
 let scrollNotification = null;
 let notificationTimeout = null;
+
+// Для мобильных подсказок
+let mobileTip = null;
+let currentMobileMarkerId = null;
 
 export function initTips(onOpen, onClose) {
     const tipsContainer = document.createElement('div');
@@ -14,20 +18,114 @@ export function initTips(onOpen, onClose) {
     onTipOpenCallback = onOpen;
     onTipCloseCallback = onClose;
     
+    // Создаем мобильную подсказку
+    createMobileTip();
+    
     console.log('Tips container created');
     return tipsContainer;
+}
+
+function createMobileTip() {
+    // Удаляем старую, если есть
+    if (mobileTip) {
+        mobileTip.remove();
+    }
+    
+    mobileTip = document.createElement('div');
+    mobileTip.className = 'tips-mobile';
+    mobileTip.innerHTML = `
+        <div class="tips-mobile-header">
+            <h4 class="tips-mobile-title"></h4>
+            <div class="tips-mobile-close">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4L4 12M4 4L12 12" stroke="#585C62" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="tips-mobile-content">
+            <p class="tips-mobile-text"></p>
+        </div>
+    `;
+    
+    document.body.appendChild(mobileTip);
+    
+    // Закрытие по клику на крестик
+    const closeBtn = mobileTip.querySelector('.tips-mobile-close');
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeCurrentMobileTip();
+    });
+    
+    // Закрытие по клику на саму подсказку (но не на крестик)
+    mobileTip.addEventListener('click', (e) => {
+        if (!e.target.closest('.tips-mobile-close')) {
+            closeCurrentMobileTip();
+        }
+    });
+}
+
+function isMobile() {
+    return window.innerWidth <= 500;
+}
+
+function showMobileTip(data, markerId) {
+    if (!mobileTip) {
+        createMobileTip();
+    }
+    
+    // Закрываем текущую подсказку, если открыта другая
+    if (currentMobileMarkerId && currentMobileMarkerId !== markerId) {
+        closeCurrentMobileTip();
+    }
+    
+    // Заполняем данные
+    const titleEl = mobileTip.querySelector('.tips-mobile-title');
+    const textEl = mobileTip.querySelector('.tips-mobile-text');
+    
+    titleEl.textContent = data.title || '';
+    textEl.textContent = data.text || 'Нет описания';
+    
+    // Показываем подсказку
+    mobileTip.classList.add('open');
+    currentMobileMarkerId = markerId;
+    
+    if (onTipOpenCallback) {
+        onTipOpenCallback(markerId);
+    }
+    
+    console.log('Mobile tip shown for marker:', markerId);
+}
+
+function closeCurrentMobileTip() {
+    if (mobileTip) {
+        mobileTip.classList.remove('open');
+        
+        if (currentMobileMarkerId && onTipCloseCallback) {
+            onTipCloseCallback(currentMobileMarkerId);
+        }
+        
+        currentMobileMarkerId = null;
+        console.log('Mobile tip closed');
+    }
 }
 
 export function showTips(data, markerId, markerX, markerY) {
     console.log('showTips called:', { markerId, markerX, markerY, data });
     
+    // Проверяем, открыта ли уже эта подсказка
     const existingTip = activeTips.find(tip => tip.markerId === markerId);
-    
     if (existingTip) {
         closeTips(markerId);
         return;
     }
     
+    // НА МОБИЛЬНЫХ - показываем мобильную подсказку
+    if (isMobile()) {
+        showMobileTip(data, markerId);
+        return;
+    }
+    
+    // НА ДЕСКТОПЕ - создаем обычную подсказку
     const tipEl = document.createElement('div');
     tipEl.className = 'tips';
     tipEl.setAttribute('data-marker-id', markerId);
@@ -52,7 +150,9 @@ export function showTips(data, markerId, markerX, markerY) {
         return;
     }
     container.appendChild(tipEl);
-
+    
+    // Позиционируем подсказку
+    positionTip(tipEl, markerX, markerY);
     
     const closeBtn = tipEl.querySelector('.tips-close');
     closeBtn.addEventListener('click', (e) => {
@@ -217,6 +317,15 @@ function positionTip(tipEl, markerX, markerY) {
 }
 
 export function closeTips(markerId) {
+    // Для мобильных
+    if (isMobile()) {
+        if (currentMobileMarkerId === markerId) {
+            closeCurrentMobileTip();
+        }
+        return;
+    }
+    
+    // Для десктопа
     const tipIndex = activeTips.findIndex(tip => tip.markerId === markerId);
     
     if (tipIndex !== -1) {
@@ -233,6 +342,13 @@ export function closeTips(markerId) {
 }
 
 export function closeAllTips() {
+    // Закрываем мобильную подсказку
+    if (isMobile()) {
+        closeCurrentMobileTip();
+        return;
+    }
+    
+    // Закрываем все десктопные
     const markerIds = activeTips.map(tip => tip.markerId);
     activeTips.forEach(tip => {
         tip.el.remove();
@@ -249,6 +365,9 @@ export function closeAllTips() {
 }
 
 export function updateTipsPositions(markersPositions) {
+    // На мобильных не нужно обновлять позиции
+    if (isMobile()) return;
+    
     activeTips.forEach(tip => {
         const markerData = markersPositions.find(m => String(m.id) === String(tip.markerId));
         if (markerData) {
@@ -258,7 +377,8 @@ export function updateTipsPositions(markersPositions) {
 }
 
 export function isTipOpen(markerId) {
+    if (isMobile()) {
+        return currentMobileMarkerId === markerId;
+    }
     return activeTips.some(tip => tip.markerId === markerId);
 }
-
-

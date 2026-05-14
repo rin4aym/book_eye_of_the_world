@@ -1,3 +1,8 @@
+.menu-mobile,
+.menu-mobile-overlay {
+
+    display: none;
+}
 
 /* Оверлей (затемненный фон) */
 .menu-overlay {
@@ -55,6 +60,23 @@
     flex-direction: column;
     gap: 16px;
 }
+
+.tip path{
+    stroke: var(--grey);
+}
+
+
+.tip:hover  path{
+    transition: 0.1s ease;
+}
+
+.tip:hover  path{
+    stroke: var(--lightgrey);
+}
+.tip:active  path{
+    stroke: white;
+}
+
 
 .head_close{
     display: flex;

@@ -9,6 +9,11 @@ let effectsToggle = null;
 let musicLabel = null;
 let effectsLabel = null;
 
+let thunderSound = null;
+let molniyaSound = null;
+
+let thunder2Sound = null;
+let kanatSound = null;
 // =========================
 // ЗВУКИ
 // =========================
@@ -25,7 +30,23 @@ let mobileMenuSound = null;
 // TOGGLES
 let toggleSound = null;
 
+// HOVER звук (для наведения)
+let hoverSound = null;
+
+// BTN нажатие звук
+let btnPressSound = null;
+
 let observerInitialized = false;
+
+let stepSound = null;
+
+// Флаг для предотвращения множественных звуков при клике на toggle
+let lastToggleClickTime = 0;
+const TOGGLE_COOLDOWN = 150;
+
+// Флаг для предотвращения множественных звуков ховера
+let lastHoverTime = 0;
+const HOVER_COOLDOWN = 200;
 
 // =========================
 // СОЗДАНИЕ AUDIO
@@ -56,10 +77,31 @@ function initSounds() {
         // TOGGLES (для переключателей И ползунка)
         toggleSound = createAudio('./assets/audio/toggle.mp3', 0.5);
         
+        // HOVER звук (легкий, короткий)
+        hoverSound = createAudio('./assets/audio/button.mp3', 0.3);
+        
+        // BTN нажатие звук
+        btnPressSound = createAudio('./assets/audio/toggle.mp3', 0.5);
+
+        stepSound = createAudio('./assets/audio/step.mp3',  0.7 );
+
+        thunderSound = createAudio('./assets/audio/long_L.mp3', 0.6);
+    molniyaSound = createAudio('./assets/audio/electr.mp3', 0.5);
+
+    thunder2Sound = createAudio('./assets/audio/thunder.mp3', 0.6);
+kanatSound = createAudio('./assets/audio/kanat.mp3', 0.8);
+        
         clickSound.load();
         menuSound.load();
         mobileMenuSound.load();
         toggleSound.load();
+        hoverSound.load();
+        btnPressSound.load();
+        stepSound.load();
+        thunderSound.load();
+molniyaSound.load();
+thunder2Sound.load();
+kanatSound.load();
         
         console.log('Все звуки инициализированы');
     } catch (error) {
@@ -67,12 +109,21 @@ function initSounds() {
     }
 }
 
+
+
+
+
+
+
+
 // =========================
 // PLAY
 // =========================
 
-function playSound(baseAudio) {
-    if (!effectsEnabled) return;
+function playSound(baseAudio, preventCooldown = false) {
+    if (!effectsEnabled) {
+        return;
+    }
     if (!baseAudio) return;
     
     try {
@@ -108,11 +159,56 @@ export function playMobileMenuSound() {
 }
 
 export function playToggleSound() {
+    const now = Date.now();
+    if (now - lastToggleClickTime < TOGGLE_COOLDOWN) {
+        return;
+    }
+    lastToggleClickTime = now;
     playSound(toggleSound);
 }
 
 export function playSliderSnapSound() {
     playSound(toggleSound);
+}
+
+// HOVER звук (с защитой от спама)
+export function playHoverSound() {
+    if (!effectsEnabled) return;
+    
+    const now = Date.now();
+    if (now - lastHoverTime < HOVER_COOLDOWN) {
+        return;
+    }
+    lastHoverTime = now;
+    playSound(hoverSound);
+}
+
+// Звук нажатия на кнопку
+export function playBtnPressSound() {
+    playSound(btnPressSound);
+}
+
+// Добавьте экспортируемую функцию:
+export function playStepSound() {
+    playSound(stepSound);
+}
+
+// В конце файла, вместе с другими экспортами:
+export function playThunderSound() {
+    playSound(thunderSound);
+}
+
+export function playMolniyaSound() {
+    playSound(molniyaSound);
+}
+
+// В конце файла, добавьте экспорты:
+export function playThunder2Sound() {
+    playSound(thunder2Sound);
+}
+
+export function playKanatSound() {
+    playSound(kanatSound);
 }
 
 // =========================
@@ -123,7 +219,7 @@ export function initSoundToggle() {
     initSounds();
     
     // =========================
-    // MUSIC TOGGLE
+    // MUSIC TOGGLE (десктопный)
     // =========================
     
     musicToggle = document.querySelector('.toggle[data-sound="music"]');
@@ -140,6 +236,10 @@ export function initSoundToggle() {
         updateMusicToggleState();
         updateMusicLabelColor();
         
+        const newMusicToggle = musicToggle.cloneNode(true);
+        musicToggle.parentNode?.replaceChild(newMusicToggle, musicToggle);
+        musicToggle = newMusicToggle;
+        
         musicToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             playToggleSound();
@@ -148,7 +248,7 @@ export function initSoundToggle() {
     }
     
     // =========================
-    // EFFECTS TOGGLE
+    // EFFECTS TOGGLE (десктопный)
     // =========================
     
     effectsToggle = document.querySelector('.toggle[data-sound="effects"]');
@@ -164,6 +264,10 @@ export function initSoundToggle() {
         
         updateEffectsToggleState();
         updateEffectsLabelColor();
+        
+        const newEffectsToggle = effectsToggle.cloneNode(true);
+        effectsToggle.parentNode?.replaceChild(newEffectsToggle, effectsToggle);
+        effectsToggle = newEffectsToggle;
         
         effectsToggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -207,17 +311,51 @@ function addSoundsToElements() {
     }, 'mouseenter');
     
     // =========================
+    // .btn КНОПКИ - HOVER (наведение)
+    // =========================
+    addSound('.btn', () => {
+        playHoverSound();
+    }, 'mouseenter');
+    
+    // =========================
+    // .btn КНОПКИ - НАЖАТИЕ (click)
+    // =========================
+    addSound('.btn', () => {
+        playBtnPressSound();
+    }, 'click');
+    
+    // =========================
+    // #sobytie КНОПКА - HOVER (наведение)
+    // =========================
+    addSound('#sobytie', () => {
+        playHoverSound();
+    }, 'mouseenter');
+    
+    // =========================
+    // #sobytie КНОПКА - НАЖАТИЕ (click)
+    // =========================
+    addSound('#sobytie', () => {
+        playBtnPressSound();
+    }, 'click');
+
+
+    addSound('.blue_btn', () => {
+        playHoverSound();
+    }, 'mouseenter');
+
+    addSound('#blue_btn', () => {
+        playBtnPressSound();
+    }, 'click');
+    
+    // =========================
     // MOBILE MENU ITEM
-    // НО ИСКЛЮЧАЕМ кнопку меню, чтобы не было двойного звука
     // =========================
     const mobileItems = document.querySelectorAll('.mobile-menu-item');
     
     mobileItems.forEach(item => {
-        // ПРОВЕРЯЕМ: если это кнопка меню - пропускаем, она получит звук через addSound('#menuBtn')
         const isMenuButton = item.closest('[data-action="menu"]') !== null;
         
         if (isMenuButton) {
-            console.log('Пропускаем кнопку меню в mobile-menu-item, чтобы избежать двойного звука');
             return;
         }
         
@@ -231,14 +369,14 @@ function addSoundsToElements() {
     });
     
     // =========================
-    // MENU BTN (только для кнопки меню)
+    // MENU BTN
     // =========================
     addSound('#menuBtn', () => {
         playMenuSound();
     });
     
     // =========================
-    // TOGGLE
+    // TOGGLE (десктопные)
     // =========================
     addSound('.toggle', () => {
         playToggleSound();
@@ -247,8 +385,15 @@ function addSoundsToElements() {
     // =========================
     // MOBILE TOGGLE
     // =========================
-    addSound('.menu-mobile-toggle', () => {
-        playToggleSound();
+    const mobileToggles = document.querySelectorAll('.menu-mobile-toggle');
+    mobileToggles.forEach(toggle => {
+        if (toggle.dataset.mobileToggleSoundAttached === 'true') return;
+        toggle.dataset.mobileToggleSoundAttached = 'true';
+        
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playToggleSound();
+        });
     });
     
     // =========================
@@ -287,6 +432,8 @@ export function toggleMusic() {
     
     const event = new CustomEvent('musicToggle', { detail: { enabled: musicEnabled } });
     window.dispatchEvent(event);
+    
+    console.log('Музыка:', musicEnabled ? 'включена' : 'выключена');
 }
 
 // =========================
@@ -301,6 +448,8 @@ export function toggleEffects() {
     
     const event = new CustomEvent('effectsToggle', { detail: { enabled: effectsEnabled } });
     window.dispatchEvent(event);
+    
+    console.log('Эффекты:', effectsEnabled ? 'включены' : 'выключены');
 }
 
 // =========================
@@ -314,6 +463,15 @@ function updateMusicToggleState() {
     } else {
         musicToggle.classList.remove('active');
     }
+    
+    const mobileMusicToggle = document.querySelector('.menu-mobile-toggle[data-sound="music"]');
+    if (mobileMusicToggle) {
+        if (musicEnabled) {
+            mobileMusicToggle.classList.add('active');
+        } else {
+            mobileMusicToggle.classList.remove('active');
+        }
+    }
 }
 
 function updateEffectsToggleState() {
@@ -322,6 +480,15 @@ function updateEffectsToggleState() {
         effectsToggle.classList.add('active');
     } else {
         effectsToggle.classList.remove('active');
+    }
+    
+    const mobileEffectsToggle = document.querySelector('.menu-mobile-toggle[data-sound="effects"]');
+    if (mobileEffectsToggle) {
+        if (effectsEnabled) {
+            mobileEffectsToggle.classList.add('active');
+        } else {
+            mobileEffectsToggle.classList.remove('active');
+        }
     }
 }
 
@@ -341,7 +508,7 @@ function updateEffectsLabelColor() {
     if (effectsEnabled) {
         effectsLabel.style.color = '#FFFFFF';
     } else {
-        musicLabel.style.color = '#585C62';
+        effectsLabel.style.color = '#585C62';
     }
 }
 
@@ -370,5 +537,12 @@ export function setMusic(enabled) {
 export function setEffects(enabled) {
     if (effectsEnabled !== enabled) {
         toggleEffects();
+    }
+}
+
+export function setThunderSoundDuration(durationMs) {
+    if (thunderSound) {
+        thunderSound.customDuration = durationMs;
+        console.log(`Длительность звука грома установлена: ${durationMs}мс`);
     }
 }

@@ -1,5 +1,7 @@
 // randAnimation.js
 
+import { playStepSound } from './sound.js';
+
 export function initRandAnimation() {
     let container = document.querySelector('.animation_rand');
     if (!container) {
@@ -14,15 +16,15 @@ export function initRandAnimation() {
     uiContainer.className = 'ui-container';
     
     // ========== КАСТОМНАЯ КНОПКА ==========
-    const actionBtn = document.createElement('div');
-    actionBtn.id = 'customActionBtn';
-    actionBtn.className = 'custom-action-btn';
-    actionBtn.innerHTML = `<svg width="126" height="131" viewBox="0 0 126 131" fill="none" xmlns="http://www.w3.org/2000/svg">
+   const actionBtn = document.createElement('div');
+   actionBtn.id = 'customActionBtn';
+   actionBtn.className = 'custom-action-btn';
+   actionBtn.innerHTML = `<svg width="126" height="131" viewBox="0 0 126 131" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g class="rotating-circle-fast">
-    <path d="M49.46 16.5781C59.047 16.5781 70.0626 22.303 78.7256 30.5947C87.392 38.8898 93.4629 49.521 93.4629 59.0781C93.4629 68.8 90.0048 79.0899 84.1182 86.9336C78.2339 94.774 70.0019 100.078 60.4609 100.078C50.8459 100.078 41.5838 95.4809 34.0156 88.1113C26.4498 80.7441 20.6379 70.6598 17.9316 59.8359C15.6105 50.552 18.6365 39.7244 24.7588 31.1777C30.8829 22.6287 39.9448 16.5782 49.46 16.5781Z" stroke="url(#paint0_linear_1136_909)" stroke-width="2"/>
+   <path d="M49.46 16.5781C59.047 16.5781 70.0626 22.303 78.7256 30.5947C87.392 38.8898 93.4629 49.521 93.4629 59.0781C93.4629 68.8 90.0048 79.0899 84.1182 86.9336C78.2339 94.774 70.0019 100.078 60.4609 100.078C50.8459 100.078 41.5838 95.4809 34.0156 88.1113C26.4498 80.7441 20.6379 70.6598 17.9316 59.8359C15.6105 50.552 18.6365 39.7244 24.7588 31.1777C30.8829 22.6287 39.9448 16.5782 49.46 16.5781Z" stroke="url(#paint0_linear_1136_909)" stroke-width="2"/>
 </g>
 <g class="rotating-circle-slow">
-    <path d="M97.7289 31.2235C103.451 40.0825 104.729 53.6627 102.244 66.5882C99.7566 79.5184 93.5668 91.4641 84.733 97.1701C75.7606 102.965 64.2042 105.908 53.4568 105.151C42.7137 104.394 32.8989 99.9575 27.2018 91.1373C21.4645 82.2547 20.1877 70.9611 22.4767 59.5881C24.765 48.2183 30.6051 36.8495 38.9768 27.9046C46.1717 20.217 57.9763 16.5577 69.5107 17.1133C81.0479 17.669 92.0459 22.4249 97.7289 31.2235Z" stroke="url(#paint1_linear_1136_909)" stroke-width="2"/>
+   <path d="M97.7289 31.2235C103.451 40.0825 104.729 53.6627 102.244 66.5882C99.7566 79.5184 93.5668 91.4641 84.733 97.1701C75.7606 102.965 64.2042 105.908 53.4568 105.151C42.7137 104.394 32.8989 99.9575 27.2018 91.1373C21.4645 82.2547 20.1877 70.9611 22.4767 59.5881C24.765 48.2183 30.6051 36.8495 38.9768 27.9046C46.1717 20.217 57.9763 16.5577 69.5107 17.1133C81.0479 17.669 92.0459 22.4249 97.7289 31.2235Z" stroke="url(#paint1_linear_1136_909)" stroke-width="2"/>
 </g>
 <circle cx="60.9639" cy="57.4561" r="26.1514" fill="#404040" stroke="url(#paint2_linear_1136_909)" stroke-width="2"/>
 <circle  class="inner-circle" cx="60.9643" cy="57.4565" r="23.6831" fill="#404040" stroke="url(#paint3_linear_1136_909)" stroke-width="2"/>
@@ -146,6 +148,10 @@ export function initRandAnimation() {
     const clickIncrement = 10;
     const decaySpeed = 1;
     
+    // Флаг для защиты от слишком частых звуков
+    let lastStepTime = 0;
+    const STEP_COOLDOWN = 150; // миллисекунд
+    
     function hideUI() {
         uiContainer.style.display = 'none';
     }
@@ -189,6 +195,31 @@ export function initRandAnimation() {
         }
     }
     
+    function onSpineEvent(entry, event) {
+
+        console.log('Spine event получен:', entry, event);
+    
+        if (!event) {
+            console.log('Нет event');
+            return;
+        }
+    
+        const eventName = event.data?.name || event.name;
+    
+        console.log('Имя события:', eventName);
+    
+        if (eventName === 'step') {
+    
+            const now = Date.now();
+    
+            if (now - lastStepTime >= STEP_COOLDOWN) {
+    
+                lastStepTime = now;
+    
+                playStepSound();
+            }
+        }
+    }
     const animations = [
         { idle: "idle_left_1", step: "left_step_2" },
         { idle: "idle_right_3", step: "right_step_4" },
@@ -220,11 +251,16 @@ export function initRandAnimation() {
         
         isTransitioning = true;
         
+        // Убираем старые слушатели, чтобы не было дублирования
+        spineCharacter.state.listeners = [];
+        
+        // Устанавливаем анимацию шага
         spineCharacter.state.setAnimation(0, currentAnim.step, false);
         
-        const listener = {
+        // Создаем временный слушатель для этой анимации
+        const tempListener = {
             complete: () => {
-                spineCharacter.state.removeListener(listener);
+                spineCharacter.state.removeListener(tempListener);
                 currentAnimationIndex++;
                 
                 if (currentAnimationIndex < animations.length) {
@@ -246,10 +282,11 @@ export function initRandAnimation() {
                 if (!animations[currentAnimationIndex]?.isLast) {
                     startDecay();
                 }
-            }
+            },
+            event: onSpineEvent
         };
         
-        spineCharacter.state.addListener(listener);
+        spineCharacter.state.addListener(tempListener);
     }
     
     actionBtn.addEventListener('click', (e) => {
@@ -265,12 +302,11 @@ export function initRandAnimation() {
             width: containerWidth,
             height: containerHeight,
             backgroundAlpha: 0,
-            antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
-            resolution: window.devicePixelRatio || 1,           // Не используй retina-разрешение
-            autoDensity: true,      // Отключи авто-плотность
-            powerPreference: "high-performance"  // Запрос высокой производительности
+            antialias: false,
+            resolution: window.devicePixelRatio || 1,
+            autoDensity: true,
+            powerPreference: "high-performance"
         });
-
         
         container.appendChild(app.view);
         
@@ -333,6 +369,15 @@ export function initRandAnimation() {
                         spineCharacter.state.data.setMix(anim.step, anim.idle, 0.5);
                     }
                 });
+                
+                // Добавляем глобальный обработчик событий для idle анимации
+                const globalListener = {
+                    event: (entry, event) => {
+                        onSpineEvent(entry, event);
+                    }
+                };
+                
+                spineCharacter.state.addListener(globalListener);
                 
                 spineCharacter.state.setAnimation(0, animations[0].idle, true);
                 uiContainer.classList.add('visible');

@@ -68,7 +68,6 @@ function applyCurrentSize() {
 }
 
 export function initTextSizeSlider() {
-
     applyCurrentSize();
 
     const sliderContainer = document.querySelector('.line_pols');
@@ -79,68 +78,46 @@ export function initTextSizeSlider() {
     const handleWidth = handle.offsetWidth;
 
     function updateSliderPosition() {
-
         const maxLeft = sliderContainer.offsetWidth - handleWidth;
-
         let percent = 0.5;
-
         if (currentSize === 'small') percent = 0;
         if (currentSize === 'large') percent = 1;
-
         handle.style.left = `${percent * maxLeft}px`;
     }
 
     function setSize(size) {
-
         if (size === currentSize) return;
-
         currentSize = size;
-
         localStorage.setItem('textSize', size);
-
         applyCurrentSize();
-
         updateSliderPosition();
     }
 
     let lastSliderSize = null;
 
-function getSizeFromPos(pos) {
+    function getSizeFromPos(pos) {
+        let size;
+        if (pos < 0.33) {
+            size = 'small';
+        } else if (pos > 0.66) {
+            size = 'large';
+        } else {
+            size = 'medium';
+        }
 
-    let size;
-
-    if (pos < 0.33) {
-
-        size = 'small';
-
-    } else if (pos > 0.66) {
-
-        size = 'large';
-
-    } else {
-
-        size = 'medium';
+        // звук только при смене позиции И если эффекты включены
+        if (lastSliderSize !== size) {
+            lastSliderSize = size;
+            // Проверяем, включены ли эффекты через глобальную переменную или событие
+            playSliderSnapSound();
+        }
+        return size;
     }
-
-    // звук только при смене позиции
-    if (lastSliderSize !== size) {
-
-        lastSliderSize = size;
-
-        playSliderSnapSound();
-    }
-
-    return size;
-}
 
     sliderContainer.addEventListener('click', (e) => {
-
         const rect = sliderContainer.getBoundingClientRect();
-
         const x = e.clientX - rect.left;
-
         const pos = x / rect.width;
-
         setSize(getSizeFromPos(pos));
     });
 
@@ -152,15 +129,10 @@ function getSizeFromPos(pos) {
     });
 
     window.addEventListener('mousemove', (e) => {
-
         if (!dragging) return;
-
         const rect = sliderContainer.getBoundingClientRect();
-
         const x = e.clientX - rect.left;
-
         const pos = x / rect.width;
-
         setSize(getSizeFromPos(pos));
     });
 
@@ -174,17 +146,11 @@ function getSizeFromPos(pos) {
     });
 
     window.addEventListener('touchmove', (e) => {
-
         if (!dragging) return;
-
         const touch = e.touches[0];
-
         const rect = sliderContainer.getBoundingClientRect();
-
         const x = touch.clientX - rect.left;
-
         const pos = x / rect.width;
-
         setSize(getSizeFromPos(pos));
     }, { passive: false });
 
@@ -200,12 +166,110 @@ function getSizeFromPos(pos) {
     });
 }
 
+// Функция для мобильного ползунка в меню
+export function initMobileTextSizeSlider() {
+    const sliderContainer = document.querySelector('.menu-mobile-line_pols');
+    const handle = document.querySelector('.menu-mobile-slider-handle');
+    
+    if (!sliderContainer || !handle) return false;
+    
+    let localCurrentSize = localStorage.getItem('textSize') || 'medium';
+    const handleWidth = handle.offsetWidth;
+    
+    function updateSliderPosition() {
+        let percent = 0.5;
+        if (localCurrentSize === 'small') percent = 0;
+        if (localCurrentSize === 'large') percent = 1;
+        const maxLeft = sliderContainer.offsetWidth - handleWidth;
+        handle.style.left = `${percent * maxLeft}px`;
+    }
+    
+    function setSize(size) {
+        if (size === localCurrentSize) return;
+        localCurrentSize = size;
+        localStorage.setItem('textSize', size);
+        applyCurrentSize();
+        updateSliderPosition();
+    }
+    
+    let lastSize = null;
+    
+    function getSizeFromPosition(pos) {
+        let size;
+        if (pos < 0.33) {
+            size = 'small';
+        } else if (pos > 0.66) {
+            size = 'large';
+        } else {
+            size = 'medium';
+        }
+        
+        if (lastSize !== size) {
+            lastSize = size;
+            playSliderSnapSound();
+        }
+        return size;
+    }
+    
+    function updateFromClientX(clientX) {
+        const rect = sliderContainer.getBoundingClientRect();
+        let x = clientX - rect.left;
+        x = Math.max(0, Math.min(x, rect.width - handleWidth));
+        const pos = x / (rect.width - handleWidth);
+        const newSize = getSizeFromPosition(pos);
+        setSize(newSize);
+    }
+    
+    sliderContainer.addEventListener('click', (e) => {
+        updateFromClientX(e.clientX);
+    });
+    
+    let isDragging = false;
+    
+    handle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        isDragging = true;
+    });
+    
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        updateFromClientX(e.clientX);
+    });
+    
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+    
+    handle.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        isDragging = true;
+        const touch = e.touches[0];
+        updateFromClientX(touch.clientX);
+    }, { passive: false });
+    
+    window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        updateFromClientX(touch.clientX);
+    }, { passive: false });
+    
+    window.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+    
+    window.addEventListener('resize', () => {
+        localCurrentSize = localStorage.getItem('textSize') || 'medium';
+        updateSliderPosition();
+    });
+    
+    updateSliderPosition();
+    return true;
+}
+
 export function setTextSize(size) {
-
     currentSize = size;
-
     localStorage.setItem('textSize', size);
-
     applyCurrentSize();
 }
 
@@ -213,6 +277,5 @@ export function getTextSize() {
     return currentSize;
 }
 
-// 🔥 ВАЖНО
 // сразу применяем размер при загрузке файла
 applyCurrentSize();

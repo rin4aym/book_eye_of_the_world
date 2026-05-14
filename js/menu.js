@@ -4,6 +4,7 @@ let menuMobile = null;
 let menuMobileOverlay = null;
 let isMenuOpen = false;
 let onCloseCallback = null;
+let isMenuInitialized = false;
 import { setTextSize, getTextSize } from './textSize.js';
 
 async function loadMenuHTML() {
@@ -377,40 +378,76 @@ function initMobileMenu() {
 }
 
 export async function initMenu(onClose) {
+
+    // НЕ СОЗДАВАТЬ ПОВТОРНО
+    if (menuEl || menuMobile) {
+
+        return {
+            menuEl,
+            menuOverlay
+        };
+    }
+
     onCloseCallback = onClose;
-    
+
     const menuHTML = await loadMenuHTML();
-    
+
     const tempDiv = document.createElement('div');
+
     tempDiv.innerHTML = menuHTML;
-    
+
     menuOverlay = tempDiv.querySelector('.menu-overlay');
     menuEl = tempDiv.querySelector('.menu');
-    
-    if (menuOverlay) document.body.appendChild(menuOverlay);
-    if (menuEl) document.body.appendChild(menuEl);
-    
-    initMobileMenu();
-    
+
     if (menuOverlay) {
+        document.body.appendChild(menuOverlay);
+    }
+
+    if (menuEl) {
+        document.body.appendChild(menuEl);
+    }
+
+    initMobileMenu();
+
+    // =========================
+    // OVERLAY
+    // =========================
+
+    if (menuOverlay) {
+
         menuOverlay.addEventListener('click', closeMenu);
     }
-    
+
+    // =========================
+    // MENU
+    // =========================
+
     if (menuEl) {
-        const closeBtn = menuEl.querySelector('.close') || menuEl.querySelector('.menu-close-btn');
+
+        const closeBtn =
+            menuEl.querySelector('.close') ||
+            menuEl.querySelector('.menu-close-btn');
+
         if (closeBtn) {
+
             closeBtn.addEventListener('click', (e) => {
+
                 e.stopPropagation();
+
                 closeMenu();
             });
         }
-        
+
         menuEl.addEventListener('click', (e) => {
+
             e.stopPropagation();
         });
     }
-    
-    return { menuEl, menuOverlay };
+
+    return {
+        menuEl,
+        menuOverlay
+    };
 }
 
 export function openMenu() {
@@ -456,16 +493,37 @@ export function isMenuOpenState() {
 }
 
 export async function initMenuButton(menuBtnId = 'menuBtn') {
-    await initMenu();
-    
-    const menuBtn = document.getElementById(menuBtnId);
-    if (!menuBtn) {
-        throw new Error(`Кнопка с id="${menuBtnId}" не найдена в DOM`);
+
+    // УЖЕ ИНИЦИАЛИЗИРОВАНО
+    if (!isMenuInitialized) {
+
+        await initMenu();
+
+        isMenuInitialized = true;
     }
-    
+
+    const menuBtn = document.getElementById(menuBtnId);
+
+    if (!menuBtn) {
+
+        throw new Error(
+            `Кнопка с id="${menuBtnId}" не найдена в DOM`
+        );
+    }
+
+    // защита от повторного listener
+    if (menuBtn.dataset.menuListenerAttached === 'true') {
+        return;
+    }
+
+    menuBtn.dataset.menuListenerAttached = 'true';
+
     menuBtn.addEventListener('click', (e) => {
+
         e.stopPropagation();
+
         toggleMenu();
     });
+
     console.log('Меню успешно инициализировано');
 }

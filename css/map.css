@@ -207,13 +207,19 @@ body[data-page="map"] {
     display: block;
 }
 
-[data-type="type2"] #type2-marker:hover circle {
-    fill: var(--grey);
+@media (hover: hover) {
+    [data-type="type2"] #type2-marker:hover circle {
+        fill: var(--grey);
+    }
+    
 }
 
 [data-type="type2"] #type2-marker.active circle {
     fill: var(--red);
 }
+
+
+
 
 
 
