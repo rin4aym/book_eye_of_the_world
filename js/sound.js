@@ -14,6 +14,9 @@ let molniyaSound = null;
 
 let thunder2Sound = null;
 let kanatSound = null;
+
+let screamSound = null;
+
 // =========================
 // ЗВУКИ
 // =========================
@@ -47,6 +50,10 @@ const TOGGLE_COOLDOWN = 150;
 // Флаг для предотвращения множественных звуков ховера
 let lastHoverTime = 0;
 const HOVER_COOLDOWN = 200;
+
+// ========== ДЛЯ ОСТАНОВКИ МУЗЫКИ ПРИ СВОРАЧИВАНИИ ==========
+let backgroundMusicElement = null; // ссылка на текущий элемент музыки
+let isPageVisible = true;
 
 // =========================
 // СОЗДАНИЕ AUDIO
@@ -83,13 +90,14 @@ function initSounds() {
         // BTN нажатие звук
         btnPressSound = createAudio('./assets/audio/toggle.mp3', 0.5);
 
-        stepSound = createAudio('./assets/audio/step.mp3',  0.7 );
+        stepSound = createAudio('./assets/audio/step.mp3', 0.7);
 
         thunderSound = createAudio('./assets/audio/long_L.mp3', 0.6);
-    molniyaSound = createAudio('./assets/audio/electr.mp3', 0.5);
+        molniyaSound = createAudio('./assets/audio/electr.mp3', 0.5);
 
-    thunder2Sound = createAudio('./assets/audio/thunder.mp3', 0.6);
-kanatSound = createAudio('./assets/audio/kanat.mp3', 0.8);
+        thunder2Sound = createAudio('./assets/audio/thunder.mp3', 0.6);
+        kanatSound = createAudio('./assets/audio/kanat.mp3', 0.8);
+        screamSound = createAudio('./assets/audio/scream.mp3', 0.8);
         
         clickSound.load();
         menuSound.load();
@@ -99,22 +107,16 @@ kanatSound = createAudio('./assets/audio/kanat.mp3', 0.8);
         btnPressSound.load();
         stepSound.load();
         thunderSound.load();
-molniyaSound.load();
-thunder2Sound.load();
-kanatSound.load();
+        molniyaSound.load();
+        thunder2Sound.load();
+        kanatSound.load();
+        screamSound.load();
         
         console.log('Все звуки инициализированы');
     } catch (error) {
         console.warn('Ошибка загрузки звуков:', error);
     }
 }
-
-
-
-
-
-
-
 
 // =========================
 // PLAY
@@ -188,12 +190,10 @@ export function playBtnPressSound() {
     playSound(btnPressSound);
 }
 
-// Добавьте экспортируемую функцию:
 export function playStepSound() {
     playSound(stepSound);
 }
 
-// В конце файла, вместе с другими экспортами:
 export function playThunderSound() {
     playSound(thunderSound);
 }
@@ -202,7 +202,6 @@ export function playMolniyaSound() {
     playSound(molniyaSound);
 }
 
-// В конце файла, добавьте экспорты:
 export function playThunder2Sound() {
     playSound(thunder2Sound);
 }
@@ -211,12 +210,83 @@ export function playKanatSound() {
     playSound(kanatSound);
 }
 
+// ========== ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ФОНОВОЙ МУЗЫКОЙ ==========
+
+// Регистрация элемента фоновой музыки
+export function registerBackgroundMusic(audioElement) {
+    backgroundMusicElement = audioElement;
+}
+
+// Пауза музыки при сворачивании
+function pauseMusicOnHide() {
+    if (backgroundMusicElement && musicEnabled && !backgroundMusicElement.paused) {
+        backgroundMusicElement.pause();
+        console.log('Музыка приостановлена (страница скрыта)');
+    }
+}
+
+// Возобновление музыки при возвращении
+function resumeMusicOnShow() {
+    if (backgroundMusicElement && musicEnabled && backgroundMusicElement.paused && isPageVisible) {
+        const playPromise = backgroundMusicElement.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.debug('Ошибка возобновления музыки:', error);
+            });
+        }
+        console.log('Музыка возобновлена (страница видима)');
+    }
+}
+
+// Обработчик видимости страницы
+function handleVisibilityChange() {
+    isPageVisible = !document.hidden;
+    
+    if (isPageVisible) {
+        resumeMusicOnShow();
+    } else {
+        pauseMusicOnHide();
+    }
+}
+
+// Инициализация слушателей видимости страницы
+export function initVisibilityHandlers() {
+    // Слушатель для сворачивания/разворачивания страницы
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Слушатель для события blur (окно потеряло фокус)
+    window.addEventListener('blur', () => {
+        if (backgroundMusicElement && musicEnabled && !backgroundMusicElement.paused) {
+            backgroundMusicElement.pause();
+            console.log('Музыка приостановлена (окно потеряло фокус)');
+        }
+    });
+    
+    // Слушатель для события focus (окно получило фокус)
+    window.addEventListener('focus', () => {
+        if (backgroundMusicElement && musicEnabled && backgroundMusicElement.paused && !document.hidden) {
+            const playPromise = backgroundMusicElement.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.debug('Ошибка возобновления музыки:', error);
+                });
+            }
+            console.log('Музыка возобновлена (окно получило фокус)');
+        }
+    });
+    
+    console.log('Слушатели видимости страницы инициализированы');
+}
+
 // =========================
 // INIT
 // =========================
 
 export function initSoundToggle() {
     initSounds();
+    
+    // Инициализируем слушатели видимости
+    initVisibilityHandlers();
     
     // =========================
     // MUSIC TOGGLE (десктопный)
@@ -338,7 +408,6 @@ function addSoundsToElements() {
         playBtnPressSound();
     }, 'click');
 
-
     addSound('.blue_btn', () => {
         playHoverSound();
     }, 'mouseenter');
@@ -346,27 +415,11 @@ function addSoundsToElements() {
     addSound('#blue_btn', () => {
         playBtnPressSound();
     }, 'click');
-    
-    // =========================
-    // MOBILE MENU ITEM
-    // =========================
-    const mobileItems = document.querySelectorAll('.mobile-menu-item');
-    
-    mobileItems.forEach(item => {
-        const isMenuButton = item.closest('[data-action="menu"]') !== null;
-        
-        if (isMenuButton) {
-            return;
-        }
-        
-        if (item.dataset.mobileSoundAttached === 'true') return;
-        
-        item.dataset.mobileSoundAttached = 'true';
-        
-        item.addEventListener('pointerdown', () => {
-            playMobileMenuSound();
-        }, { passive: true });
-    });
+
+// =========================
+// MOBILE MENU ITEM (ПРАВИЛЬНАЯ ВЕРСИЯ)
+// =========================
+
     
     // =========================
     // MENU BTN
@@ -385,6 +438,9 @@ function addSoundsToElements() {
     // =========================
     // MOBILE TOGGLE
     // =========================
+
+
+    
     const mobileToggles = document.querySelectorAll('.menu-mobile-toggle');
     mobileToggles.forEach(toggle => {
         if (toggle.dataset.mobileToggleSoundAttached === 'true') return;
@@ -432,6 +488,20 @@ export function toggleMusic() {
     
     const event = new CustomEvent('musicToggle', { detail: { enabled: musicEnabled } });
     window.dispatchEvent(event);
+    
+    // Если музыку выключили - останавливаем
+    if (!musicEnabled && backgroundMusicElement) {
+        backgroundMusicElement.pause();
+    }
+    // Если музыку включили и страница видима - запускаем
+    if (musicEnabled && backgroundMusicElement && !document.hidden) {
+        const playPromise = backgroundMusicElement.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.debug('Ошибка запуска музыки:', error);
+            });
+        }
+    }
     
     console.log('Музыка:', musicEnabled ? 'включена' : 'выключена');
 }
@@ -545,4 +615,9 @@ export function setThunderSoundDuration(durationMs) {
         thunderSound.customDuration = durationMs;
         console.log(`Длительность звука грома установлена: ${durationMs}мс`);
     }
+
+}
+
+export function playScreamSound() {
+    playSound(screamSound);
 }

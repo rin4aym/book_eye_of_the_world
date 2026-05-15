@@ -8,7 +8,9 @@ const heroPathsDataRaw = {
         name: 'Мор',
         points: [
             { x: 1667, y: 2488 },
+            { x: 1728, y: 2300 },
             { x: 1903, y: 2209 },
+            { x: 2287, y: 2611 },
             { x: 2633, y: 2489 },
             { x: 3031, y: 2589 },
             { x: 3748, y: 1068 }
@@ -18,9 +20,12 @@ const heroPathsDataRaw = {
         color: '#67960F',
         name: 'Ранд',
         points: [
+            { x: 1667, y: 2488 },
             { x: 1728, y: 2300 },
+            { x: 1903, y: 2209 },
             { x: 2287, y: 2611 },
-            { x: 3474, y: 2182 }
+            { x: 3031, y: 2589 },
+            { x: 3748, y: 1068 }
         ]
     },
     per: {
@@ -81,6 +86,8 @@ function transformHeroPaths() {
         };
     }
 }
+
+
 
 // Вызываем трансформацию сразу
 transformHeroPaths();

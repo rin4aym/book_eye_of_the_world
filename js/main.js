@@ -2,7 +2,7 @@
 import { initCover } from './index.js';
 import { initMap } from './map.js';
 import { initMenuButton } from './menu.js';
-import { initSoundToggle, playClickSound } from './sound.js';
+import { initSoundToggle, registerBackgroundMusic } from './sound.js';
 import { initTextSizeSlider } from './textSize.js';
 import { initFullscreenToggle } from './fullscreen.js';
 import { removeRandAnimation } from './Rand_anim.js';
@@ -10,7 +10,8 @@ import { removeBattleAnimation } from './Battle.js';
 import { saveScrollPosition, restoreScrollPosition } from './storage.js';
 import { initWelcomePopup } from './welcome.js';
 import { initMobileMenu } from './toolbar.js';
-import { initBackgroundMusic, switchMusicForPage } from './music.js';
+import { initBackgroundMusic, switchMusicForPage, getBackgroundAudio } from './music.js';
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   const page = document.body.dataset.page;
@@ -18,6 +19,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ========== ИНИЦИАЛИЗАЦИЯ МУЗЫКИ ==========
   // Инициализируем музыку на всех страницах
   initBackgroundMusic();
+  
+  // Получаем ссылку на уже созданный аудиоэлемент из music.js
+  const backgroundAudio = getBackgroundAudio();
+  if (backgroundAudio) {
+    registerBackgroundMusic(backgroundAudio);
+  }
 
   // Отслеживаем переходы между страницами для смены музыки
   document.addEventListener('click', (e) => {
@@ -35,6 +42,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   });
+
+  
 
   // Кнопки, которые исчезают при скролле вниз и появляются при скролле вверх
   const disappearButtons = document.querySelectorAll('.btn.disappear');

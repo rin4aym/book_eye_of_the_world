@@ -1,4 +1,4 @@
-// backgroundMusic.js
+
 
 let audio = null;
 let isMusicEnabled = true;
@@ -9,7 +9,7 @@ let currentPage = null;
 const MUSIC_URLS = {
     index: 'assets/audio/index.mp3',   // музыка для главной страницы
     map: 'assets/audio/map.mp3',       // музыка для карты
-    event: 'assets/audio/event-music.mp3'    // музыка для страниц глав (опционально)
+    event: null                         // для event музыки нет
 };
 
 export function initBackgroundMusic() {
@@ -18,7 +18,14 @@ export function initBackgroundMusic() {
     const page = document.body.dataset.page;
     currentPage = page;
     
-    const musicUrl = MUSIC_URLS[page] || MUSIC_URLS.index;
+    const musicUrl = MUSIC_URLS[page];
+    
+    // Для страницы event музыку не включаем
+    if (page === 'event' || !musicUrl) {
+        console.log('На этой странице музыка не предусмотрена');
+        isInitialized = true;
+        return;
+    }
     
     // Проверяем, есть ли уже аудио для этой страницы
     if (window.backgroundAudio && window.backgroundAudio.src === musicUrl) {
@@ -70,22 +77,43 @@ export function initBackgroundMusic() {
 }
 
 function waitForUserInteraction() {
+
+    let started = false;
+
     const startMusic = () => {
+
+        // Защита от двойного вызова
+        if (started) return;
+
+        started = true;
+
         if (isMusicEnabled && audio && audio.paused) {
-            audio.play().catch(e => console.log('Автовоспроизведение заблокировано:', e));
+
+            audio.play().catch(e => {
+                console.log('Автовоспроизведение заблокировано:', e);
+            });
         }
-        document.removeEventListener('click', startMusic);
-        document.removeEventListener('touchstart', startMusic);
+
+        document.removeEventListener('pointerdown', startMusic);
         document.removeEventListener('keydown', startMusic);
     };
-    
-    document.addEventListener('click', startMusic);
-    document.addEventListener('touchstart', startMusic);
-    document.addEventListener('keydown', startMusic);
-    
+
+    // Вместо click + touchstart
+    document.addEventListener('pointerdown', startMusic, {
+        passive: true,
+        once: true
+    });
+
+    document.addEventListener('keydown', startMusic, {
+        once: true
+    });
+
     // Пробуем сразу
     if (isMusicEnabled && audio) {
-        audio.play().catch(e => console.log('Ожидание взаимодействия пользователя'));
+
+        audio.play().catch(() => {
+            console.log('Ожидание взаимодействия пользователя');
+        });
     }
 }
 
@@ -115,8 +143,24 @@ export function getMusicState() {
     };
 }
 
+// Получить ссылку на текущий аудиоэлемент
+export function getBackgroundAudio() {
+    return audio;
+}
+
 // Переключение музыки для конкретной страницы (при переходе)
 export function switchMusicForPage(page) {
+    // Для страницы event музыку не включаем
+    if (page === 'event') {
+        if (audio) {
+            audio.pause();
+            audio = null;
+            window.backgroundAudio = null;
+        }
+        currentPage = page;
+        return;
+    }
+    
     const musicUrl = MUSIC_URLS[page];
     if (!musicUrl) return;
     
@@ -148,6 +192,17 @@ export function switchMusicForPage(page) {
         }
         
         if (wasPlaying && isMusicEnabled) {
+            audio.play().catch(e => console.log('Ошибка воспроизведения:', e));
+        }
+    } else if (!audio && musicUrl) {
+        // Если аудио нет, создаём новое
+        audio = new Audio(musicUrl);
+        audio.loop = true;
+        audio.volume = 0.5;
+        window.backgroundAudio = audio;
+        currentPage = page;
+        
+        if (isMusicEnabled) {
             audio.play().catch(e => console.log('Ошибка воспроизведения:', e));
         }
     }

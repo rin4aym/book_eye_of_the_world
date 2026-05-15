@@ -1,3 +1,6 @@
+// ischezAnimation.js
+
+import { playScreamSound, isEffectsEnabled } from './sound.js';
 
 export function initIschezAnimation() {
     let container = document.querySelector('.animation_ischez');
@@ -16,6 +19,77 @@ export function initIschezAnimation() {
     let spineCharacter = null;
     let originalBounds = null;
     let app = null;
+    let isVisible = false;
+    let screamInterval = null;
+    
+    // Функция проверки видимости блока
+    function checkVisibility() {
+        if (!container) return false;
+        
+        const rect = container.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        
+        // Блок считается видимым, если он находится в пределах окна
+        const wasVisible = isVisible;
+        isVisible = rect.top <= windowHeight && rect.bottom >= 0;
+        
+        // Если видимость изменилась
+        if (wasVisible !== isVisible) {
+            if (isVisible) {
+                startScreamSound();
+                console.log('Анимация видима, запускаем звук');
+            } else {
+                stopScreamSound();
+                console.log('Анимация скрыта, останавливаем звук');
+            }
+        }
+        
+        return isVisible;
+    }
+    
+    // Запуск циклического звука
+    function startScreamSound() {
+        if (screamInterval) return;
+        
+        // Первый звук сразу
+        playScreamSound();
+        
+        // Повторяем каждые 4 секунды (длина звука scream)
+        screamInterval = setInterval(() => {
+            if (isVisible && isEffectsEnabled()) {
+                playScreamSound();
+            }
+        }, 4000);
+    }
+    
+    // Остановка циклического звука
+    function stopScreamSound() {
+        if (screamInterval) {
+            clearInterval(screamInterval);
+            screamInterval = null;
+        }
+    }
+    
+    // Слушатель скролла для обновления видимости
+    function onScroll() {
+        checkVisibility();
+    }
+    
+    // Инициализация слушателей видимости
+    function initVisibilityHandlers() {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        
+        // Также проверяем при сворачивании/разворачивании вкладки
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopScreamSound();
+                console.log('Вкладка скрыта, останавливаем звук');
+            } else {
+                checkVisibility();
+            }
+        });
+    }
     
     function initApp() {
         const containerWidth = container.clientWidth;
@@ -25,10 +99,10 @@ export function initIschezAnimation() {
             width: containerWidth,
             height: containerHeight,
             backgroundAlpha: 0,
-            antialias: false,        // ОТКЛЮЧИ сглаживание (самое важное!)
-            resolution: window.devicePixelRatio || 1,           // Не используй retina-разрешение
-            autoDensity: true,      // Отключи авто-плотность
-            powerPreference: "high-performance"  // Запрос высокой производительности
+            antialias: false,
+            resolution: window.devicePixelRatio || 1,
+            autoDensity: true,
+            powerPreference: "high-performance"
         });
         
         container.appendChild(app.view);
@@ -61,7 +135,11 @@ export function initIschezAnimation() {
     
     function resize() {
         updateSizeAndPosition();
+        checkVisibility();
     }
+    
+    // Инициализируем слушатели видимости
+    initVisibilityHandlers();
     
     window.addEventListener('resize', resize);
     
@@ -90,10 +168,21 @@ export function initIschezAnimation() {
                 // Запускаем анимацию "animation" зацикленно
                 spineCharacter.state.setAnimation(0, "animation", true);
                 console.log('Playing animation: animation');
+                
+                // Проверяем видимость при старте
+                checkVisibility();
             }, 100);
         });
     
-    return { app, container };
+    // Очистка при удалении
+    return { 
+        app, 
+        container,
+        destroy: () => {
+            stopScreamSound();
+            window.removeEventListener('scroll', onScroll);
+        }
+    };
 }
 
 export function removeIschezAnimation() {
@@ -103,5 +192,9 @@ export function removeIschezAnimation() {
         container.style.minHeight = '';
     }
     
+    // Останавливаем звук при удалении
+    if (window.ischezSpine?.destroy) {
+        window.ischezSpine.destroy();
+    }
     window.ischezSpine = null;
 }

@@ -120,6 +120,7 @@ export function initMap() {
             initPathLines(camera);
             createLightFx(app, camera);      
             createMapMarkers(camera);
+            initMapClickTracking();
             initWindows();
         });
     
@@ -295,6 +296,92 @@ export function initMap() {
         
         app.view.style.cursor = 'grab';
     }
+
+    // Добавьте эту функцию в map.js, например, после функции setupInteraction()
+
+function initMapClickTracking() {
+    function getWorldCoordinates(screenX, screenY) {
+        if (!mapSprite) return null;
+        
+        const rect = app.view.getBoundingClientRect();
+        const canvasX = (screenX - rect.left) * (app.screen.width / rect.width);
+        const canvasY = (screenY - rect.top) * (app.screen.height / rect.height);
+        
+        const worldX = (canvasX - camera.x) / camera.scale.x;
+        const worldY = (canvasY - camera.y) / camera.scale.y;
+        
+        return {
+            x: worldX,
+            y: worldY,
+            screenX: canvasX,
+            screenY: canvasY,
+            timestamp: Date.now()
+        };
+    }
+    
+    function getEventCoordinates(event) {
+        let clientX, clientY;
+        
+        if (event.touches && event.touches[0]) {
+            clientX = event.touches[0].clientX;
+            clientY = event.touches[0].clientY;
+        } else {
+            clientX = event.clientX;
+            clientY = event.clientY;
+        }
+        
+        return getWorldCoordinates(clientX, clientY);
+    }
+    
+    function onMapClick(event) {
+        const worldCoords = getEventCoordinates(event);
+        if (!worldCoords) return;
+        
+        console.log(`Клик по карте: x=${Math.round(worldCoords.x)}, y=${Math.round(worldCoords.y)}`);
+        
+        const clickEvent = new CustomEvent('mapClick', { detail: worldCoords });
+        window.dispatchEvent(clickEvent);
+        
+        return worldCoords;
+    }
+    
+    let longPressTimer = null;
+    let longPressCoords = null;
+    
+    function onTouchStart(event) {
+        if (event.touches.length === 1) {
+            longPressCoords = getEventCoordinates(event);
+            longPressTimer = setTimeout(() => {
+                if (longPressCoords) {
+                    console.log(`Долгое нажатие: x=${Math.round(longPressCoords.x)}, y=${Math.round(longPressCoords.y)}`);
+                    window.dispatchEvent(new CustomEvent('mapLongPress', { detail: longPressCoords }));
+                }
+                longPressTimer = null;
+            }, 500);
+        }
+    }
+    
+    function onTouchEnd() {
+        if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+        }
+        longPressCoords = null;
+    }
+    
+    app.view.addEventListener('click', onMapClick);
+    
+    if (mobile) {
+        app.view.addEventListener('touchstart', onTouchStart);
+        app.view.addEventListener('touchend', onTouchEnd);
+        app.view.addEventListener('touchcancel', onTouchEnd);
+    }
+    
+    console.log('Отслеживание кликов по карте инициализировано');
+}
+
+// Затем в конце initMap(), после createMapMarkers(camera); добавьте:
+
     
     function startZoomInertia(minScale, maxScale) {
         if (currentZoomTarget) cancelAnimationFrame(currentZoomTarget);

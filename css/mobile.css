@@ -1,9 +1,14 @@
+/* На мобильных устройствах - показываем */
 @media (max-width: 500px) {
-
     .menu-mobile,
     .menu-mobile-overlay {
-
-        display: block;
+        display: block !important;
+    }
+    
+    /* Когда меню открыто - показываем */
+    .menu-mobile.open,
+    .menu-mobile-overlay.open {
+        display: block !important;
     }
 }
 
@@ -953,7 +958,7 @@
 
     /* Стилизация скроллбара */
     .menu-mobile-content::-webkit-scrollbar {
-        width: 5px;
+        width: 2px !important;
     }
     
     .marks-mobile-content::-webkit-scrollbar-track {
