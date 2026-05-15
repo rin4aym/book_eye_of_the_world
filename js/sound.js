@@ -379,6 +379,7 @@ function addSoundsToElements() {
     addSound('.read', () => {
         playClickSound();
     }, 'mouseenter');
+
     
     // =========================
     // .btn КНОПКИ - HOVER (наведение)

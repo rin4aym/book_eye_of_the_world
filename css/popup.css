@@ -351,7 +351,7 @@
 
 
 .tip path{
-    stroke: var(--grey);
+    stroke: var(--lightgrey);
 }
 
 
@@ -360,10 +360,10 @@
 }
 
 .tip:hover  path{
-    stroke: var(--lightgrey);
+    stroke: white;
 }
 .tip:active  path{
-    stroke: white;
+    stroke: var(--ui);
 }
 
 

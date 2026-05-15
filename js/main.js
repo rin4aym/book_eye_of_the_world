@@ -122,7 +122,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (page === 'index') {
     initCover();
-    initWelcomePopup(); // Приветственное окно только на главной
   }
   
   if (page === 'map') {
@@ -130,6 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     removeRandAnimation();
     removeBattleAnimation();
     initMobileMenu();
+    initWelcomePopup();
   }
 
   // В секции event
