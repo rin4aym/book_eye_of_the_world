@@ -587,23 +587,20 @@ export function isMenuOpenState() {
     return isMenuOpen;
 }
 
+// menu.js - исправленная версия initMenuButton
 export async function initMenuButton(menuBtnId = 'menuBtn') {
 
     // УЖЕ ИНИЦИАЛИЗИРОВАНО
     if (!isMenuInitialized) {
-
         await initMenu();
-
         isMenuInitialized = true;
     }
 
     const menuBtn = document.getElementById(menuBtnId);
 
     if (!menuBtn) {
-
-        throw new Error(
-            `Кнопка с id="${menuBtnId}" не найдена в DOM`
-        );
+        console.warn(`Кнопка с id="${menuBtnId}" не найдена в DOM, пропускаем инициализацию`);
+        return; // Просто выходим, а не выбрасываем ошибку
     }
 
     // защита от повторного listener
@@ -614,9 +611,7 @@ export async function initMenuButton(menuBtnId = 'menuBtn') {
     menuBtn.dataset.menuListenerAttached = 'true';
 
     menuBtn.addEventListener('click', (e) => {
-
         e.stopPropagation();
-
         toggleMenu();
     });
 

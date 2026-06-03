@@ -372,6 +372,7 @@ function addSoundsToElements() {
     addSound('.start_button', () => {
         playClickSound();
     }, 'mouseenter');
+
     
     // =========================
     // READ
