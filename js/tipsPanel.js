@@ -10,6 +10,11 @@ let notificationTimeout = null;
 let mobileTip = null;
 let currentMobileMarkerId = null;
 
+// Проверка, есть ли карта на странице
+function isMapPage() {
+    return document.body.dataset.page === 'map';
+}
+
 export function initTips(onOpen, onClose) {
     const tipsContainer = document.createElement('div');
     tipsContainer.className = 'tips-container';
@@ -18,14 +23,19 @@ export function initTips(onOpen, onClose) {
     onTipOpenCallback = onOpen;
     onTipCloseCallback = onClose;
     
-    // Создаем мобильную подсказку
-    createMobileTip();
+    // Создаем мобильную подсказку ТОЛЬКО на странице карты
+    if (isMapPage()) {
+        createMobileTip();
+    }
     
     console.log('Tips container created');
     return tipsContainer;
 }
 
 function createMobileTip() {
+    // Не создаем на странице главы
+    if (!isMapPage()) return;
+    
     // Удаляем старую, если есть
     if (mobileTip) {
         mobileTip.remove();
@@ -51,10 +61,12 @@ function createMobileTip() {
     
     // Закрытие по клику на крестик
     const closeBtn = mobileTip.querySelector('.tips-mobile-close');
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeCurrentMobileTip();
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeCurrentMobileTip();
+        });
+    }
     
     // Закрытие по клику на саму подсказку (но не на крестик)
     mobileTip.addEventListener('click', (e) => {
@@ -69,9 +81,14 @@ function isMobile() {
 }
 
 function showMobileTip(data, markerId) {
+    // Не показываем на странице главы
+    if (!isMapPage()) return;
+    
     if (!mobileTip) {
         createMobileTip();
     }
+    
+    if (!mobileTip) return;
     
     // Закрываем текущую подсказку, если открыта другая
     if (currentMobileMarkerId && currentMobileMarkerId !== markerId) {
@@ -82,8 +99,8 @@ function showMobileTip(data, markerId) {
     const titleEl = mobileTip.querySelector('.tips-mobile-title');
     const textEl = mobileTip.querySelector('.tips-mobile-text');
     
-    titleEl.textContent = data.title || '';
-    textEl.textContent = data.text || 'Нет описания';
+    if (titleEl) titleEl.textContent = data.title || '';
+    if (textEl) textEl.textContent = data.text || 'Нет описания';
     
     // Показываем подсказку
     mobileTip.classList.add('open');
@@ -119,9 +136,15 @@ export function showTips(data, markerId, markerX, markerY) {
         return;
     }
     
-    // НА МОБИЛЬНЫХ - показываем мобильную подсказку
-    if (isMobile()) {
+    // НА МОБИЛЬНЫХ И НА СТРАНИЦЕ КАРТЫ - показываем мобильную подсказку
+    if (isMobile() && isMapPage()) {
         showMobileTip(data, markerId);
+        return;
+    }
+    
+    // НА ДЕСКТОПЕ ИЛИ НЕ НА КАРТЕ - создаем обычную подсказку или не показываем
+    if (!isMapPage()) {
+        console.log('Not on map page, skipping tip');
         return;
     }
     
@@ -318,7 +341,7 @@ function positionTip(tipEl, markerX, markerY) {
 
 export function closeTips(markerId) {
     // Для мобильных
-    if (isMobile()) {
+    if (isMobile() && isMapPage()) {
         if (currentMobileMarkerId === markerId) {
             closeCurrentMobileTip();
         }
@@ -343,7 +366,7 @@ export function closeTips(markerId) {
 
 export function closeAllTips() {
     // Закрываем мобильную подсказку
-    if (isMobile()) {
+    if (isMobile() && isMapPage()) {
         closeCurrentMobileTip();
         return;
     }
@@ -377,7 +400,7 @@ export function updateTipsPositions(markersPositions) {
 }
 
 export function isTipOpen(markerId) {
-    if (isMobile()) {
+    if (isMobile() && isMapPage()) {
         return currentMobileMarkerId === markerId;
     }
     return activeTips.some(tip => tip.markerId === markerId);

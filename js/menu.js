@@ -7,6 +7,16 @@ let onCloseCallback = null;
 let isMenuInitialized = false;
 import { setTextSize, getTextSize } from './textSize.js';
 
+// Функция для скачивания файла
+function downloadFile(url, filename) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 async function loadMenuHTML() {
     const response = await fetch('/menu.html');
     if (!response.ok) {
@@ -156,6 +166,62 @@ function createMobileMenu() {
                 </div>
                 <p>rinaymaletdin@mail.ru</p>
             </div>
+
+    <div class="download_block dmob">
+        <div class="download">
+        <svg class="read dmob" width="282" height="48" viewBox="0 0 282 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="active" d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="url(#paint0_linear_1183_1512)" stroke="url(#paint1_linear_1183_1512)" stroke-width="1.47486" stroke-linecap="round"/>
+            <path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="url(#paint2_linear_1183_1512)"/>
+            <path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="black" fill-opacity="0.2"/>
+            <path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" stroke="url(#paint3_linear_1183_1512)" stroke-width="1.47486" stroke-linecap="round"/>
+            <path id="defoult" d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" fill="#585C62"/>
+            <path d="M29.1621 0.734375H252.162L280.162 23.7344L252.162 46.7344H29.1621L1.16211 23.7344L29.1621 0.734375Z" stroke="url(#paint4_linear_1183_1512)" stroke-width="1.47486" stroke-linecap="round"/>
+                <text x="141" y="29" text-anchor="middle" fill="white" font-size="16" font-family="NotoSerifB" pointer-events="none">
+                    Скачать артбук
+                </text>
+            <defs>
+            <linearGradient id="paint0_linear_1183_1512" x1="271.717" y1="-17.8734" x2="-29.8376" y2="132.798" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C7AA7F"/>
+            <stop offset="0.0001" stop-color="#CCAA79"/>
+            <stop offset="0.211538" stop-color="#A98959"/>
+            <stop offset="0.514423" stop-color="#E5CCA8"/>
+            <stop offset="0.75" stop-color="#AA8A59"/>
+            <stop offset="0.870192" stop-color="#F0DBBC"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear_1183_1512" x1="264.463" y1="-20.0902" x2="-32.5423" y2="113.379" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C7AA7F"/>
+            <stop offset="0.211538" stop-color="#785C32"/>
+            <stop offset="0.514423" stop-color="#D9AF72"/>
+            <stop offset="0.75" stop-color="#9C8460"/>
+            <stop offset="0.870192" stop-color="#F8F4EE"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear_1183_1512" x1="271.717" y1="-17.8734" x2="-29.8376" y2="132.798" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C7AA7F"/>
+            <stop offset="0.0001" stop-color="#CCAA79"/>
+            <stop offset="0.211538" stop-color="#A98959"/>
+            <stop offset="0.514423" stop-color="#E5CCA8"/>
+            <stop offset="0.75" stop-color="#AA8A59"/>
+            <stop offset="0.870192" stop-color="#F0DBBC"/>
+            </linearGradient>
+            <linearGradient id="paint3_linear_1183_1512" x1="264.463" y1="-20.0902" x2="-32.5423" y2="113.379" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C7AA7F"/>
+            <stop offset="0.211538" stop-color="#785C32"/>
+            <stop offset="0.514423" stop-color="#D9AF72"/>
+            <stop offset="0.75" stop-color="#9C8460"/>
+            <stop offset="0.870192" stop-color="#F8F4EE"/>
+            </linearGradient>
+            <linearGradient id="paint4_linear_1183_1512" x1="264.463" y1="-20.0902" x2="-32.5423" y2="113.379" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C7AA7F"/>
+            <stop offset="0.211538" stop-color="#785C32"/>
+            <stop offset="0.514423" stop-color="#D9AF72"/>
+            <stop offset="0.75" stop-color="#9C8460"/>
+            <stop offset="0.870192" stop-color="#F8F4EE"/>
+            </linearGradient>
+            </defs>
+            </svg>
+            </div>
+         </div>
+
         </div>
     `;
     return el;
@@ -364,6 +430,9 @@ function initMobileMenu() {
         closeBtn.addEventListener('click', closeMenu);
     }
     
+    // ========== ИНИЦИАЛИЗАЦИЯ КНОПКИ СКАЧИВАНИЯ ==========
+    initDownloadButton();
+    
     setTimeout(() => {
         initMobileSlider();
         
@@ -376,6 +445,32 @@ function initMobileMenu() {
         if (fullscreenToggle) initMobileFullscreenToggle(fullscreenToggle);
     }, 100);
 }
+
+// Функция для инициализации кнопки скачивания
+function initDownloadButton() {
+    // Ищем все возможные кнопки скачивания
+    const downloadButtons = document.querySelectorAll('.download, .download_block');
+    
+    downloadButtons.forEach(block => {
+        const btn = block.querySelector('svg, .read');
+        if (!btn) return;
+        
+        if (btn.dataset.downloadAttached === 'true') return;
+        btn.dataset.downloadAttached = 'true';
+        
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            
+            const fileUrl = '/assets/files/artbook.pdf';
+            const fileName = 'Артбук Око Мира.pdf';
+            
+            downloadFile(fileUrl, fileName);
+            console.log('Скачивание файла начато:', fileName);
+        });
+    });
+}
+
 
 export async function initMenu(onClose) {
 

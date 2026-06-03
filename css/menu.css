@@ -278,18 +278,24 @@ padding-top: 40px;
 
 
 .download_block{
-    padding: 40px 0px;
+    display: flex;
+    padding-top: 20px;
+    justify-content: center;
 }
 
 .gold_line{
-    height: 1px;
+    height: 2px;
     width: auto;
-    background-color: #C7AA7F;
+    background-color: var(--grey);
 }
 
 .download_block .read{
- padding: 40px 0px;
+ padding-top: 40px;
 }
+
+.download_block .dmob{
+    padding-top: 20px;
+   }
 
 
 /* Стилизация скроллбара для меню */
