@@ -961,12 +961,12 @@
         width: 2px !important;
     }
     
-    .marks-mobile-content::-webkit-scrollbar-track {
+    .menu-mobile-content::-webkit-scrollbar-track {
         background: var(--menu);
         border-radius: 2px;
     }
     
-    .marks-mobile-content::-webkit-scrollbar-thumb {
+    .menu-mobile-content::-webkit-scrollbar-thumb {
         background: var(--grey);
         border-radius: 2px;
     }
@@ -1011,6 +1011,25 @@
         width: 100%;
         max-width: 300px;
         height: auto;
+    }
+
+
+    .menu-mobile::-webkit-scrollbar {
+        width: 5px; /* Ширина вертикального скроллбара */
+    }
+    
+    .menu-mobile::-webkit-scrollbar-track {
+        background: var(--manu); /* Цвет дорожки */
+        border-radius: 5px;
+    }
+    
+    .menu-mobile::-webkit-scrollbar-thumb {
+        background: var(--grey); /* Цвет ползунка */
+        border-radius: 5px;
+    }
+    
+    .menu-mobile::-webkit-scrollbar-thumb:hover {
+        background: var(--lightgrey); /* Цвет ползунка при наведении */
     }
 
 

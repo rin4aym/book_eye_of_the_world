@@ -563,3 +563,72 @@ body[data-page="event"] #menuBtn{
 .naym-fill.active {
     fill: #8F9CAE;
 }
+
+
+
+
+
+
+/* Состояния кружка в finalAnimation */
+
+/* Обычное состояние */
+.final-handle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    background: var(--grey);
+    border: 2px solid var(--lipa);
+    border-radius: 50%;
+    cursor: grab;
+    z-index: 1002;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Hover - когда мышка над кружком */
+.final-handle:hover {
+    background: var(--lightgrey);
+    transform: translateX(-50%) scale(1.05);
+}
+
+/* Active - когда зажали кружок (тянем) */
+.final-handle:active {
+    cursor: grabbing;
+    transform: translateX(-50%) scale(0.98);
+    background: var(--ui);
+}
+
+/* Disabled - когда анимация проигрывается (неактивен) */
+.final-handle.disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+    background: var(--ui);
+}
+
+/* Disabled + hover (чтобы не было эффектов) */
+.final-handle.disabled:hover {
+    transform: translateX(-50%);
+    background: var(--ui);
+    cursor: not-allowed;
+}
+
+/* Контейнер шкалы */
+.final-scale-container {
+    position: absolute;
+    bottom: 300px;
+    left: 120px;
+    width: 73px;
+    height: 278px;
+    z-index: 1001;
+}
+
+/* Заливка шкалы */
+.final-fill {
+    transition: height 0.05s linear;
+}
+
+.final-fill.active {
+    fill: #8F9CAE;
+}

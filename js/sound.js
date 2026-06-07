@@ -16,6 +16,11 @@ let thunder2Sound = null;
 let kanatSound = null;
 
 let screamSound = null;
+let timeSound = null;
+
+// В sound.js добавьте
+let strikeSound = null;
+let endSound = null;
 
 // =========================
 // ЗВУКИ
@@ -98,6 +103,11 @@ function initSounds() {
         thunder2Sound = createAudio('./assets/audio/thunder.mp3', 0.6);
         kanatSound = createAudio('./assets/audio/kanat.mp3', 0.8);
         screamSound = createAudio('./assets/audio/scream.mp3', 0.8);
+
+        // В initSounds()
+        strikeSound = createAudio('./assets/audio/strike.mp3', 0.6);
+
+        timeSound = createAudio('./assets/audio/time.mp3', 0.5);
         
         clickSound.load();
         menuSound.load();
@@ -111,6 +121,8 @@ function initSounds() {
         thunder2Sound.load();
         kanatSound.load();
         screamSound.load();
+        strikeSound.load();
+        timeSound.load();
         
         console.log('Все звуки инициализированы');
     } catch (error) {
@@ -209,7 +221,12 @@ export function playThunder2Sound() {
 export function playKanatSound() {
     playSound(kanatSound);
 }
-
+export function playStrikeSound() {
+    playSound(strikeSound);
+}
+export function playTimeSound() {
+    playSound(timeSound);
+}
 // ========== ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ФОНОВОЙ МУЗЫКОЙ ==========
 
 // Регистрация элемента фоновой музыки

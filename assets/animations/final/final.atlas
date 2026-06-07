@@ -1,0 +1,293 @@
+
+final.png
+size: 4065,2994
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+B hand
+  rotate: true
+  xy: 3866, 37
+  size: 176, 165
+  orig: 176, 165
+  offset: 0, 0
+  index: -1
+L hand
+  rotate: true
+  xy: 2302, 144
+  size: 182, 171
+  orig: 193, 171
+  offset: 0, 0
+  index: -1
+PANTS
+  rotate: false
+  xy: 2880, 1677
+  size: 712, 523
+  orig: 712, 578
+  offset: 0, 55
+  index: -1
+R hand
+  rotate: true
+  xy: 3813, 2213
+  size: 153, 148
+  orig: 158, 162
+  offset: 0, 14
+  index: -1
+Rock big
+  rotate: true
+  xy: 2582, 89
+  size: 414, 501
+  orig: 414, 501
+  offset: 0, 0
+  index: -1
+Rock left
+  rotate: false
+  xy: 1533, 4
+  size: 246, 196
+  orig: 1761, 1257
+  offset: 46, 338
+  index: -1
+Rock midle
+  rotate: true
+  xy: 2319, 336
+  size: 427, 259
+  orig: 427, 259
+  offset: 0, 0
+  index: -1
+Rock small
+  rotate: false
+  xy: 3912, 1497
+  size: 143, 181
+  orig: 143, 181
+  offset: 0, 0
+  index: -1
+arm R
+  rotate: true
+  xy: 1533, 204
+  size: 504, 274
+  orig: 504, 274
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 4, 1880
+  size: 1967, 1110
+  orig: 1967, 1110
+  offset: 0, 0
+  index: -1
+balzamon
+  rotate: false
+  xy: 4, 712
+  size: 1648, 1164
+  orig: 1648, 1164
+  offset: 0, 0
+  index: -1
+big glow
+  rotate: false
+  xy: 4, 5
+  size: 771, 703
+  orig: 777, 736
+  offset: 6, 0
+  index: -1
+body
+  rotate: false
+  xy: 1975, 1318
+  size: 705, 677
+  orig: 1150, 1361
+  offset: 0, 675
+  index: -1
+dop light
+  rotate: false
+  xy: 1656, 772
+  size: 237, 240
+  orig: 237, 240
+  offset: 0, 0
+  index: -1
+face
+  rotate: false
+  xy: 2684, 1735
+  size: 192, 260
+  orig: 203, 265
+  offset: 7, 0
+  index: -1
+fall bright
+  rotate: false
+  xy: 3944, 2767
+  size: 113, 133
+  orig: 113, 133
+  offset: 0, 0
+  index: -1
+fall corner
+  rotate: false
+  xy: 3813, 2370
+  size: 127, 620
+  orig: 127, 620
+  offset: 0, 0
+  index: -1
+fall smallest
+  rotate: false
+  xy: 3944, 2904
+  size: 117, 86
+  orig: 117, 86
+  offset: 0, 0
+  index: -1
+fall top
+  rotate: false
+  xy: 1811, 80
+  size: 487, 246
+  orig: 487, 246
+  offset: 0, 0
+  index: -1
+hoke sparkles
+  rotate: true
+  xy: 2591, 507
+  size: 573, 575
+  orig: 573, 575
+  offset: 0, 0
+  index: -1
+hole sword
+  rotate: false
+  xy: 2684, 1084
+  size: 638, 589
+  orig: 638, 589
+  offset: 0, 0
+  index: -1
+knee
+  rotate: true
+  xy: 3087, 109
+  size: 394, 215
+  orig: 394, 215
+  offset: 0, 0
+  index: -1
+light hole
+  rotate: false
+  xy: 1975, 1999
+  size: 901, 991
+  orig: 901, 991
+  offset: 0, 0
+  index: -1
+locon
+  rotate: false
+  xy: 3912, 1431
+  size: 71, 62
+  orig: 72, 66
+  offset: 0, 4
+  index: -1
+locon 1
+  rotate: false
+  xy: 2591, 1135
+  size: 81, 179
+  orig: 81, 179
+  offset: 0, 0
+  index: -1
+locon niz
+  rotate: false
+  xy: 3673, 46
+  size: 189, 167
+  orig: 189, 167
+  offset: 0, 0
+  index: -1
+long hair
+  rotate: false
+  xy: 3611, 554
+  size: 353, 527
+  orig: 353, 527
+  offset: 0, 0
+  index: -1
+mini glow
+  rotate: false
+  xy: 1811, 330
+  size: 504, 433
+  orig: 504, 433
+  offset: 0, 0
+  index: -1
+niti hole
+  rotate: true
+  xy: 3326, 1085
+  size: 588, 582
+  orig: 632, 731
+  offset: 44, 40
+  index: -1
+nozni
+  rotate: false
+  xy: 1656, 1016
+  size: 272, 860
+  orig: 292, 860
+  offset: 0, 0
+  index: -1
+obrivki
+  rotate: true
+  xy: 3673, 217
+  size: 333, 325
+  orig: 333, 325
+  offset: 0, 0
+  index: -1
+pup[e R
+  rotate: false
+  xy: 2684, 1716
+  size: 17, 15
+  orig: 19, 18
+  offset: 1, 2
+  index: -1
+puple L
+  rotate: false
+  xy: 1897, 998
+  size: 16, 14
+  orig: 18, 18
+  offset: 2, 2
+  index: -1
+pushek
+  rotate: true
+  xy: 3170, 523
+  size: 557, 437
+  orig: 557, 437
+  offset: 0, 0
+  index: -1
+sky
+  rotate: false
+  xy: 779, 10
+  size: 750, 698
+  orig: 750, 698
+  offset: 0, 0
+  index: -1
+sword
+  rotate: false
+  xy: 1932, 767
+  size: 655, 547
+  orig: 683, 547
+  offset: 0, 0
+  index: -1
+thread
+  rotate: true
+  xy: 3596, 1682
+  size: 518, 404
+  orig: 625, 530
+  offset: 56, 63
+  index: -1
+white L
+  rotate: true
+  xy: 1932, 1830
+  size: 46, 29
+  orig: 46, 29
+  offset: 0, 0
+  index: -1
+white R
+  rotate: true
+  xy: 1783, 163
+  size: 37, 24
+  orig: 37, 24
+  offset: 0, 0
+  index: -1
+большой меч
+  rotate: false
+  xy: 2880, 2204
+  size: 929, 786
+  orig: 995, 786
+  offset: 0, 0
+  index: -1
+шнур
+  rotate: false
+  xy: 3306, 136
+  size: 363, 383
+  orig: 363, 405
+  offset: 0, 22
+  index: -1

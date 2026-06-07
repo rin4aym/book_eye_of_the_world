@@ -112,7 +112,7 @@ function updateLabelColor() {
     if (!fullscreenLabel) return;
     
     if (isFullscreenEnabled) {
-        fullscreenLabel.style.color = '#C7AA7F';
+        fullscreenLabel.style.color = 'white';
         fullscreenLabel.style.transition = 'color 0.3s ease';
     } else {
         fullscreenLabel.style.color = '#585C62';
