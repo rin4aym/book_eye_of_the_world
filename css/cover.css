@@ -37,7 +37,7 @@
 .logo {
     margin-top: 40%;
     width: 100%;
-    min-width: 40%;
+    min-width: 350px;
     pointer-events: none; /* Логотип не перехватывает клики */
 }
 
@@ -86,3 +86,23 @@
     opacity: 0;
     transition: opacity 0.2s ease;
   }
+
+  @media (max-width: 750px) {
+    .overlay {
+      position: fixed;
+      top: 0;
+      max-width: none;
+      height: 100%;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
+      justify-content: space-between;  /* Элементы распределяются: логотип вверху, кнопка внизу */
+      align-items: center;
+      pointer-events: none; /* Чтобы клики проходили сквозь overlay, но не сквозь кнопку */
+      
+  }
+
+
+}
+
